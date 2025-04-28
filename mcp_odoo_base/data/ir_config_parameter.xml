@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <data >
+        <!-- MCP允许访问的业务对象列表 -->
+        <record id="mcp_allowed_models" model="ir.config_parameter">
+            <field name="key">mcp.allowed_models</field>
+            <field name="value"></field>
+        </record>
+
+        <!-- AI代理服务器URL -->
+        <record id="ai_agent_url" model="ir.config_parameter">
+            <field name="key">ai.agent_url</field>
+            <field name="value">http://localhost:8000</field>
+        </record>
+
+        <!-- 企查查API配置 -->
+        <record id="qcc_app_key" model="ir.config_parameter">
+            <field name="key">qcc.app_key</field>
+            <field name="value">1234567890</field>
+        </record>
+
+        <record id="qcc_secret_key" model="ir.config_parameter">
+            <field name="key">qcc.secret_key</field>
+            <field name="value">1234567890</field>
+        </record>
+    </data>
+</odoo>

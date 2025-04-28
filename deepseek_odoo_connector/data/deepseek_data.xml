@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- 授权信息 -->
+        <record id="deepseek_api_keys" model="deepseek.api.keys">
+            <field name="name">DS-API-key</field>
+            <field name="secret">sk-031b34475d704c96aa8d984f9b439950</field>
+            <field name="description">列表内是你的全部 API key，API key 仅在创建时可见可复制，请妥善保存。不要与他人共享你的 API key，或将其暴露在浏览器或其他客户端代码中。为了保护你的帐户安全，我们可能会自动禁用我们发现已公开泄露的 API key。我们未对 2024 年 4 月 25 日前创建的 API key 的使用情况进行追踪。</field>
+        </record>
+
+        <!-- 余额信息 -->
+        <record id="deepseek_user_balance" model="deepseek.user.balance">
+            <field name="name">Get User Balance</field>
+            <field name="is_available">True</field>
+            <field name="currency">CNY</field>
+        </record>
+
+        <!-- 模型提示词生成 -->
+        <record id="deepseek_cue_word_01" model="deepseek.cue.word">
+            <field name="name">模型提示词生成</field>
+            <field name="model">deepseek-chat</field>
+            <field name="role_system">system</field>
+            <field name="content_system">你是一位大模型提示词生成专家，请根据用户的需求编写一个智能助手的提示词，来指导大模型进行内容生成，要求：\n1. 以 Markdown 格式输出\n2. 贴合用户需求，描述智能助手的定位、能力、知识储备\n3. 提示词应清晰、精确、易于理解，在保持质量的同时，尽可能简洁\n4. 只输出提示词，不要输出多余解释</field>
+            <field name="role_user">user</field>
+            <field name="content_user">请帮我生成一个“Linux 助手”的提示词</field>
+            <field name="description">根据用户需求，帮助生成高质量提示词</field>
+        </record>
+
+        <!-- JSON 结构化输出 -->
+        <record id="deepseek_cue_word_02" model="deepseek.cue.word">
+            <field name="name">结构化输出</field>
+            <field name="model">deepseek-chat</field>
+            <field name="role_system">system</field>
+            <field name="content_system">用户将提供给你一段新闻内容，请你分析新闻内容，并提取其中的关键信息，以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
+                        {
+                          "entiry":"新闻实体",
+                          "time": "新闻时间，格式为 YYYY-mm-dd HH:MM:SS，没有请填 null",
+                          "summary": "新闻内容总结"
+                        }</field>
+            <field name="role_user">user</field>
+            <field name="content_user">8月31日，一枚猎鹰9号运载火箭于美国东部时间凌晨3时43分从美国佛罗里达州卡纳维拉尔角发射升空，将21颗星链卫星（Starlink）送入轨道。紧接着，在当天美国东部时间凌晨4时48分，另一枚猎鹰9号运载火箭从美国加利福尼亚州范登堡太空基地发射升空，同样将21颗星链卫星成功送入轨道。两次发射间隔65分钟创猎鹰9号运载火箭最短发射间隔纪录。
+                        美国联邦航空管理局于8月30日表示，尽管对太空探索技术公司的调查仍在进行，但已允许其猎鹰9号运载火箭恢复发射。目前，双方并未透露8月28日助推器着陆失败事故的详细信息。尽管发射已恢复，但原计划进行五天太空活动的“北极星黎明”（Polaris Dawn）任务却被推迟。美国太空探索技术公司为该任务正在积极筹备，等待美国联邦航空管理局的最终批准后尽快进行发射。</field>
+            <field name="description">将内容转化为 Json，来方便后续程序处理</field>
+        </record>
+
+        <!-- 结构化输出 -->
+        <record id="deepseek_cue_word_03" model="deepseek.cue.word">
+            <field name="name">角色扮演（情景续写）</field>
+            <field name="model">deepseek-chat</field>
+            <field name="role_system"></field>
+            <field name="content_system"></field>
+            <field name="role_user">user</field>
+            <field name="content_user">假设诸葛亮死后在地府遇到了刘备，请模拟两个人展开一段对话。</field>
+            <field name="description">提供一个场景，让模型模拟该场景下的任务对话</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 企查查营业执照列表视图 -->
+    <record id="view_qcc_business_license_list" model="ir.ui.view">
+        <field name="name">qcc.business.license.list</field>
+        <field name="model">qcc.business.license</field>
+        <field name="arch" type="xml">
+            <list string="企查查营业执照">
+                <field name="company_name"/>
+                <field name="credit_code"/>
+                <field name="legal_representative"/>
+                <field name="registered_capital"/>
+                <field name="establishment_date"/>
+                <field name="business_status"/>
+                <field name="last_query_time"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 企查查营业执照表单视图 -->
+    <record id="view_qcc_business_license_form" model="ir.ui.view">
+        <field name="name">qcc.business.license.form</field>
+        <field name="model">qcc.business.license</field>
+        <field name="arch" type="xml">
+            <form string="企查查营业执照">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_name"/>
+                            <field name="credit_code"/>
+                            <field name="registration_number"/>
+                            <field name="company_type"/>
+                            <field name="legal_representative"/>
+                            <field name="registered_capital"/>
+                            <field name="paid_in_capital"/>
+                            <field name="establishment_date"/>
+                        </group>
+                        <group>
+                            <field name="business_term"/>
+                            <field name="registration_authority"/>
+                            <field name="approval_date"/>
+                            <field name="business_status"/>
+                            <field name="is_listed"/>
+                            <field name="stock_number" invisible="is_listed == False"/>
+                            <field name="stock_type" invisible="is_listed == False"/>
+                            <field name="last_query_time"/>
+                        </group>
+                    </group>
+                    <group string="地址和经营范围">
+                        <field name="address" nolabel="1"/>
+                        <field name="business_scope" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 企查查营业执照搜索视图 -->
+    <record id="view_qcc_business_license_search" model="ir.ui.view">
+        <field name="name">qcc.business.license.search</field>
+        <field name="model">qcc.business.license</field>
+        <field name="arch" type="xml">
+            <search string="企查查营业执照">
+                <field name="company_name"/>
+                <field name="credit_code"/>
+                <field name="legal_representative"/>
+                <field name="business_status"/>
+                <separator/>
+                <filter string="上市公司" name="listed" domain="[('is_listed', '=', True)]"/>
+                <group expand="0" string="分组">
+                    <filter string="企业类型" name="company_type" context="{'group_by': 'company_type'}"/>
+                    <filter string="登记状态" name="business_status" context="{'group_by': 'business_status'}"/>
+                    <filter string="成立日期" name="establishment_date" context="{'group_by': 'establishment_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- 企查查营业执照动作 -->
+    <record id="action_qcc_business_license" model="ir.actions.act_window">
+        <field name="name">企查查营业执照</field>
+        <field name="res_model">qcc.business.license</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_qcc_business_license_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                暂无企查查营业执照记录
+            </p>
+        </field>
+    </record>
+
+    <!-- 企查查营业执照菜单 -->
+    <menuitem id="menu_qcc_business_license"
+        name="企查查营业执照"
+        parent="menu_mcp_root"
+        action="action_qcc_business_license"
+        sequence="20"/>
+</odoo> 

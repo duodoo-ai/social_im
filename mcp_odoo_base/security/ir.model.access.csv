@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mcp_base_user,mcp.base.user,model_mcp_base,group_mcp_user,1,1,1,1
+access_qcc_business_license_system,qcc.business.license.system,model_qcc_business_license,base.group_system,1,1,1,1
+access_qcc_business_license_user,qcc.business.license.user,model_qcc_business_license,base.group_user,1,0,0,0

@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<odoo>
+    <menuitem id="menu_eai_root"
+              name="AI"
+              sequence="1099"
+              web_icon="odoo_deepseek_connector,static/description/icon.png"/>
+    <!--二级菜单-->
+    <menuitem id="sub_deepseek_api_keys"
+              name="DeepSeek Interface"
+              sequence="10"
+              action="action_deepseek_api_keys"
+              parent="menu_eai_root"/>
+    <menuitem id="sub_deepseek_user_balance"
+              name="Get User Balance"
+              sequence="15"
+              action="action_deepseek_user_balance"
+              parent="menu_eai_root"/>
+    <menuitem id="sub_deepseek_cue_word"
+              name="Deepseek Cue Word"
+              sequence="20"
+              action="action_deepseek_cue_word"
+              parent="menu_eai_root"/>
+</odoo>

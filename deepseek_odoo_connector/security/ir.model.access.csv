@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deepseek_api_keys_user,access.deepseek_api_keys_user,model_deepseek_api_keys,,1,1,1,1
+access_deepseek_user_balance_user,access.deepseek_user_balance_user,model_deepseek_user_balance,,1,1,1,1
+access_deepseek_cue_word_user,access.deepseek_cue_word_user,model_deepseek_cue_word,,1,1,1,1
+
+

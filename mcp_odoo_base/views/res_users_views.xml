@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_mcp" model="ir.ui.view">
+        <field name="name">res.users.form.mcp</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="MCP配置" groups="base.group_system">
+                    <group>
+                        <field name="mcp_enabled"/>
+                        <field name="mcp_api_key"/>
+                        <field name="mcp_last_access" readonly="1"/>
+                        <field name="mcp_access_count" readonly="1"/>
+                    </group>
+                    <group>
+                        <button name="action_generate_mcp_key" 
+                                string="生成API密钥" 
+                                type="object" 
+                                class="btn-primary"
+                                invisible="not mcp_enabled"/>
+                        <button name="action_disable_mcp" 
+                                string="禁用MCP访问" 
+                                type="object" 
+                                class="btn-secondary"
+                                invisible="not mcp_enabled"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo> 

@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="deepseek_user_balance_tree" model="ir.ui.view">
+        <field name="name">Get User Balance List</field>
+        <field name="model">deepseek.user.balance</field>
+        <field name="arch" type="xml">
+            <list string="Get User Balance">
+                <field name="name" optional="show"/>
+                <field name="is_available" optional="show"/>
+                <field name="currency" optional="show"/>
+                <field name="total_balance" optional="show"/>
+                <field name="granted_balance" optional="show"/>
+                <field name="topped_up_balance" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_deepseek_user_balance" model="ir.actions.act_window">
+        <field name="name">Get User Balance Action</field>
+        <field name="res_model">deepseek.user.balance</field>
+        <field name="view_mode">list</field>
+        <field name="view_ids"
+           eval="[(5, 0, 0),
+                  (0, 0, {'view_mode': 'list', 'view_id': ref('deepseek_user_balance_tree')}),
+                  ]"/>
+    </record>
+</odoo>

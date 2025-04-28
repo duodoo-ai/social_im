@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="cron_gen_user_balance_from_deepseek" model="ir.cron">
+            <field name="interval_type">minutes</field>
+            <field name="name">【DeepSeek-AI】DS01 Get user current balance</field>
+            <field name="priority">5</field>
+            <field name="active">False</field>
+            <field name="interval_number">30</field>
+            <field name="model_id" ref="odoo_deepseek_connector.model_deepseek_user_balance"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_gen_user_balance_from_deepseek()</field>
+        </record>
+    </data>
+</odoo>

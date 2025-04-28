@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MCP菜单 -->
+    <menuitem id="menu_mcp_root"
+        name="MCP"
+        sequence="100"/>
+
+    <menuitem id="menu_mcp_config"
+        name="配置"
+        parent="menu_mcp_root"
+        sequence="100"/>
+
+    <!-- AI设置表单视图 -->
+    <record id="view_ai_settings_form" model="ir.ui.view">
+        <field name="name">ai.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="AI" string="AI" name="mcp_odoo_base">
+                    <block name="ai_settings_block" title="AI设置">
+                        <setting id="ai_agent_url_setting" 
+                                help="设置AI代理服务器的URL地址，用于连接AI服务">
+                            <field name="ai_agent_url"/>
+                        </setting>
+                        
+                        <setting id="qcc_settings" title="企查查API配置" 
+                                help="配置企查查API的密钥信息">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label class="col-lg-3" for="qcc_app_key">AppKey</label>
+                                    <field name="qcc_app_key" class="col-lg-9"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label class="col-lg-3" for="qcc_secret_key">SecretKey</label>
+                                    <field name="qcc_secret_key" class="col-lg-9"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- AI设置菜单 -->
+    <menuitem id="menu_ai_settings"
+        name="AI"
+        parent="base.menu_administration"
+        sequence="100"/>
+</odoo> 

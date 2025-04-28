@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-odoo-server"
+version = "0.1.1"
+description = "MCP Odoo Server - 提供Odoo系统的MCP接口"
+requires-python = ">=3.10"
+authors = [
+    { name = "YiZuo ltd", email = "pengyb@yizuo.ltd" }
+]
+license = { text = "MIT" }
+keywords = ["odoo", "mcp", "server", "api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "mcp>=1.4.1",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0"
+]
+
+[project.scripts]
+mcp-odoo-server = "mcp_odoo_server.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/xhair/mcp-odoo-server"
+Repository = "https://github.com/xhair/mcp-odoo-server.git"
+Documentation = "https://github.com/xhair/mcp-odoo-server#readme"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcp_odoo_server"]

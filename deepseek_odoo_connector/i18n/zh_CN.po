@@ -1,0 +1,74 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* odoo_eshr_connector
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-27 08:48+0000\n"
+"PO-Revision-Date: 2025-03-27 08:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: odoo_eshr_connector
+#: model:ir.model,name:odoo_eshr_connector.model_hr_department
+msgid "Department"
+msgstr "部门"
+
+#. module: odoo_eshr_connector
+#: model:ir.model,name:odoo_eshr_connector.model_hr_employee
+msgid "Employee"
+msgstr "员工"
+
+#. module: odoo_eshr_connector
+#: model_terms:ir.ui.view,arch_db:odoo_eshr_connector.inherit_view_employee_form_2025
+#: model_terms:ir.ui.view,arch_db:odoo_eshr_connector.inherit_view_employee_tree_2025
+msgid "Manager"
+msgstr "直接领导"
+
+#. module: odoo_eshr_connector
+#: model_terms:ir.ui.view,arch_db:odoo_eshr_connector.inherit_view_department_form_2025
+#: model_terms:ir.ui.view,arch_db:odoo_eshr_connector.inherit_view_employee_form_2025
+msgid "e-shr Base Info"
+msgstr "e-shr键值信息"
+
+#. module: odoo_eshr_connector
+#: model:ir.model.fields,field_description:odoo_eshr_connector.field_hr_department__fnum
+msgid "e-shr Department Code"
+msgstr "部门编码"
+
+#. module: odoo_eshr_connector
+#: model:ir.model.fields,field_description:odoo_eshr_connector.field_hr_employee__fnum
+msgid "e-shr Employee Code"
+msgstr "职工编码"
+
+#. module: odoo_eshr_connector
+#: model:ir.model.fields,field_description:odoo_eshr_connector.field_hr_department__fid
+#: model:ir.model.fields,field_description:odoo_eshr_connector.field_hr_employee__fid
+msgid "e-shr FID"
+msgstr "E-SHR唯一标识"
+
+#. module: odoo_eshr_connector
+#: model:ir.model.fields,field_description:odoo_eshr_connector.field_hr_department__level
+msgid "e-shr Level"
+msgstr "部门层级"
+
+#. module: odoo_eshr_connector
+#: model:ir.model.fields,field_description:odoo_eshr_connector.field_hr_job__fid
+msgid "e-shr Position FID"
+msgstr "职位唯一ID"
+
+#. module: odoo_eshr_connector
+#: model:ir.actions.server,name:odoo_eshr_connector.cron_shr_org_to_odoo_ir_actions_server
+msgid "【OrgSync】SHR01 Departmental Information Synch Task (SHR ->Intermediate Platform)"
+msgstr "【组织同步】SHR01-部门信息同步任务（SHR->中间平台）"
+
+#. module: odoo_eshr_connector
+#: model:ir.actions.server,name:odoo_eshr_connector.cron_shr_employee_to_odoo_ir_actions_server
+msgid "【OrgSync】SHR02 Employee Information Synch Task (SHR ->Intermediate Platform)"
+msgstr "【组织同步】SHR02-职工信息同步任务（SHR->中间平台）"
