@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deepseek_config,deepseek.config,model_deepseek_config,base.group_user,1,1,1,0
+access_deepseek_history,deepseek.history,model_deepseek_history,base.group_user,1,0,1,0
+access_deepseek_api,deepseek.deepseek_api,model_deepseek_api,base.group_user,1,1,1,0
+

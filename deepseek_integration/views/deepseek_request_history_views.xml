@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="deepseek_history_tree" model="ir.ui.view">
+        <field name="name">Deepseek API Request History List</field>
+        <field name="model">deepseek.history</field>
+        <field name="arch" type="xml">
+            <list string="Deepseek API Request History">
+                <field name="config_id" optional="show"/>
+                <field name="prompt" optional="show"/>
+                <field name="response" optional="show"/>
+                <field name="status" optional="show"/>
+                <field name="cost" optional="show"/>
+                <field name="model" optional="show"/>
+                <field name="duration" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="deepseek_history_form" model="ir.ui.view">
+        <field name="name">Deepseek API Request History Form</field>
+        <field name="model">deepseek.history</field>
+        <field name="arch" type="xml">
+            <form string="Deepseek API Request History">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,success,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="config_id"/>
+                        <field name="prompt"/>
+                        <field name="response"/>
+                    </group>
+                    <group>
+                        <field name="status"/>
+                        <field name="cost"/>
+                        <field name="model"/>
+                        <field name="duration"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_deepseek_request_history" model="ir.actions.act_window">
+        <field name="name">Deepseek API Request History Action</field>
+        <field name="res_model">deepseek.history</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids"
+           eval="[(5, 0, 0),
+                  (0, 0, {'view_mode': 'list', 'view_id': ref('deepseek_history_tree')}),
+                  (0, 0, {'view_mode': 'form', 'view_id': ref('deepseek_history_form')}),
+                  ]"/>
+    </record>
+</odoo>

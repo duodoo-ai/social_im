@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="inherit_crm_lead_view_form_2025" model="ir.ui.view">
+        <field name="name">inherit.crm.lead.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="hr.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="deepseek_widget_field" widget="deepseek_widget"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

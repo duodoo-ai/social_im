@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<odoo>
+    <menuitem id="menu_integration_root"
+              name="AI"
+              sequence="1099"
+              web_icon="deepseek_integration,static/description/icon.png"/>
+    <!--二级菜单-->
+    <menuitem id="deepseek_config_mun"
+              name="DeepSeek API Configuration"
+              sequence="10"
+              action="action_deepseek_config"
+              parent="menu_integration_root"/>
+        <menuitem id="deepseek_request_history_mun"
+              name="Deepseek API Request History"
+              sequence="15"
+              action="action_deepseek_request_history"
+              parent="menu_integration_root"/>
+</odoo>
