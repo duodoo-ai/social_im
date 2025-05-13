@@ -1,0 +1,171 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* deepseek_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-12 08:48+0000\n"
+"PO-Revision-Date: 2025-05-12 08:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: deepseek_integration
+#: model:ir.ui.menu,name:deepseek_integration.menu_integration_root
+msgid "AI"
+msgstr "人工智能"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__cost
+msgid "API Cost"
+msgstr "API成本"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__api_url
+msgid "API Endpoint"
+msgstr "API URL"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__api_key
+msgid "API Key"
+msgstr "接口Key值"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__response
+msgid "API Response"
+msgstr "接口响应"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__active
+msgid "Active Configuration"
+msgstr "启用"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__config_id
+msgid "Configuration"
+msgstr "配置"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__name
+msgid "Configuration Name"
+msgstr "配置名称"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__create_uid
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__create_uid
+msgid "Created by"
+msgstr "创建人"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__create_date
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__create_date
+msgid "Created on"
+msgstr "创建时间"
+
+#. module: deepseek_integration
+#: model:ir.ui.menu,name:deepseek_integration.deepseek_config_mun
+msgid "DeepSeek API Configuration"
+msgstr "Deepseek接口配置"
+
+#. module: deepseek_integration
+#: model:ir.model,name:deepseek_integration.model_deepseek_config
+#: model_terms:ir.ui.view,arch_db:deepseek_integration.deepseek_config_tree
+msgid "Deepseek API Configuration"
+msgstr "Deepseek接口配置"
+
+#. module: deepseek_integration
+#: model:ir.actions.act_window,name:deepseek_integration.action_deepseek_config
+msgid "Deepseek API Configuration Action"
+msgstr "Deepseek接口配置"
+
+#. module: deepseek_integration
+#: model:ir.model,name:deepseek_integration.model_deepseek_api
+msgid "Deepseek API Handler"
+msgstr "Deepseek接口处理程序"
+
+#. module: deepseek_integration
+#: model:ir.model,name:deepseek_integration.model_deepseek_history
+#: model:ir.ui.menu,name:deepseek_integration.deepseek_request_history_mun
+#: model_terms:ir.ui.view,arch_db:deepseek_integration.deepseek_history_form
+#: model_terms:ir.ui.view,arch_db:deepseek_integration.deepseek_history_tree
+msgid "Deepseek API Request History"
+msgstr "Deepseek接口请求历史操作"
+
+#. module: deepseek_integration
+#: model:ir.actions.act_window,name:deepseek_integration.action_deepseek_request_history
+msgid "Deepseek API Request History Action"
+msgstr "Deepseek接口请求历史操作"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__display_name
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: deepseek_integration
+#: model:ir.model.fields.selection,name:deepseek_integration.selection__deepseek_history__status__draft
+msgid "Draft"
+msgstr "草稿"
+
+#. module: deepseek_integration
+#: model:ir.model.fields.selection,name:deepseek_integration.selection__deepseek_history__status__failed
+msgid "Failed"
+msgstr "失败"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__id
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__id
+msgid "ID"
+msgstr "序号"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__prompt
+msgid "Input Prompt"
+msgstr "输入提示词"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__write_uid
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__write_uid
+msgid "Last Updated by"
+msgstr "最近一次更新人"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__write_date
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__write_date
+msgid "Last Updated on"
+msgstr "最近一次更新时间"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__max_tokens
+msgid "Max Tokens"
+msgstr "最大Tokens"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__model
+msgid "Model Used"
+msgstr "应用模型"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__duration
+msgid "Response Time (s)"
+msgstr "响应时间(s)"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_history__status
+msgid "Status"
+msgstr "状态"
+
+#. module: deepseek_integration
+#: model:ir.model.fields.selection,name:deepseek_integration.selection__deepseek_history__status__success
+msgid "Success"
+msgstr "成功"
+
+#. module: deepseek_integration
+#: model:ir.model.fields,field_description:deepseek_integration.field_deepseek_config__temperature
+msgid "Temperature"
+msgstr "温度"

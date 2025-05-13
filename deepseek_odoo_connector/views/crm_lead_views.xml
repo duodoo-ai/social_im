@@ -1,12 +1,17 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="inherit_crm_lead_view_form_2025" model="ir.ui.view">
-        <field name="name">inherit.crm.lead.form</field>
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.deepseek</field>
         <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="hr.crm_lead_view_form"/>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="deepseek_widget_field" widget="deepseek_widget"/>
+            <xpath expr="//field[@name='description']" position="after">
+                <field name="markdown_content" invisible="1"/>
+                <field name="html_content"/>
+                <button name="action_generate_analysis"
+                        type="object"
+                        string="生成AI分析"
+                        class="btn-primary"/>
             </xpath>
         </field>
     </record>

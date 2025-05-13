@@ -31,7 +31,7 @@
                         <field name="response"/>
                     </group>
                     <group>
-                        <field name="status"/>
+                        <field name="status" invisible="1"/>
                         <field name="cost"/>
                         <field name="model"/>
                         <field name="duration"/>

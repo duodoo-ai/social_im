@@ -4,24 +4,34 @@
 @Author  : Jason Zou
 @Email   : zou.jason@qq.com
 """
-from odoo import models, fields
+import markdown
+from odoo import fields, models, api
 
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
-    deepseek_widget_field = fields.Text(string='Deepseek Widget Field',
-                                        help="输入问题后点击右侧按钮获取AI响应",
-                                        store=False,
-                                        compute="_compute_dummy_field",
-                                        inverse="_inverse_dummy_field")
+    markdown_content = fields.Text(string="AI分析报告")
+    html_content = fields.Html(string="HTML Content",
+                               compute='_compute_html_content',
+                               inverse='_inverse_html_content',
+                               sanitize=False)
 
-    def _compute_dummy_field(self):
-        """ 保持字段可编辑的技术性计算字段 """
+    @api.depends('markdown_content')
+    def _compute_html_content(self):
         for record in self:
-            record.deepseek_temp_input = False
+            record.html_content = markdown.markdown(record.markdown_content or '')
 
-    def _inverse_dummy_field(self):
-        """ 接收前端输入但不实际存储 """
+    def _inverse_html_content(self):
         pass
 
+    def action_generate_analysis(self):
+        prompt = f"""
+        作为销售分析专家，请基于以下线索信息生成结构化报告：
+        公司名称：{self.partner_name}
+        预计收入：{self.expected_revenue}
+        备注：{self.description}
+        """
+        response = self.env['deepseek.api'].generate_text(prompt)
+        if response:
+            self.write({'markdown_content': response})

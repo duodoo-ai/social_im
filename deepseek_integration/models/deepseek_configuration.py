@@ -16,15 +16,15 @@ class DeepseekConfig(models.Model):
     _name = 'deepseek.config'
     _description = 'Deepseek API Configuration'
 
-    name = fields.Char(string='Configuration Name', required=True)
+    name = fields.Char(string='Configuration Name', default='deepseek-chat', required=True)
     api_key = fields.Char(string='API Key', required=True)
     api_url = fields.Char(
         string='API Endpoint',
-        default='https://api.deepseek.com/v1/chat/completions'
+        default='https://api.deepseek.com/v1/'
     )
     max_tokens = fields.Integer(string='Max Tokens', default=1000)
     temperature = fields.Float(string='Temperature', default=0.7)
-    active = fields.Boolean(string='Active Configuration', default=True)
+    active = fields.Boolean(string='Active', default=True)
 
     @api.model
     def get_active_config(self):
