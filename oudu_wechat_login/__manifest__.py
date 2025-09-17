@@ -27,6 +27,6 @@
     'installable': True,
     'application': True,
     'auto_install': False,
-    'license': 'LGPL-3',
+    'license': 'AGPL-3',
     'post_init_hook': 'post_init_hook',
 }
