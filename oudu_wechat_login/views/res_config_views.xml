@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 微信配置主视图 -->
+    <!-- 微信配置主视图 -->
+    <!-- 微信配置主视图 -->
+    <!-- 微信配置主视图 -->
+    <record id="wechat_config_view_tree" model="ir.ui.view">
+        <field name="name">wechat.config.tree</field>
+        <field name="model">wechat.sso.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+                <field name="app_id"/>
+                <field name="auth_scope"/>
+                <field name="auto_create_user"/>
+                <field name="token" optional="hide"/>
+                <field name="encoding_aes_key"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="wechat_config_view_form" model="ir.ui.view">
+        <field name="name">wechat.config.form</field>
+        <field name="model">wechat.sso.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="auto_create_user"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="微信凭证">
+                            <group>
+                                <field name="app_id"/>
+                                <field name="app_secret" password="True"/>
+                                <field name="redirect_uri"/>
+                                <field name="token"/>
+                                <field name="encoding_aes_key"/>
+                            </group>
+                            <group string="高级设置">
+                                <field name="auth_scope" widget="radio" options="{'horizontal': true}"/>
+                                <field name="token_expiration"/>
+                                <field name="qrcode_expiry"/>
+                                <field name="default_user_group"/>
+                                <field name="force_refresh"/>
+                                <field name="access_token_expires"/>
+                                <field name="refresh_token_expires"/>
+                            </group>
+                        </page>
+                        <!-- 在适当位置添加新字段 -->
+                        <page string="乱码处理配置">
+                            <group>
+                                <field name="garbled_chars" widget="textarea"/>
+                                <!-- 修复标签错误 -->
+                                <div class="oe_edit_only" style="margin-top: 16px;">
+                                    <label for="garbled_chars" class="o_form_label" string="配置说明"/>
+                                    <div>
+                                        <p>1. 用逗号分隔的乱码字符列表</p>
+                                        <p>2. 系统会检测这些字符的存在以判断是否需要修复</p>
+                                        <p>3. 默认值：Ã,Â,â,é­å½¬,€,ç,¢,£,¥</p>
+                                    </div>
+                                </div>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 搜索视图 -->
+    <record id="view_wechat_config_search" model="ir.ui.view">
+        <field name="name">wechat.sso.config.search</field>
+        <field name="model">wechat.sso.config</field>
+        <field name="arch" type="xml">
+            <search string="微信配置搜索">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="active"/>
+                <filter string="活跃配置" name="active" domain="[('active','=',True)]"/>
+                <filter string="按公司" name="company" context="{'group_by':'company_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- 微信配置窗口动作 -->
+    <record id="wechat_config_action" model="ir.actions.act_window">
+        <field name="name">微信登录配置</field>
+        <field name="res_model">wechat.sso.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="wechat_config_view_tree"/>
+        <field name="search_view_id" ref="view_wechat_config_search"/>
+        <field name="context">{'default_company_id': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                创建新的微信配置
+            </p>
+        </field>
+    </record>
+
+    <!-- 菜单项 -->
+    <menuitem id="menu_wechat_config"
+              name="微信登录"
+              parent="base.menu_administration"
+              action="wechat_config_action"
+              sequence="500"/>
+</odoo>
+
+
+
+
+<!--&lt;!&ndash; 集成到系统配置 &ndash;&gt;-->
+<!--<record id="res_config_settings_view_form_inherit" model="ir.ui.view">-->
+<!--    <field name="name">res.config.settings.wechat.inherit</field>-->
+<!--    <field name="model">res.config.settings</field>-->
+<!--    <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        &lt;!&ndash; 修改XPath表达式，准确定位到Integrations块之前 &ndash;&gt;-->
+<!--        <xpath expr="//app/block[@name='integration']" position="before">-->
+<!--            <block title="微信登录配置" name="wechat_sso_block">-->
+<!--                <div class="row mt16" id="wechat_sso">-->
+<!--                    <div class="col-12">-->
+<!--                        <div class="row mt16">-->
+<!--                            <div class="col-12 col-lg-6 o_setting_box">-->
+<!--                                <div class="o_setting_left_content">-->
+<!--                                    <field name="wechat_config_id"-->
+<!--                                           options="{'no_create_edit': True}"/>-->
+<!--                                </div>-->
+<!--                                <div class="o_setting_right_content">-->
+<!--                                    <div class="text-muted">-->
+<!--                                        激活的微信配置将用于当前公司的登录验证-->
+<!--                                    </div>-->
+<!--                                    <a href="#" class="btn btn-link"-->
+<!--                                       onclick="window.open('/web#action=oudu_wechat_login.wechat_config_action&amp;model=wechat.sso.config&amp;view_type=list&amp;cids=1','_blank')">-->
+<!--                                        管理全部配置-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </block>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->

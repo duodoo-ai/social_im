@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- 在用户表单中添加微信字段 -->
+    <record id="view_users_form_wechat" model="ir.ui.view">
+        <field name="name">res.users.form.wechat</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']" position="before">
+                <page string="微信认证">
+                    <group string="微信用户信息">
+                        <field name="wechat_user_id"/>
+                        <field name="wechat_unionid"/>
+                        <field name="wechat_openid"/>
+                        <field name="wechat_nickname"/>
+                        <field name="wechat_sex" widget="radio" options="{'horizontal': true}"/>
+                        <field name="wechat_city"/>
+                        <field name="wechat_province"/>
+                        <field name="wechat_country"/>
+                        <field name="wechat_headimgurl"/>
+                        <field name="wechat_privilege"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="auth_signup_view_users_form_wechat" model="ir.ui.view">
+        <field name="name">res.users.form.wechat</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="auth_signup.res_users_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_reset_password']" position="after">
+                <!-- 添加修复乱码按钮 -->
+                <button name="fix_all_wechat_nicknames"
+                        string="修复所有微信昵称乱码"
+                        type="object"
+                        class="oe_highlight"
+                        confirm="这将修复系统中所有微信用户的昵称乱码问题。您确定要继续吗？"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

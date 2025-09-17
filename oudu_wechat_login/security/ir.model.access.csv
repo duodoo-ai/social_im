@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wechat_config_manager,wechat.config.manager,model_wechat_sso_config,base.group_system,1,1,1,1
+access_wechat_config_user,wechat.config.user,model_wechat_sso_config,base.group_user,1,0,0,0
+
+access_ir_session_manager,ir.session.manager,model_ir_session,base.group_system,1,1,1,1
+access_ir_session_user,ir.session.user,model_ir_session,base.group_user,1,0,0,0

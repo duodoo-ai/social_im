@@ -1,0 +1,496 @@
+一、核心架构设计
+采用「微信服务号OAuth2.0授权码模式」+「Odoo会话管理」实现单点登录，流程如下：
+
+用户访问Odoo登录页 → 点击「微信登录」
+Odoo生成带state的授权URL → 跳转微信服务号授权页
+用户扫码确认授权 → 微信重定向至Odoo回调URL（携带code和state）
+Odoo验证state有效性 → 用code换取access_token和用户信息
+根据用户信息查找/创建本地用户 → 完成会话认证 → 自动跳转系统首页
+
+
+服务号: 筑能链
+账号开发信息: gh_1890ec32a5fb  （账号/密码：ningzhuhui@yeah.net / Nzh168168 ）
+开发者ID(AppID): wx065d1d2cac29ab41        
+开发者密码(AppSecret): 8fab07c28b90737fbcfd5c931e522f38
+开发者密码是校验账号开发者身份的密码，具有极高的安全性。切记勿把密码直接交给第三方开发者或直接存储在代码中。
+如需第三方代开发账号，请使用授权方式接入。
+也可使用微信云托管免服务器免运维，支持免鉴权调用账号接口能力，无需启用开发者密码及配置IP白名单。
+
+服务器配置(未启用)
+服务器地址(URL): https://www.ningzhuhui.com/
+令牌(Token): 123456
+消息加解密密钥 (EncodingAESKey): ONcnhr9VHtpIg7jk7Io3S52wNzXJU1IcGXZrrLYjjgM
+消息加解密方式: 明文模式
+
+构建授权链接：
+生成授权链接:
+授权URL: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx065d1d2cac29ab41&redirect_uri=http%3A%2F%2Fwww.ningzhuhui.com%2Fwechat%2Fcallback&response_type=code&scope=snsapi_userinfo&state=custom_state_123&forcePopup=true#wechat_redirect
+请将此链接在微信客户端中打开
+
+构建一个正确的授权链接是第一步。其基本格式如下，你需要替换其中的关键参数：
+
+ 一、前期准备
+确认域名解析：
+
+确保你的域名 www.ningzhuhui.com 已通过A记录解析到你当前Ubuntu 24.04服务器的公网IP地址。
+
+你可以通过 ping www.ningzhuhui.com 命令检查解析是否生效。
+
+确认Web服务器：
+
+Ubuntu上常用的Web服务器是Nginx或Apache。微信的验证文件放置操作与Web服务器类型直接相关。
+
+以下将分别提供Nginx和Apache两种环境的配置方法。请根据你的实际情况选择。
+
+下载验证文件：
+
+从微信公众平台下载提供的 MP_verify_G8nr5kH3FlV5qehl.txt 文件。
+
+通过SCP、FTP等方式（具体SCP命令示例可参考搜索结果中关于文件传输的部分36），或直接在服务器上使用 wget 命令，将该文件上传到你的Ubuntu服务器上一个临时目录，例如你的家目录 (~) 或 /tmp 目录。
+
+二、部署验证文件（Nginx环境）
+如果你的服务器使用Nginx14：
+
+放置验证文件：
+
+Nginx的默认网站根目录通常是 /var/www/html。
+
+使用以下命令将验证文件复制到该目录：
+
+bash
+sudo cp /path/to/your/downloaded/MP_verify_G8nr5kH3FlV5qehl.txt /var/www/html/
+请将 /path/to/your/downloaded/ 替换为你实际存放验证文件的路径。
+
+设置文件权限：
+
+确保Nginx进程（通常以 www-data 用户运行）有权读取该文件：
+
+bash
+sudo chown www-data:www-data /var/www/html/MP_verify_G8nr5kH3FlV5qehl.txt
+sudo chmod 644 /var/www/html/MP_verify_G8nr5kH3FlV5qehl.txt
+检查Nginx配置：
+
+通常，Nginx的默认配置已能提供 /var/www/html 目录下的文件。
+
+你可以检查默认配置文件（/etc/nginx/sites-enabled/default 或 /etc/nginx/nginx.conf），确保其中包含类似以下的配置：
+
+nginx
+server {
+    listen 80;
+    server_name www.ningzhuhui.com; # 确保此处是你的域名
+    root /var/www/html;
+    index index.html index.htm;
+    # 其他配置...
+}
+如果配置中的 server_name 不是你的域名，你需要修改它或为你的域名创建一个新的server block（虚拟主机）14。
+
+测试并重载Nginx配置：
+
+测试配置是否正确：
+
+bash
+sudo nginx -t
+如果显示成功，则重新加载Nginx以使配置生效：
+
+bash
+sudo systemctl reload nginx
+
+#### 完整并且成功的Nginx配置文件
+
+# Odoo 18 Server Configuration
+server {
+    listen 80;
+    server_name www.ningzhuhui.com;
+    
+    # 安全设置 - 隐藏服务器版本信息
+    server_tokens off;
+    
+    # 增加客户端最大上传大小
+    client_max_body_size 100M;
+    
+    # 特殊处理微信验证文件 - 这是关键修复
+    location = /MP_verify_G8nr5kH3FlV5qehl.txt {
+        alias /var/www/html/MP_verify_G8nr5kH3FlV5qehl.txt;
+        access_log off;
+        expires 24h;
+    }
+    
+    # Odoo 应用代理配置
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        
+        # 增加超时设置
+        proxy_read_timeout 720s;
+        proxy_connect_timeout 720s;
+        proxy_send_timeout 720s;
+    }
+    
+    # 长轮询支持 - Odoo 即时消息所需
+    location /longpolling {
+        proxy_pass http://127.0.0.1:8072;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    # 静态文件缓存 - 提高性能
+    location ~* /web/static/ {
+        proxy_cache_valid 200 60m;
+        proxy_buffering on;
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # 缓存设置
+        expires 24h;
+        add_header Cache-Control public;
+    }
+    
+    # 通用文本文件处理
+    location ~* \.(txt)$ {
+        root /var/www/html;
+        access_log off;
+        expires 24h;
+    }
+    
+    # 禁止访问 .ht 和其他敏感文件
+    location ~ /\.ht {
+        deny all;
+    }
+    
+    # 记录访问日志
+    access_log /var/log/nginx/odoo_access.log;
+    error_log /var/log/nginx/odoo_error.log;
+}
+
+#### 完整并且成功的Nginx配置文件
+
+    curl -I http://www.ningzhuhui.com/MP_verify_G8nr5kH3FlV5qehl.txt
+    
+    root@VM-0-16-ubuntu:/etc/nginx/sites-available# curl -I http://www.ningzhuhui.com/MP_verify_G8nr5kH3FlV5qehl.txt
+    HTTP/1.1 200 OK
+    Server: nginx/1.24.0 (Ubuntu)
+    Date: Tue, 26 Aug 2025 13:53:33 GMT
+    Content-Type: text/plain
+    Content-Length: 16
+    Last-Modified: Tue, 26 Aug 2025 13:12:56 GMT
+    Connection: keep-alive
+    ETag: "68adb2d8-10"
+    Expires: Wed, 27 Aug 2025 13:53:33 GMT
+    Cache-Control: max-age=86400
+    Accept-Ranges: bytes
+
+#### 网页授权回调域名
+
+    在微信服务号请求用户网页授权之前，开发者需要先到公众平台中的「设置与开发 - 账号设置 - 功能设置」的配置选项中，修改「网页授权域名」。
+
+    微信服务号：JS接口安全域名  www.ningzhuhui.com
+
+
+
+### 微信开放文档 /服务端 API
+基础接口
+接口名称	英文名	请求路径
+获取接口调用凭据	getAccessToken	/cgi-bin/token
+获取稳定版接口调用凭据	getStableAccessToken	/cgi-bin/stable_token
+网络通信检测	callbackCheck	/cgi-bin/callback/check
+获取微信API服务器IP	getApiDomainIp	/cgi-bin/get_api_domain_ip
+获取微信推送服务器IP	getCallbackIp	/cgi-bin/getcallbackip
+openApi管理
+接口名称	英文名	请求路径
+重置API调用次数	clearQuota	/cgi-bin/clear_quota
+查询API调用额度	getApiQuota	/cgi-bin/openapi/quota/get
+查询rid信息	getRidInfo	/cgi-bin/openapi/rid/get
+使用AppSecret重置API调用次数	clearQuotaByAppSecret	/cgi-bin/clear_quota/v2
+自定义菜单
+接口名称	英文名	请求路径
+创建自定义菜单	createCustomMenu	/cgi-bin/menu/create
+查询自定义菜单信息	getCurrentSelfmenuInfo	/cgi-bin/get_current_selfmenu_info
+获取自定义菜单配置	getMenu	/cgi-bin/menu/get
+删除自定义菜单	deleteMenu	/cgi-bin/menu/delete
+创建个性化菜单	addConditionalMenu	/cgi-bin/menu/addconditional
+删除个性化菜单	deleteConditionalMenu	/cgi-bin/menu/delconditional
+测试个性化菜单匹配结果	tryMatchMenu	/cgi-bin/menu/trymatch
+基础消息与订阅通知
+群发消息
+接口名称	英文名	请求路径
+上传图文消息图片	uploadImage	/cgi-bin/media/uploadimg
+删除群发消息	deleteMassMsg	/cgi-bin/message/mass/delete
+获取群发速度	getSpeed	/cgi-bin/message/mass/speed/get
+查询群发消息发送状态	massmsgget	/cgi-bin/message/mass/get
+根据OpenID群发消息	massSend	/cgi-bin/message/mass/send
+预览消息	preview	/cgi-bin/message/mass/preview
+根据标签群发消息	sendAll	/cgi-bin/message/mass/sendall
+设置群发速度	setSpeed	/cgi-bin/message/mass/speed/set
+上传图文消息素材	uploadnewsmsg	/cgi-bin/media/uploadnews
+模板消息
+接口名称	英文名	请求路径
+发送模板消息	sendTemplateMessage	/cgi-bin/message/template/send
+选用模板	addTemplate	/cgi-bin/template/api_add_template
+查询拦截的模板消息	queryBlockTmplMsg	/wxa/sec/queryblocktmplmsg
+删除模板	deleteTemplate	/cgi-bin/template/del_private_template
+获取已选用模板列表	getAllTemplates	/cgi-bin/template/get_all_private_template
+获取行业信息	getIndustry	/cgi-bin/template/get_industry
+设置所属行业	setIndustry	/cgi-bin/template/api_set_industry
+订阅通知
+接口名称	英文名	请求路径
+删除模板	delwxanewtemplate	/wxaapi/newtmpl/deltemplate
+获取类目	getCategory	/wxaapi/newtmpl/getcategory
+获取模板中的关键词	getpubnewtemplatekeywords	/wxaapi/newtmpl/getpubtemplatekeywords
+获取类目下的公共模板	getPubNewTemplatetitles	/wxaapi/newtmpl/getpubtemplatetitles
+获取已有模板列表	getwxapubnewtemplate	/wxaapi/newtmpl/gettemplate
+选用模板	addwxanewtemplate	/wxaapi/newtmpl/addtemplate
+发送订阅通知	sendNewSubscribeMsg	/cgi-bin/message/subscribe/bizsend
+一次性订阅消息
+接口名称	英文名	请求路径
+发送一次性订阅消息	templateSubscribe	/cgi-bin/message/template/subscribe
+自动回复
+接口名称	英文名	请求路径
+获取自动回复规则	getCurrentAutoreplyInfo	/cgi-bin/get_current_autoreply_info
+客服消息
+客服管理
+接口名称	英文名	请求路径
+设置客服头像	uploadkfheadimg	/customservice/kfaccount/uploadheadimg
+删除客服账号	delkfaccount	/customservice/kfaccount/del
+邀请绑定客服账号	invitekfworker	/customservice/kfaccount/inviteworker
+获取所有客服账号	getkflist	/cgi-bin/customservice/getkflist
+添加客服账号	addkfaccount	/customservice/kfaccount/add
+获取在线客服列表	getonlinekflist	/cgi-bin/customservice/getonlinekflist
+修改客服账号	updatekfaccount	/customservice/kfaccount/update
+会话控制
+接口名称	英文名	请求路径
+获取客服会话列表	getkfsessionlist	/customservice/kfsession/getsessionlist
+关闭会话	closeSession	/customservice/kfsession/close
+创建会话	createkfsession	/customservice/kfsession/create
+获取客户会话状态	getkfsession	/customservice/kfsession/getsession
+获取未接入会话列表	getwaitcase	/customservice/kfsession/getwaitcase
+客服消息
+接口名称	英文名	请求路径
+获取聊天记录	getMsgList	/customservice/msgrecord/getmsglist
+客服输入状态	typing	/cgi-bin/message/custom/typing
+发送客服消息	sendCustomMessage	/cgi-bin/message/custom/send
+素材管理
+永久素材
+接口名称	英文名	请求路径
+获取永久素材	getMaterial	/cgi-bin/material/get_material
+获取永久素材总数	getMaterialCount	/cgi-bin/material/get_materialcount
+获取永久素材列表	batchGetMaterial	/cgi-bin/material/batchget_material
+上传图文消息图片	uploadImage	/cgi-bin/media/uploadimg
+上传永久素材	addMaterial	/cgi-bin/material/add_material
+删除永久素材	delMaterial	/cgi-bin/material/del_material
+临时素材
+接口名称	英文名	请求路径
+获取临时素材	getMedia	/cgi-bin/media/get
+新增临时素材	uploadTempMedia	/cgi-bin/media/upload
+获取高清语音素材	getHDVoice	/cgi-bin/media/get/jssdk
+草稿管理和商品卡片
+草稿管理
+接口名称	英文名	请求路径
+草稿箱开关设置	draft_switch	/cgi-bin/draft/switch
+更新草稿	draft_update	/cgi-bin/draft/update
+获取草稿列表	draft_batchget	/cgi-bin/draft/batchget
+新增草稿	draft_add	/cgi-bin/draft/add
+获取草稿的总数	draft_count	/cgi-bin/draft/count
+删除草稿	draft_delete	/cgi-bin/draft/delete
+获取草稿详情	getDraft	/cgi-bin/draft/get
+商品卡片
+接口名称	英文名	请求路径
+获取商品卡片的DOM结构	ecsgetproductcardinfo	/channels/ec/service/product/getcardinfo
+留言管理
+接口名称	英文名	请求路径
+打开已群发文章评论	openArticleComment	/cgi-bin/comment/open
+查看指定文章的评论数据	listComment	/cgi-bin/comment/list
+关闭已群发文章评论	closecomment	/cgi-bin/comment/close
+评论标记精选	electcomment	/cgi-bin/comment/markelect
+评论取消精选	unelectcomment	/cgi-bin/comment/unmarkelect
+删除评论	delcomment	/cgi-bin/comment/delete
+回复评论	replycomment	/cgi-bin/comment/reply/add
+删除回复	delreplycomment	/cgi-bin/comment/reply/delete
+发布能力
+接口名称	英文名	请求路径
+获取已发布的消息列表	freepublish_batchget	/cgi-bin/freepublish/batchget
+删除发布文章	freepublishDelete	/cgi-bin/freepublish/delete
+发布状态查询	freepublish_get	/cgi-bin/freepublish/get
+获取已发布图文信息	freepublishGetarticle	/cgi-bin/freepublish/getarticle
+发布草稿	freepublish_submit	/cgi-bin/freepublish/submit
+用户管理
+标签管理
+接口名称	英文名	请求路径
+获取标签下粉丝列表	getTagFans	/cgi-bin/user/tag/get
+获取标签	getTags	/cgi-bin/tags/get
+创建标签	createTag	/cgi-bin/tags/create
+编辑标签	updateTag	/cgi-bin/tags/update
+删除标签	deleteTag	/cgi-bin/tags/delete
+批量为用户取消标签	batchUntagging	/cgi-bin/tags/members/batchuntagging
+批量为用户打标签	batchTagging	/cgi-bin/tags/members/batchtagging
+获取用户的标签列表	getTagidList	/cgi-bin/tags/getidlist
+用户信息
+接口名称	英文名	请求路径
+取消拉黑用户	batchUnblacklist	/cgi-bin/tags/members/batchunblacklist
+获取公众号的黑名单列表	getBlacklist	/cgi-bin/tags/members/getblacklist
+获取用户基本信息	userInfo	/cgi-bin/user/info
+批量获取用户基本信息	batchUserinfo	/cgi-bin/user/info/batchget
+获取关注用户列表	getFans	/cgi-bin/user/get
+拉黑用户	batchBlacklist	/cgi-bin/tags/members/batchblacklist
+设置用户备注名	updateRemark	/cgi-bin/user/info/updateremark
+服务号二维码
+扫二维码打开小程序
+接口名称	英文名	请求路径
+获取已设置规则	qrcodeJumpGet	/cgi-bin/wxopen/qrcodejumpget
+设置二维码规则	qrcodeJumpAdd	/cgi-bin/wxopen/qrcodejumpadd
+发布二维码规则	qrcodeJumpPublish	/cgi-bin/wxopen/qrcodejumppublish
+删除二维码规则	qrcodeJumpDelete	/cgi-bin/wxopen/qrcodejumpdelete
+带参二维码
+接口名称	英文名	请求路径
+生成带参数的二维码	createQRCode	/cgi-bin/qrcode/create
+长信息与短链
+接口名称	英文名	请求路径
+长信息转短链	genShortKey	/cgi-bin/shorten/gen
+短链转长信息	fetchShorten	/cgi-bin/shorten/fetch
+数据统计
+用户数据
+接口名称	英文名	请求路径
+获取用户增减数据	getusersummary	/datacube/getusersummary
+获取累计用户数据	getusercumulate	/datacube/getusercumulate
+图文数据
+接口名称	英文名	请求路径
+获取图文群发每日数据	getarticlesummary	/datacube/getarticlesummary
+获取图文阅读分时数据	getuserreadhour	/datacube/getuserreadhour
+获取图文转发分时数据	getusersharehour	/datacube/getusersharehour
+获取图文阅读概况数据	getuserread	/datacube/getuserread
+获取图文群发总数据	getarticletotal	/datacube/getarticletotal
+获取图文转发概况数据	getusershare	/datacube/getusershare
+消息数据
+接口名称	英文名	请求路径
+获取消息发送概况数据	getupstreammsg	/datacube/getupstreammsg
+获取消息发送月数据	getupstreammsgmonth	/datacube/getupstreammsgmonth
+获取消息发送分布周数据	getupstreammsgdistweek	/datacube/getupstreammsgdistweek
+获取消息发送分布月数据	getupstreammsgdistmonth	/datacube/getupstreammsgdistmonth
+获取消息发送分时数据	getupstreammsghour	/datacube/getupstreammsghour
+获取消息发送周数据	getupstreammsgweek	/datacube/getupstreammsgweek
+获取消息发送分布数据	getupstreammsgdist	/datacube/getupstreammsgdist
+接口数据
+接口名称	英文名	请求路径
+获取被动回复概要数据	getinterfacesummary	/datacube/getinterfacesummary
+获取被动回复分布数据	getinterfacesummaryhour	/datacube/getinterfacesummaryhour
+网页开发
+网页授权
+接口名称	英文名	请求路径
+换取用户授权凭证	snsAccessToken	/sns/oauth2/access_token
+检验用户授权凭证	snsAuth	/sns/auth
+获取授权用户信息	snsUserInfo	/sns/userinfo
+刷新用户授权凭证	snsRefreshToken	/sns/oauth2/refresh_token
+JS-SDK
+接口名称	英文名	请求路径
+获取sdk临时票据	getTicket	/cgi-bin/ticket/getticket
+智能接口
+AI开放接口
+接口名称	英文名	请求路径
+微信翻译	translateContent	/cgi-bin/media/voice/translatecontent
+上传语音文件	addVoiceTorecoForText	/cgi-bin/media/voice/addvoicetorecofortext
+获取语音识别结果	queryRecoResultForText	/cgi-bin/media/voice/queryrecoresultfortext
+ORC识别
+接口名称	英文名	请求路径
+菜单识别	menuOcr	/cv/ocr/menu
+通用印刷体识别	commocr	/cv/ocr/comm
+行驶证识别	drivingocr	/cv/ocr/driving
+银行卡识别	bankcardOcr	/cv/ocr/bankcard
+营业执照识别	bizlicenseOcr	/cv/ocr/bizlicense
+驾驶证识别	drivinglicenseocr	/cv/ocr/drivinglicense
+身份证识别	idcardOcr	/cv/ocr/idcard
+图像处理
+接口名称	英文名	请求路径
+图片智能裁剪	imgAiCrop	/cv/img/aicrop
+二维码/条码识别	imgQrcode	/cv/img/qrcode
+微信门店
+门店小程序
+接口名称	英文名	请求路径
+拉取门店小程序类目	getwxastorecatelist	/wxa/get_merchant_category
+创建门店小程序	applywxastore	/wxa/apply_merchant
+获取门店小程序审核结果	getwxastoreauditinfo	/wxa/get_merchant_audit_info
+修改门店小程序信息	modifywxastore	/wxa/modify_merchant
+获取省市区信息	getdistrictlist	/wxa/get_district
+搜索门店地图信息	poilistsearch	/wxa/search_map_poi
+新增门店	addentityshop	/wxa/add_store
+获取门店详情	newgetpoi	/wxa/get_store_info
+获取门店列表	newgetpoilist	/wxa/get_store_list
+删除门店	newdelpoi	/wxa/del_store
+更新门店信息	newupdatepoi	/wxa/update_store
+在地图中创建门店	createnewpoid	/wxa/create_map_poi
+微信发票
+商户开票接口
+接口名称	英文名	请求路径
+查询与设置授权页与商户信息	invoicebizsetattr	/card/invoice/setbizattr
+查询授权信息	invoiceBizGetAuthData	/card/invoice/getauthdata
+获取sdk临时票据	getTicket	/cgi-bin/ticket/getticket
+获取授权页链接	invoicebizgetauthurl	/card/invoice/getauthurl
+拒绝开票	invoicebizrejectinsert	/card/invoice/rejectinsert
+开票平台
+接口名称	英文名	请求路径
+获取开票平台识别码	setinvoiceurl	/card/invoice/seturl
+查询已上传的PDF文件	invoiceplatformgetpdf	/card/invoice/platform/getpdf
+更新发票卡券状态	invoicekpupdatainvoicestatus	/card/invoice/platform/updatestatus
+上传发票PDF	invoiceplatformsetpdf	/card/invoice/platform/setpdf
+创建发票卡券模板	invoiceplatformcreatecard	/card/invoice/platform/createcard
+将电子发票卡券插入用户卡包	insertinvoice	/card/invoice/insert
+发票报销
+接口名称	英文名	请求路径
+查询报销发票信息	invoicebxgetinvoice	/card/invoice/reimburse/getinvoiceinfo
+更新报销发票状态	invoicebxupdatainvoicestatus	/card/invoice/reimburse/updateinvoicestatus
+批量更新报销发票状态	invoicereimburseupdatestatusbatch	/card/invoice/reimburse/updatestatusbatch
+批量获取报销发票信息	invoicereimbursegetinvoicebatch	/card/invoice/reimburse/getinvoicebatch
+极速开发票
+接口名称	英文名	请求路径
+录入抬头到用户微信	invoicebizgetusertitleurl	/card/invoice/biz/getusertitleurl
+获取商户专属抬头链接	invoicebizgetselecttitleurl	/card/invoice/biz/getselecttitleurl
+解析扫描的抬头二维码	invoicescantitle	/card/invoice/scantitle
+电子发票自助打印
+接口名称	英文名	请求路径
+查询报销发票信息	invoicebxgetinvoice	/card/invoice/reimburse/getinvoiceinfo
+更新报销发票状态	invoicebxupdatainvoicestatus	/card/invoice/reimburse/updateinvoicestatus
+批量更新报销发票状态	invoicereimburseupdatestatusbatch	/card/invoice/reimburse/updatestatusbatch
+批量获取报销发票信息	invoicereimbursegetinvoicebatch	/card/invoice/reimburse/getinvoicebatch
+非税票据
+接口名称	英文名	请求路径
+查询授权信息	invoiceBizGetAuthData	/card/invoice/getauthdata
+获取sdk临时票据	getTicket	/cgi-bin/ticket/getticket
+拒绝开票	invoicebizrejectinsert	/card/invoice/rejectinsert
+获取开票平台识别码	setinvoiceurl	/card/invoice/seturl
+查询已上传的PDF文件	invoiceplatformgetpdf	/card/invoice/platform/getpdf
+更新发票卡券状态	invoicekpupdatainvoicestatus	/card/invoice/platform/updatestatus
+获取授权页链接	notaxinvoicegetauthurl	/nontax/getbillauthurl
+创建财政电子票据模板	notaxinvoicecreatecard	/nontax/createbillcard
+票据插入用户卡包	notaxinvoiceinsert	/nontax/insertbill
+上传发票PDF	invoiceplatformsetpdf	/card/invoice/platform/setpdf
+微信非税缴费
+接口名称	英文名	请求路径
+查询应收信息	nontaxqueryfee	/nontax/queryfee
+缴费支付下单	nontaxunifiedorder	/nontax/unifiedorder
+下载缴费对帐单	nontaxdownloadbill	/nontax/downloadbill
+通知不一致订单	nontaxnotifyinconsistentorder	/nontax/notifyinconsistentorder
+模拟支付结果通知	nontaxmocknotification	/nontax/mocknotification
+模拟查询应收信息	nontaxmockqueryfee	/nontax/mockqueryfee
+提交刷卡支付	nontaxmicropay	/nontax/micropay
+获取缴费订单列表	nontaxgetorderlist	/nontax/getorderlist
+缴费订单退款	nontaxrefund	/nontax/refund
+获取缴费订单详情	nontaxgetorder	/nontax/getorder
+微信“一物一码”
+接口名称	英文名	请求路径
+查询二维码申请单接口	intp_marketcode_applycodequery	/intp/marketcode/applycodequery
+下载二维码包接口	intp_marketcode_applycodedownload	/intp/marketcode/applycodedownload
+激活二维码接口	intp_marketcode_codeactive	/intp/marketcode/codeactive
+查询二维码激活状态接口	intp_marketcode_codeactivequery	/intp/marketcode/codeactivequery
+CODE_TICKET换CODE接口	intp_marketcode_tickettocode	/intp/marketcode/tickettocode
+申请二维码接口	intp_marketcode_applycode	/intp/marketcode/applycode
+微信就医助手
+接口名称	英文名	请求路径
+消息推送接口	cityservice_sendchannelmsg	/cityservice/sendchannelmsg
