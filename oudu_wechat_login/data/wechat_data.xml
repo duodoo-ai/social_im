@@ -4,8 +4,8 @@
         <!-- 创建默认配置 -->
         <record id="default_wechat_config" model="wechat.sso.config">
             <field name="name">Default WeChat Configuration</field>
-            <field name="app_id">wx065d1d2cac29ab41</field>
-            <field name="app_secret">8fab07c28b90737fbcfd5c931e522f38</field>
+            <field name="app_id">your_app_id</field>
+            <field name="app_secret">your_app_secret</field>
             <field name="redirect_uri">http://www.ningzhuhui.com/wechat/callback</field>
             <field name="auth_scope">snsapi_userinfo</field>
             <field name="auto_create_user">True</field>

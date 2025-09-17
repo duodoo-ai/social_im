@@ -9,17 +9,17 @@ Odoo验证state有效性 → 用code换取access_token和用户信息
 
 
 服务号: 筑能链
-账号开发信息: gh_1890ec32a5fb  （账号/密码：ningzhuhui@yeah.net / Nzh168168 ）
-开发者ID(AppID): wx065d1d2cac29ab41        
-开发者密码(AppSecret): 8fab07c28b90737fbcfd5c931e522f38
+账号开发信息: gh_1890ec32a5fb  （账号/密码： /  ）
+开发者ID(AppID): your_app_id        
+开发者密码(AppSecret): your_app_secret
 开发者密码是校验账号开发者身份的密码，具有极高的安全性。切记勿把密码直接交给第三方开发者或直接存储在代码中。
 如需第三方代开发账号，请使用授权方式接入。
 也可使用微信云托管免服务器免运维，支持免鉴权调用账号接口能力，无需启用开发者密码及配置IP白名单。
 
 服务器配置(未启用)
 服务器地址(URL): https://www.ningzhuhui.com/
-令牌(Token): 123456
-消息加解密密钥 (EncodingAESKey): ONcnhr9VHtpIg7jk7Io3S52wNzXJU1IcGXZrrLYjjgM
+令牌(Token): your_token
+消息加解密密钥 (EncodingAESKey): your_encoding_aes_key
 消息加解密方式: 明文模式
 
 构建授权链接：
