@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- 扩展登录页面添加二维码登录按钮 -->
+    <template id="web_login_extend" inherit_id="web.login" active="true">
+        <xpath expr="//div[hasclass('oe_login_buttons')]" position="after">
+            <div class="text-center mt-4">
+                <div class="oe_login_division">
+                    <span>或</span>
+                </div>
+                <a href="/wechat/qr/login" class="btn btn-primary mt-2">
+                    <i class="fa fa-weixin"></i> 微信二维码登录
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

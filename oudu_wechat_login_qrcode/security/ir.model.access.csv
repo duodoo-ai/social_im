@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wechat_qr_session,wechat.qr.session,model_wechat_qr_session,base.group_user,1,0,0,0
+access_wechat_qr_session_manager,wechat.qr.session.manager,model_wechat_qr_session,base.group_system,1,1,1,1

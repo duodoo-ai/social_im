@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- 二维码页面模板 -->
+    <template id="qr_template" name="WeChat QR Login Page" active="true">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <script type="text/javascript" src="/web/static/lib/jquery/jquery.js"></script>
+                <style>
+                    /* 自定义样式 */
+                    .wechat-login-container {
+                        max-width: 450px;
+                        margin: 2rem auto;
+                        padding: 2rem;
+                        background: #fff;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                        text-align: center;
+                    }
+
+                    .wechat-header {
+                        margin-bottom: 1.5rem;
+                    }
+
+                    .wechat-header h2 {
+                        color: #07C160;
+                        font-weight: 600;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .wechat-header p {
+                        color: #666;
+                        font-size: 0.95rem;
+                    }
+
+                    .qr-wrapper {
+                        position: relative;
+                        display: inline-block;
+                        padding: 16px;
+                        background: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+                        margin: 1rem 0;
+                    }
+
+                    .qr-image {
+                        width: 220px;
+                        height: 220px;
+                        display: block;
+                    }
+
+                    .status-container {
+                        margin: 1.5rem 0;
+                        padding: 12px 16px;
+                        background: #f9f9f9;
+                        border-radius: 8px;
+                        border-left: 4px solid #07C160;
+                    }
+
+                    .status-message {
+                        font-size: 1rem;
+                        color: #333;
+                        margin: 0;
+                    }
+
+                    .status-loading {
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        border: 3px solid rgba(7, 193, 96, 0.3);
+                        border-radius: 50%;
+                        border-top-color: #07C160;
+                        animation: spin 1s ease-in-out infinite;
+                        margin-right: 10px;
+                        vertical-align: middle;
+                    }
+
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+
+                    .action-buttons {
+                        margin-top: 1.5rem;
+                    }
+
+                    .btn-wechat {
+                        background-color: #07C160;
+                        border-color: #07C160;
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 6px;
+                        font-weight: 500;
+                    }
+
+                    .btn-wechat:hover {
+                        background-color: #06AE56;
+                        border-color: #06AE56;
+                        color: white;
+                    }
+
+                    .refresh-hint {
+                        margin-top: 1rem;
+                        font-size: 0.85rem;
+                        color: #888;
+                    }
+
+                    /* 响应式设计 */
+                    @media (max-width: 576px) {
+                        .wechat-login-container {
+                            margin: 1rem;
+                            padding: 1.5rem;
+                        }
+
+                        .qr-image {
+                            width: 180px;
+                            height: 180px;
+                        }
+                    }
+                </style>
+            </t>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="wechat-login-container">
+                            <div class="wechat-header">
+                                <h2>微信扫码登录</h2>
+                                <p>请使用微信扫一扫登录系统</p>
+                            </div>
+
+                            <div class="qr-wrapper">
+                                <img t-att-src="'data:image/png;base64,' + qr_img"
+                                     class="qr-image" alt="微信扫码登录二维码"/>
+                            </div>
+
+                            <div class="status-container">
+                                <div class="status-message" id="status_message">
+                                    <span class="status-loading"></span>
+                                    <span>正在生成二维码...</span>
+                                </div>
+                            </div>
+
+                            <div id="qr_actions">
+                                <button class="btn btn-wechat" onclick="refreshQRCode()">
+                                    <i class="fa fa-refresh"></i> 刷新二维码
+                                </button>
+                                <button class="btn btn-wechat" onclick="history.back()">
+                                    <i class="fa fa-arrow-left"></i> 返回登录页
+                                </button>
+                            </div>
+
+                            <div class="refresh-hint">
+                                <p>二维码5分钟内有效，过期后请点击刷新</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // 全局变量存储会话ID
+                var currentSessionId = '<t t-esc="session_id"/>';
+
+                // 刷新二维码函数
+                function refreshQRCode() {
+                    $('#status_message').html('<span>正在刷新二维码...</span>');
+
+                    $.ajax({
+                        url: '/wechat/qr/generate',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        success: function(result) {
+                            if (result.error) {
+                                $('#status_message').html('<span style="color: #e74c3c;">错误: ' + result.error + '</span>');
+                            } else {
+                                // 更新二维码图片
+                                $('.qr-image').attr('src', 'data:image/png;base64,' + result.qr_img);
+                                currentSessionId = result.session_id;
+
+                                // 重新开始轮询
+                                $('#status_message').html('<span>请使用微信扫描二维码</span>');
+                                checkLoginStatus(currentSessionId);
+                            }
+                        },
+                        error: function(error) {
+                            console.error('QR code refresh failed:', error);
+                            $('#status_message').html('<span style="color: #e74c3c;">刷新失败，请重试</span>');
+                        }
+                    });
+                }
+
+                // 检查登录状态
+                function checkLoginStatus(sessionId) {
+                    var retries = 0;
+                    var maxRetries = 30;
+                    var baseDelay = 2000;
+
+                    function poll() {
+                        if (retries >= maxRetries) {
+                            updateStatusMessage('二维码已过期，请刷新二维码', 'expired');
+                            return;
+                        }
+
+                        $.ajax({
+                            url: '/wechat/qr/status',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                session_id: sessionId
+                            }),
+                            success: function(result) {
+                                if (result.status === 'success') {
+                                    updateStatusMessage('登录成功，正在跳转...', 'success');
+                                    setTimeout(function() {
+                                        window.location.href = result.redirect_url || '/web';
+                                    }, 1500);
+                                } else if (result.status === 'scanned') {
+                                    updateStatusMessage('二维码已扫描，请在手机端确认登录', 'scanned');
+                                    setTimeout(poll, baseDelay);
+                                } else if (result.status === 'pending') {
+                                    updateStatusMessage('请使用微信扫描二维码', 'pending');
+                                    setTimeout(poll, baseDelay);
+                                } else if (result.status === 'expired') {
+                                    updateStatusMessage('二维码已过期，请刷新二维码', 'expired');
+                                } else if (result.status === 'canceled') {
+                                    updateStatusMessage('用户取消登录', 'canceled');
+                                } else {
+                                    retries++;
+                                    setTimeout(poll, baseDelay * Math.pow(1.5, retries));
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Polling error:', error);
+                                retries++;
+                                setTimeout(poll, baseDelay * Math.pow(1.5, retries));
+                            }
+                        });
+                    }
+
+                    function updateStatusMessage(message, status) {
+                        var statusHtml = '';
+
+                        if (status === 'pending' || status === 'scanned') {
+                            statusHtml = '<span class="status-loading"></span><span>' + message + '</span>';
+                        } else if (status === 'success') {
+                            statusHtml = '<span style="color: #07C160;"><i class="fa fa-check-circle"></i> ' + message + '</span>';
+                        } else if (status === 'expired' || status === 'canceled') {
+                            statusHtml = '<span style="color: #e74c3c;"><i class="fa fa-exclamation-circle"></i> ' + message + '</span>';
+                        } else {
+                            statusHtml = '<span>' + message + '</span>';
+                        }
+
+                        $('#status_message').html(statusHtml);
+                    }
+
+                    // 开始轮询
+                    poll();
+                }
+
+                // 页面加载完成后启动状态检查
+                $(document).ready(function() {
+                    // 初始设置状态
+                    $('#status_message').html('<span class="status-loading"></span><span>请使用微信扫描二维码</span>');
+
+                    // 开始检查登录状态
+                    checkLoginStatus(currentSessionId);
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- 错误页面模板 -->
+    <template id="qr_error_template" name="QR Login Error" active="true">
+        <t t-call="web.layout">
+            <style>
+                .error-container {
+                    max-width: 500px;
+                    margin: 3rem auto;
+                    padding: 2rem;
+                    background: #fff;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                }
+
+                .error-icon {
+                    font-size: 4rem;
+                    color: #e74c3c;
+                    margin-bottom: 1rem;
+                }
+
+                .error-message {
+                    color: #333;
+                    margin-bottom: 2rem;
+                    font-size: 1.1rem;
+                }
+            </style>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="error-container">
+                            <div class="error-icon">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </div>
+                            <h2>二维码生成失败</h2>
+                            <p class="error-message" t-esc="error_message"/>
+                            <div class="mt-4">
+                                <a href="/wechat/qr/login" class="btn btn-wechat">
+                                    <i class="fa fa-refresh"></i> 重新尝试
+                                </a>
+                                <a href="/web/login" class="btn btn-secondary ml-2">
+                                    <i class="fa fa-arrow-left"></i> 返回登录页
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

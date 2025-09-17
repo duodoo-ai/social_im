@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odoo微信服务号SSO模块 - 说明文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #07C160 0%, #05a54e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .section h2 {
+            color: #07C160;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #07C160;
+            display: inline-block;
+        }
+        .section h3 {
+            color: #333;
+            margin: 15px 0 10px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .feature-card h4 {
+            color: #07C160;
+            margin-bottom: 10px;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .field-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .field-table th, .field-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .field-table th {
+            background-color: #f2f2f2;
+        }
+        .field-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .endpoints {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .endpoint {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #c8e6c9;
+        }
+        .endpoint:last-child {
+            border-bottom: none;
+        }
+        .endpoint-method {
+            display: inline-block;
+            background: #07C160;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+        .author-info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+            margin-top: 30px;
+        }
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">📱</div>
+            <h1>Odoo微信二维码扫码SSO模块</h1>
+            <p><strong>通过微信二维码实现Odoo单点登录的完整解决方案</strong></p>
+        </header>
+
+        <div class="content">
+            <div class="section">
+                <h2>模块概述</h2>
+                <p>本模块为Odoo系统提供了与微信服务号集成的单点登录(SSO)功能。用户可以通过扫描微信二维码或通过微信公众号授权快速登录Odoo系统，无需记忆额外的账号密码。</p>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <h4>微信集成</h4>
+                        <p>无缝对接微信开放平台API，支持服务号网页授权和用户信息获取</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>自动用户创建</h4>
+                        <p>支持首次登录时自动创建Odoo用户账户，并可配置默认权限组</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>乱码修复</h4>
+                        <p>智能检测和修复微信昵称乱码问题，支持多种编码格式</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>安全可靠</h4>
+                        <p>使用微信安全协议和Odoo会话管理，确保登录过程安全</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>核心功能</h2>
+
+                <h3>微信用户认证</h3>
+                <p>通过OAuth2.0协议与微信API交互，获取用户授权并验证身份：</p>
+                <div class="code-block">
+// 认证流程核心代码
+def auth_wechat(self, provider, code, params):
+    if provider != 'wechat':
+        return False
+
+    # 通过code获取access_token和openid
+    token_url = "https://api.weixin.qq.com/sns/oauth2/access_token"
+    token_params = {
+        'appid': config.app_id,
+        'secret': config.app_secret,
+        'code': code,
+        'grant_type': 'authorization_code'
+    }
+    # 获取用户信息并创建/更新Odoo用户
+    # ...
+                </div>
+
+                <h3>用户信息管理</h3>
+                <p>在res.users模型中扩展了微信用户相关字段：</p>
+                <table class="field-table">
+                    <tr>
+                        <th>字段名</th>
+                        <th>描述</th>
+                        <th>类型</th>
+                    </tr>
+                    <tr>
+                        <td>wechat_user_id</td>
+                        <td>微信用户ID</td>
+                        <td>Char</td>
+                    </tr>
+                    <tr>
+                        <td>wechat_unionid</td>
+                        <td>微信UnionID</td>
+                        <td>Char</td>
+                    </tr>
+                    <tr>
+                        <td>wechat_openid</td>
+                        <td>微信OpenID</td>
+                        <td>Char</td>
+                    </tr>
+                    <tr>
+                        <td>wechat_nickname</td>
+                        <td>微信昵称</td>
+                        <td>Char</td>
+                    </tr>
+                    <tr>
+                        <td>wechat_sex</td>
+                        <td>微信性别</td>
+                        <td>Selection</td>
+                    </tr>
+                    <tr>
+                        <td>wechat_headimgurl</td>
+                        <td>微信头像URL</td>
+                        <td>Char</td>
+                    </tr>
+                </table>
+
+                <h3>乱码修复功能</h3>
+                <p>智能识别和修复微信昵称中的乱码字符：</p>
+                <div class="code-block">
+def fix_wechat_nickname(self, original_nickname):
+    # 处理双重编码问题
+    if any(char in original_nickname for char in garbled_chars):
+        try:
+            fixed_bytes = original_nickname.encode('latin1')
+            fixed_nickname = fixed_bytes.decode('utf-8')
+            return fixed_nickname
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            pass
+    # 其他处理逻辑...
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>配置说明</h2>
+
+                <h3>微信服务号配置</h3>
+                <p>在Odoo中创建微信配置记录，填写从微信开放平台获取的参数：</p>
+                <table class="field-table">
+                    <tr>
+                        <th>参数</th>
+                        <th>说明</th>
+                        <th>必填</th>
+                    </tr>
+                    <tr>
+                        <td>App ID</td>
+                        <td>微信开发者后台的AppID</td>
+                        <td>是</td>
+                    </tr>
+                    <tr>
+                        <td>App Secret</td>
+                        <td>微信开发者后台的AppSecret</td>
+                        <td>是</td>
+                    </tr>
+                    <tr>
+                        <td>授权范围</td>
+                        <td>snsapi_base(静默授权)或snsapi_userinfo(用户信息授权)</td>
+                        <td>是</td>
+                    </tr>
+                    <tr>
+                        <td>自动创建用户</td>
+                        <td>是否允许首次登录时自动创建用户</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td>默认用户组</td>
+                        <td>自动创建用户时分配的权限组</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td>乱码字符配置</td>
+                        <td>用于检测微信昵称乱码的字符列表</td>
+                        <td>否</td>
+                    </tr>
+                </table>
+
+                <h3>回调URL配置</h3>
+                <p>在微信开放平台中配置授权回调域名为：</p>
+                <div class="code-block">
+# 格式为：https://你的odoo域名/wechat/callback
+https://your-odoo-domain.com/wechat/callback
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>API端点</h2>
+
+                <div class="endpoints">
+                    <div class="endpoint">
+                        <span class="endpoint-method">GET</span>
+                        <strong>/wechat/callback</strong>
+                        <p>微信授权回调接口，处理用户授权后的跳转和用户信息获取</p>
+                    </div>
+                </div>
+
+                <h3>回调参数</h3>
+                <table class="field-table">
+                    <tr>
+                        <th>参数</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>code</td>
+                        <td>微信返回的授权码，用于获取access_token</td>
+                    </tr>
+                    <tr>
+                        <td>state</td>
+                        <td>自定义参数，用于防止CSRF攻击</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>安装与部署</h2>
+
+                <h3>依赖模块</h3>
+                <ul>
+                    <li>base</li>
+                    <li>web</li>
+                    <li>auth_oauth</li>
+                </ul>
+
+                <h3>安装步骤</h3>
+                <ol>
+                    <li>将模块添加到Odoo的addons目录</li>
+                    <li>在Odoo应用中安装"Odoo WeChat Service Account SSO"模块</li>
+                    <li>进入设置 → 微信登录配置，添加微信服务号配置</li>
+                    <li>在微信开放平台配置授权回调域名</li>
+                    <li>启用配置并测试登录功能</li>
+                </ol>
+
+                <h3>定时任务配置</h3>
+                <p>模块提供了定时更新微信access_token的功能，需要在Odoo中配置定时任务：</p>
+                <div class="code-block">
+# 定时任务方法
+def cron_update_access_token(self):
+    """定时任务：更新所有活跃配置的微信token"""
+    active_configs = self.search([('active', '=', True)])
+    for config in active_configs:
+        try:
+            config.get_wechat_access_token()
+        except Exception as e:
+            # 错误处理...
+            continue
+    return True
+                </div>
+            </div>
+
+            <div class="author-info">
+                <h3>模块信息</h3>
+                <p><strong>名称：</strong>Odoo WeChat Service Account SSO</p>
+                <p><strong>版本：</strong>18.0.2.0</p>
+                <p><strong>作者：</strong>Jason Zou</p>
+                <p><strong>联系方式：</strong>zou.jason@qq.com | 18951631470</p>
+                <p><strong>网站：</strong>http://www.duodoo.tech</p>
+                <p><strong>许可证：</strong>AGPL-3</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 Odoo微信服务号SSO模块 | 由Jason Zou开发</p>
+        </footer>
+    </div>
+</body>
+</html>
