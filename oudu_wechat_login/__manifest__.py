@@ -23,6 +23,9 @@
 
         ],
     },
+    'images': [
+        'static/description/banner.png',
+    ],
     'demo': [],
     'installable': True,
     'application': True,
