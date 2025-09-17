@@ -6,7 +6,7 @@
         This module enables single sign-on (SSO) for Odoo using WeChat Service Account.
         It allows users to log in to Odoo through WeChat by scanning a QR code or via WeChat official account.
     """,
-    'author': 'Jason Zou',
+    'author': 'DuodooTEKr 多度科技',
     'phone': '18951631470',
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
