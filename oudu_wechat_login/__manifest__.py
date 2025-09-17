@@ -11,6 +11,8 @@
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
     'category': 'wechat',
+    'price': 19.99,
+    'currency': 'USD',
     'depends': ['base', 'web', 'auth_oauth'],
     'data': [
         'security/ir.model.access.csv',
