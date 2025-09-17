@@ -1,2 +1,3 @@
-# odoo-mcp-deepseek-ollama-integration
-AI诊断、Pipe、Edge、集成DeepSeek模型
+# social_im
+
+欧度（Odoo）与微信服务号、微信小程度、企业微信、抖音小程序、H5等多端集成
