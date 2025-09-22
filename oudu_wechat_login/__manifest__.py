@@ -1,5 +1,5 @@
 {
-    'name': 'Odoo WeChat Service Account SSO',
+    'name': '微信服务号集成 Odoo WeChat Service Account SSO',
     'version': '18.0.2.0',
     'summary': 'Single Sign-On via WeChat Service Account（微信服务号SSO）',
     'description': """

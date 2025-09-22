@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Odoo WeChat QRCode Login',
+    'name': '微信扫描二维码登录 Odoo WeChat QRCode Login',
     'version': '18.0.2.0',
     'summary': 'WeChat QRCode Single Sign-On for Odoo',
     'description': """
@@ -14,6 +14,8 @@
         - Automatic redirection after login
     """,
     'author': 'DuodooTEKr多度科技',
+    'phone': '18951631470',
+    'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
     'category': 'Authentication',
     'price': 39.99,
