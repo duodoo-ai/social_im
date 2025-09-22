@@ -16,7 +16,7 @@
     <data noupdate="0">
         <!-- 添加定时任务：每小时更新一次微信access_token -->
         <record id="ir_cron_update_wechat_access_token" model="ir.cron">
-            <field name="name">WeChat: Update Access Token</field>
+            <field name="name">微信：每小时从微信服务号access_token更新一次</field>
             <field name="model_id" ref="model_wechat_sso_config"/>
             <field name="state">code</field>
             <field name="code">model.cron_update_access_token()</field>

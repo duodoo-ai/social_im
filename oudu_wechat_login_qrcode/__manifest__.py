@@ -1,33 +1,36 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'Odoo WeChat QR Code Login',
+    'name': 'Odoo WeChat QRCode Login',
     'version': '18.0.2.0',
-    'summary': 'WeChat QR Code Login for Odoo 18',
+    'summary': 'WeChat QRCode Single Sign-On for Odoo',
     'description': """
-        Enable WeChat QR code login functionality for Odoo 18.
-        Users can scan QR code with personal WeChat to login.
+        This module enables QR code based single sign-on (SSO) for Odoo using WeChat Service Account.
+        Users can log in to Odoo by scanning a WeChat QR code.
+        
+        Features:
+        - Beautiful and responsive QR code display
+        - Three status states: pending, scanned, expired
+        - Countdown timer after successful scan
+        - Automatic redirection after login
     """,
-    'author': 'DuodooTEKr 多度科技',
-    'phone': '18951631470',
-    'email': 'zou.jason@qq.com',
+    'author': 'DuodooTEKr多度科技',
     'website': 'http://www.duodoo.tech',
-    'category': 'wechat',
-    'price': 29.99,
+    'category': 'Authentication',
+    'price': 39.99,
     'currency': 'USD',
-    'depends': ['base', 'web', 'auth_oauth', 'oudu_wechat_login'],
+    'depends': ['base', 'web', 'website', 'auth_oauth', 'oudu_wechat_login'],
     'data': [
-        'security/ir.model.access.csv',
         'data/wechat_data.xml',
+        'security/ir.model.access.csv',
         'views/qr_session_views.xml',
-        'views/qr_templates.xml',
         'views/web_login.xml',
+        'views/qr_templates.xml',
     ],
     'assets': {
-        'web.assets_frontend': [
-            'oudu_wechat_login_qrcode/static/src/js/*.js',
-        ],
+
     },
     'images': [
-        'static/description/banner.png',
+        'static/description/icon.png',
     ],
     'demo': [],
     'installable': True,

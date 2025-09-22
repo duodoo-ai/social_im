@@ -3,13 +3,13 @@
     <data noupdate="0">
         <!-- 清理会话的定时任务 -->
         <record id="ir_cron_cleanup_qr_sessions" model="ir.cron">
-            <field name="name">清理过期微信二维码会话</field>
+            <field name="name">微信：清理过期微信二维码会话</field>
             <field name="model_id" ref="model_wechat_qr_session"/>
             <field name="state">code</field>
             <field name="code">model.cleanup_expired_sessions()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
     </data>
 </odoo>

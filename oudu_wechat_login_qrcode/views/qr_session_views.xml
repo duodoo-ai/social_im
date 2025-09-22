@@ -9,7 +9,6 @@
                 <field name="name" string="会话ID"/>
                 <field name="state" string="状态"/>
                 <field name="user_id" string="关联用户"/>
-                <field name="openid" string="微信OpenID"/>
                 <field name="create_date" string="创建时间"/>
                 <field name="expire_date" string="过期时间"/>
             </list>
@@ -31,21 +30,16 @@
                     <group>
                         <group>
                             <field name="name" readonly="1"/>
-                            <field name="state" readonly="1"/>
+                            <field name="state" readonly="1" invisible="1"/>
                         </group>
                         <group>
                             <field name="user_id"/>
-                            <field name="openid"/>
                         </group>
                     </group>
                     <group>
                         <group>
                             <field name="create_date" readonly="1"/>
                             <field name="expire_date" readonly="1"/>
-                        </group>
-                        <group>
-                            <field name="scan_date" readonly="1"/>
-                            <field name="confirm_date" readonly="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -60,7 +54,6 @@
         <field name="arch" type="xml">
             <search string="微信二维码会话搜索">
                 <field name="name"/>
-                <field name="openid"/>
                 <field name="user_id"/>
                 <filter string="待扫描" name="pending" domain="[('state','=','pending')]"/>
                 <filter string="已扫描" name="scanned" domain="[('state','=','scanned')]"/>

@@ -6,11 +6,11 @@
         This module enables single sign-on (SSO) for Odoo using WeChat Service Account.
         It allows users to log in to Odoo through WeChat by scanning a QR code or via WeChat official account.
     """,
-    'author': 'DuodooTEKr 多度科技',
+    'author': 'DuodooTEKr多度科技',
     'phone': '18951631470',
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
-    'category': 'wechat',
+    'category': 'Authentication',
     'depends': ['base', 'web', 'auth_oauth'],
     'data': [
         'security/ir.model.access.csv',
@@ -18,11 +18,11 @@
         'views/res_config_views.xml',
         'views/res_users_views.xml',
     ],
-    'assets': {
-        'web.assets_frontend': [
-
-        ],
-    },
+    # 'assets': {
+    #     'web.assets_frontend': [
+    #
+    #     ],
+    # },
     'images': [
         'static/description/banner.png',
     ],

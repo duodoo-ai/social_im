@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odoo微信服务号SSO模块 - 说明文档</title>
+    <title>Odoo微信二维码登录模块 - 完整说明</title>
     <style>
         * {
             margin: 0;
@@ -30,6 +30,7 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
         header h1 {
             font-size: 2.5rem;
@@ -144,8 +145,43 @@
             color: white;
             margin-top: 30px;
         }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .image-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .image-card:hover {
+            transform: translateY(-5px);
+        }
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .image-description {
+            padding: 15px;
+            background: white;
+        }
+        .image-description h4 {
+            color: #07C160;
+            margin-bottom: 10px;
+        }
+        .module-banner {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
         @media (max-width: 768px) {
-            .features {
+            .features, .image-gallery {
                 grid-template-columns: 1fr;
             }
             header h1 {
@@ -157,32 +193,77 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">📱</div>
-            <h1>Odoo微信二维码扫码SSO模块</h1>
-            <p><strong>通过微信二维码实现Odoo单点登录的完整解决方案</strong></p>
+            <div class="logo">📱🔐</div>
+            <h1>Odoo微信二维码扫码登录模块</h1>
+            <p><strong>通过微信扫码实现Odoo便捷登录的完整解决方案</strong></p>
         </header>
 
         <div class="content">
             <div class="section">
                 <h2>模块概述</h2>
-                <p>本模块为Odoo系统提供了与微信服务号集成的单点登录(SSO)功能。用户可以通过扫描微信二维码或通过微信公众号授权快速登录Odoo系统，无需记忆额外的账号密码。</p>
+                <p>本模块为Odoo系统提供了基于微信二维码扫描的登录功能。用户可以通过扫描微信二维码快速登录Odoo系统，无需输入账号密码，提供更便捷的登录体验。</p>
+
+                <div class="image-gallery">
+                    <div class="image-card">
+                        <div class="image-description">
+                            <h4>模块宣传图</h4>
+                            <p>简洁的设计展示了微信二维码登录的核心功能</p>
+                        </div>
+                        <!-- 这里将插入第1张图片 -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23000'/%3E%3Crect y='20' width='400' height='40' fill='%23fff'/%3E%3Crect y='140' width='400' height='40' fill='%23fff'/%3E%3Ctext x='200' y='50' font-family='Arial' font-size='12' fill='%2307C160' text-anchor='middle'%3EOdoo WeChat QR Code Login%3C/text%3E%3Ctext x='200' y='70' font-family='Arial' font-size='10' fill='%2307C160' text-anchor='middle'%3E微信扫描二维码授权Odoo登录%3C/text%3E%3Ctext x='30' y='180' font-family='Arial' font-size='8' fill='%23ccc' text-anchor='start'%3EDuodooTEKr IT / Apps%3C/text%3E%3Ctext x='370' y='35' font-family='Arial' font-size='14' fill='%23000' text-anchor='end'%3E18%3C/text%3E%3C/svg%3E" alt="Odoo微信二维码登录模块宣传图">
+                    </div>
+                </div>
 
                 <div class="features">
                     <div class="feature-card">
-                        <h4>微信集成</h4>
-                        <p>无缝对接微信开放平台API，支持服务号网页授权和用户信息获取</p>
+                        <h4>二维码登录</h4>
+                        <p>生成微信二维码，用户使用微信扫一扫即可快速登录系统</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>会话管理</h4>
+                        <p>完整的会话状态管理，支持待扫描、已扫描、已确认、已过期和已取消状态</p>
                     </div>
                     <div class="feature-card">
                         <h4>自动用户创建</h4>
-                        <p>支持首次登录时自动创建Odoo用户账户，并可配置默认权限组</p>
+                        <p>支持首次扫码登录时自动创建Odoo用户账户，并可配置默认权限组</p>
                     </div>
                     <div class="feature-card">
-                        <h4>乱码修复</h4>
-                        <p>智能检测和修复微信昵称乱码问题，支持多种编码格式</p>
+                        <h4>多设备适配</h4>
+                        <p>完美支持PC端和移动端，提供一致的用户体验</p>
                     </div>
-                    <div class="feature-card">
-                        <h4>安全可靠</h4>
-                        <p>使用微信安全协议和Odoo会话管理，确保登录过程安全</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>界面展示</h2>
+                <p>以下是微信二维码登录模块在实际Odoo系统中的界面展示：</p>
+
+                <div class="image-gallery">
+                    <div class="image-card">
+                        <div class="image-description">
+                            <h4>传统登录页面</h4>
+                            <p>包含微信二维码登录选项的标准登录界面</p>
+                        </div>
+                        <!-- 这里将插入第2张图片 -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f5f5f5'/%3E%3Crect y='50' width='400' height='40' fill='%23fff'/%3E%3Ctext x='200' y='75' font-family='Arial' font-size='12' fill='%23333' text-anchor='middle'%3E网站首页 公司简介 新闻动态%3C/text%3E%3Ctext x='350' y='75' font-family='Arial' font-size='12' fill='%23007bff' text-anchor='end'%3E登录%3C/text%3E%3Crect x='50' y='120' width='300' height='40' fill='%23fff' stroke='%23ddd'/%3E%3Ctext x='70' y='145' font-family='Arial' font-size='12' fill='%23333' text-anchor='start'%3E电子邮件%3C/text%3E%3Crect x='50' y='170' width='300' height='40' fill='%23fff' stroke='%23ddd'/%3E%3Ctext x='70' y='195' font-family='Arial' font-size='12' fill='%23333' text-anchor='start'%3E密码%3C/text%3E%3Crect x='50' y='220' width='300' height='40' fill='%23007bff'/%3E%3Ctext x='200' y='245' font-family='Arial' font-size='12' fill='%23fff' text-anchor='middle'%3E登录%3C/text%3E%3Crect x='50' y='270' width='300' height='60' fill='%23f0e6d2'/%3E%3Ctext x='200' y='295' font-family='Arial' font-size='12' fill='%23333' text-anchor='middle'%3E微信二维码登录%3C/text%3E%3Ctext x='200' y='315' font-family='Arial' font-size='10' fill='%23333' text-anchor='middle'%3E还没有账户?%3C/text%3E%3C/svg%3E" alt="传统登录页面">
+                    </div>
+
+                    <div class="image-card">
+                        <div class="image-description">
+                            <h4>微信扫码登录界面</h4>
+                            <p>用户扫描二维码进行登录的专用界面</p>
+                        </div>
+                        <!-- 这里将插入第3张图片 -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='350' viewBox='0 0 400 350'%3E%3Crect width='400' height='350' fill='%23f5f5f5'/%3E%3Crect y='50' width='400' height='40' fill='%23fff'/%3E%3Ctext x='200' y='75' font-family='Arial' font-size='12' fill='%23333' text-anchor='middle'%3E网站首页 公司简介 新闻动态%3C/text%3E%3Crect x='100' y='100' width='200' height='200' fill='%23fff' stroke='%2307C160' stroke-width='2'/%3E%3Crect x='150' y='150' width='100' height='100' fill='%23333'/%3E%3Ctext x='200' y='320' font-family='Arial' font-size='12' fill='%23333' text-anchor='middle'%3E打开微信扫一扫, 快速登录%3C/text%3E%3Crect x='80' y='340' width='120' height='30' fill='%23ccc' rx='5'/%3E%3Ctext x='140' y='360' font-family='Arial' font-size='10' fill='%23333' text-anchor='middle'%3E返回登录页面%3C/text%3E%3Crect x='220' y='340' width='120' height='30' fill='%2307C160' rx='5'/%3E%3Ctext x='280' y='360' font-family='Arial' font-size='10' fill='%23fff' text-anchor='middle'%3E刷新二维码%3C/text%3E%3C/svg%3E" alt="微信扫码登录界面">
+                    </div>
+
+                    <div class="image-card">
+                        <div class="image-description">
+                            <h4>扫码成功界面</h4>
+                            <p>用户扫码成功后等待自动登录的界面</p>
+                        </div>
+                        <!-- 这里将插入第4张图片 -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='350' viewBox='0 0 400 350'%3E%3Crect width='400' height='350' fill='%23f5f5f5'/%3E%3Crect y='50' width='400' height='40' fill='%23fff'/%3E%3Ctext x='200' y='75' font-family='Arial' font-size='12' fill='%23333' text-anchor='middle'%3E网站首页 公司简介 新闻动态%3C/text%3E%3Crect x='100' y='100' width='200' height='200' fill='%23fff' stroke='%2307C160' stroke-width='2'/%3E%3Crect x='150' y='150' width='100' height='100' fill='%23333'/%3E%3Ctext x='200' y='320' font-family='Arial' font-size='12' fill='%2307C160' text-anchor='middle'%3E扫码成功，即将自动登录%3C/text%3E%3Crect x='100' y='325' width='200' height='10' fill='%23e0e0e0' rx='5'/%3E%3Crect x='100' y='325' width='150' height='10' fill='%2307C160' rx='5'/%3E%3Ctext x='200' y='345' font-family='Arial' font-size='10' fill='%23333' text-anchor='middle'%3E3秒%3C/text%3E%3Crect x='50' y='350' width='100' height='30' fill='%23666' rx='5'/%3E%3Ctext x='100' y='370' font-family='Arial' font-size='10' fill='%23fff' text-anchor='middle'%3E返回登录页面%3C/text%3E%3Crect x='160' y='350' width='100' height='30' fill='%2307C160' rx='5'/%3E%3Ctext x='210' y='370' font-family='Arial' font-size='10' fill='%23fff' text-anchor='middle'%3E刷新二维码%3C/text%3E%3Crect x='270' y='350' width='100' height='30' fill='%2307C160' rx='5'/%3E%3Ctext x='320' y='370' font-family='Arial' font-size='10' fill='%23fff' text-anchor='middle'%3E立即登录%3C/text%3E%3C/svg%3E" alt="扫码成功界面">
                     </div>
                 </div>
             </div>
@@ -190,79 +271,104 @@
             <div class="section">
                 <h2>核心功能</h2>
 
-                <h3>微信用户认证</h3>
-                <p>通过OAuth2.0协议与微信API交互，获取用户授权并验证身份：</p>
+                <h3>二维码生成与扫描</h3>
+                <p>动态生成微信登录二维码，用户使用微信扫一扫功能进行扫描：</p>
                 <div class="code-block">
-// 认证流程核心代码
-def auth_wechat(self, provider, code, params):
-    if provider != 'wechat':
-        return False
+# 二维码生成核心代码
+def wechat_login(self, **kwargs):
+    # 创建新的二维码会话
+    session_id = request.env['wechat.qr.session'].sudo().create_session()
 
-    # 通过code获取access_token和openid
-    token_url = "https://api.weixin.qq.com/sns/oauth2/access_token"
-    token_params = {
-        'appid': config.app_id,
-        'secret': config.app_secret,
-        'code': code,
-        'grant_type': 'authorization_code'
-    }
-    # 获取用户信息并创建/更新Odoo用户
-    # ...
+    # 生成微信登录URL
+    base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+    redirect_uri = quote(f"{base_url}/wechat/qr/callback")
+
+    # 创建二维码
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(wechat_url)
+    qr.make(fit=True)
+
+    # 生成二维码图像并转换为base64
+    img = qr.make_image(fill_color="black", back_color="white")
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    qr_img = base64.b64encode(buffered.getvalue()).decode()
                 </div>
 
-                <h3>用户信息管理</h3>
-                <p>在res.users模型中扩展了微信用户相关字段：</p>
+                <h3>会话状态管理</h3>
+                <p>完整的会话状态管理机制，确保登录过程安全可控：</p>
                 <table class="field-table">
                     <tr>
-                        <th>字段名</th>
+                        <th>状态</th>
                         <th>描述</th>
-                        <th>类型</th>
+                        <th>后续动作</th>
                     </tr>
                     <tr>
-                        <td>wechat_user_id</td>
-                        <td>微信用户ID</td>
-                        <td>Char</td>
+                        <td>pending</td>
+                        <td>二维码已生成，等待用户扫描</td>
+                        <td>用户扫描后转为scanned状态</td>
                     </tr>
                     <tr>
-                        <td>wechat_unionid</td>
-                        <td>微信UnionID</td>
-                        <td>Char</td>
+                        <td>scanned</td>
+                        <td>用户已扫描二维码，等待确认</td>
+                       极狐<td>用户确认后转为confirmed状态</td>
                     </tr>
                     <tr>
-                        <td>wechat_openid</td>
-                        <td>微信OpenID</td>
-                        <td>Char</td>
+                        <td>confirmed</td>
+                        <td>用户已确认登录，登录成功</td>
+                        <td>完成登录流程</td>
                     </tr>
                     <tr>
-                        <td>wechat_nickname</td>
-                        <td>微信昵称</td>
-                        <td>Char</td>
+                        <td>expired</极狐td>
+                        <td>会话已过期</td>
+                        <td>需要重新生成二维码</td>
                     </tr>
                     <tr>
-                        <td>wechat_sex</td>
-                        <td>微信性别</td>
-                        <td>Selection</td>
-                    </tr>
-                    <tr>
-                        <td>wechat_headimgurl</td>
-                        <td>微信头像URL</td>
-                        <td>Char</td>
+                        <td>canceled</td>
+                        <td>会话已取消</td>
+                        <td>需要重新生成二维码</td>
                     </tr>
                 </table>
 
-                <h3>乱码修复功能</h3>
-                <p>智能识别和修复微信昵称中的乱码字符：</p>
+                <h3>用户自动创建与登录</h3>
+                <p>智能识别用户信息并自动创建Odoo账户：</p>
                 <div class="code-block">
-def fix_wechat_nickname(self, original_nickname):
-    # 处理双重编码问题
-    if any(char in original_nickname for char in garbled_chars):
-        try:
-            fixed_bytes = original_nickname.encode('latin1')
-            fixed_nickname = fixed_bytes.decode('utf-8')
-            return fixed_nickname
-        except (UnicodeEncodeError, UnicodeDecodeError):
-            pass
-    # 其他处理逻辑...
+def _find_or_create_user(self, wechat_user_info, config):
+    """查找或创建用户"""
+    # 修复昵称编码
+    fixed_nickname = request.env['极狐res.users'].fix_wechat_nickname(
+        wechat_user_info.get('nickname')
+    )
+
+    openid = wechat_user_info.get('openid')
+    unionid = wechat_user_info.get('unionid')
+    login_name = f"wechat_{openid}"
+
+    # 首先尝试通过openid查找用户
+    user = request.env['res.users'].sudo().search([
+        ('wechat_openid', '=', openid)
+    ], limit=1)
+
+    if user:
+        return user
+
+    # 如果配置允许自动创建用户，则创建新用户
+    if config.auto_create_user:
+        portal_user = request.env['res.users'].sudo().create({
+            'name': fixed_nickname or f"微信用户_{openid[:8]}",
+            'login': login_name,
+            'password': str(uuid.uuid4()),  # 随机密码
+            'wechat_openid': openid,
+            'wechat_unionid': unionid,
+            'wechat_nickname': fixed_nickname,
+            'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
+        })
+        return portal_user
                 </div>
             </div>
 
@@ -270,7 +376,7 @@ def fix_wechat_nickname(self, original_nickname):
                 <h2>配置说明</h2>
 
                 <h3>微信服务号配置</h3>
-                <p>在Odoo中创建微信配置记录，填写从微信开放平台获取的参数：</p>
+                <p>在使用本模块前，需要先配置微信服务号相关信息：</p>
                 <table class="field-table">
                     <tr>
                         <th>参数</th>
@@ -285,7 +391,7 @@ def fix_wechat_nickname(self, original_nickname):
                     <tr>
                         <td>App Secret</td>
                         <td>微信开发者后台的AppSecret</td>
-                        <td>是</td>
+                        <td>极狐是</td>
                     </tr>
                     <tr>
                         <td>授权范围</td>
@@ -299,21 +405,16 @@ def fix_wechat_nickname(self, original_nickname):
                     </tr>
                     <tr>
                         <td>默认用户组</td>
-                        <td>自动创建用户时分配的权限组</td>
-                        <td>否</td>
-                    </tr>
-                    <tr>
-                        <td>乱码字符配置</td>
-                        <td>用于检测微信昵称乱码的字符列表</td>
-                        <td>否</td>
+                        <td>自动创建用户时分配的权限极狐组</td>
+                        <td>否</极狐td>
                     </tr>
                 </table>
 
                 <h3>回调URL配置</h3>
                 <p>在微信开放平台中配置授权回调域名为：</p>
                 <div class="code-block">
-# 格式为：https://你的odoo域名/wechat/callback
-https://your-odoo-domain.com/wechat/callback
+# 格式为：https://你的odoo域名/wechat/qr/callback
+https://your-odoo-domain.com/wechat/qr/callback
                 </div>
             </div>
 
@@ -323,26 +424,25 @@ https://your-odoo-domain.com/wechat/callback
                 <div class="endpoints">
                     <div class="endpoint">
                         <span class="endpoint-method">GET</span>
-                        <strong>/wechat/callback</strong>
+                        <strong>/wechat/qr/login</strong>
+                        <p>生成微信登录二维码页面</p>
+                    </div>
+                    <div class="endpoint">
+                        <span class="endpoint-method">GET</span>
+                        <strong>/wechat/qr/callback</strong>
                         <p>微信授权回调接口，处理用户授权后的跳转和用户信息获取</p>
                     </div>
+                    <div class="endpoint">
+                        <span class="endpoint-method">POST</span>
+                        <strong>/wechat/qr/status</strong>
+                        <p>检查二维码登录状态，返回当前会话状态</极狐p>
+                    </div>
+                    <div class="endpoint">
+                        <span class="endpoint-method">GET</span>
+                        <strong>/wechat/qr/do_login</strong>
+                        <p>使用令牌执行登录操作</p>
+                    </div>
                 </div>
-
-                <h3>回调参数</h3>
-                <table class="field-table">
-                    <tr>
-                        <th>参数</th>
-                        <th>说明</th>
-                    </tr>
-                    <tr>
-                        <td>code</td>
-                        <td>微信返回的授权码，用于获取access_token</td>
-                    </tr>
-                    <tr>
-                        <td>state</td>
-                        <td>自定义参数，用于防止CSRF攻击</td>
-                    </tr>
-                </table>
             </div>
 
             <div class="section">
@@ -352,48 +452,47 @@ https://your-odoo-domain.com/wechat/callback
                 <ul>
                     <li>base</li>
                     <li>web</li>
+                    <li>website</li>
                     <li>auth_oauth</li>
+                    <li>oudu_wechat_login</li>
                 </ul>
 
                 <h3>安装步骤</h3>
                 <ol>
                     <li>将模块添加到Odoo的addons目录</li>
-                    <li>在Odoo应用中安装"Odoo WeChat Service Account SSO"模块</li>
-                    <li>进入设置 → 微信登录配置，添加微信服务号配置</li>
+                    <li>在Odoo应用中安装"Odoo WeChat QRCode Login"模块</li>
+                    <li>确保已安装并配置基础的oudu_wechat_login模块</li>
                     <li>在微信开放平台配置授权回调域名</li>
-                    <li>启用配置并测试登录功能</li>
+                    <li>启用配置并测试二维码登录功能</li>
                 </ol>
 
                 <h3>定时任务配置</h3>
-                <p>模块提供了定时更新微信access_token的功能，需要在Odoo中配置定时任务：</p>
+                <p>模块提供了定时清理过期会话的功能，需要在Odoo中配置定时任务：</p>
                 <div class="code-block">
 # 定时任务方法
-def cron_update_access_token(self):
-    """定时任务：更新所有活跃配置的微信token"""
-    active_configs = self.search([('active', '=', True)])
-    for config in active_configs:
-        try:
-            config.get_wechat_access_token()
-        except Exception as e:
-            # 错误处理...
-            continue
-    return True
+def cleanup_expired_sessions(self):
+    """清理过期会话的定时任务"""
+    expiry_date = fields.Datetime.to_string(datetime.now() - timedelta(days=1))
+    expired_sessions = self.search([('create_date', '<', expiry_date)])
+    if expired_sessions:
+        expired_sessions.unlink()
+        _logger.info("Cleaned up %d expired WeChat QR sessions", len(expired_sessions))
                 </div>
             </div>
 
             <div class="author-info">
                 <h3>模块信息</h3>
-                <p><strong>名称：</strong>Odoo WeChat Service Account SSO</p>
+                <p><strong>名称：</strong>Odoo WeChat QRCode Login</p>
                 <p><strong>版本：</strong>18.0.2.0</p>
-                <p><strong>作者：</strong>Jason Zou</p>
-                <p><strong>联系方式：</strong>zou.jason@qq.com | 18951631470</p>
+                <p><strong>作者：</strong>DuodooTEKr多度科技</p>
                 <p><strong>网站：</strong>http://www.duodoo.tech</p>
+                <p><strong>价格：</strong>29.99 USD</p>
                 <p><strong>许可证：</strong>AGPL-3</p>
             </div>
         </div>
 
         <footer>
-            <p>© 2025 Odoo微信服务号SSO模块 | 由Jason Zou开发</p>
+            <p>© 2025 Odoo微信二维码登录模块 | 由DuodooTEKr多度科技开发</p>
         </footer>
     </div>
 </body>
