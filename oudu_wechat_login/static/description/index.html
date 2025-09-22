@@ -159,11 +159,14 @@
         .justify-content-between {
             justify-content: space-between;
         }
-
-        /* 自定义样式 */
         .wechat-green {
             background-color: #07C160;
             color: white;
+            border-color: #07C160;
+        }
+        .wechat-green:hover {
+            background-color: #05a54e;
+            border-color: #05a54e;
         }
         .module-header {
             text-align: center;
@@ -233,10 +236,10 @@
 </head>
 <body>
     <section class="oe_container">
-        <div class="module-header">
+        <div class="oe_row oe_spaced">
             <h2 class="oe_slogan">Odoo微信登录模块</h2>
             <h3 class="oe_slogan mb-0">无缝集成微信服务号的单点登录解决方案</h3>
-
+            <img src="static/description/icon.png" style="width: 150px;" class="mx-auto center-block">
             <h4 class="oe_slogan mt-0" style="font-size: 23px">DuodooTEKr多度科技 - www.duodoo.tech</h4>
             <div class="mb-4" style="text-align: center;">
                 <span
@@ -254,7 +257,7 @@
             </div>
             <div class="oe_demo oe_screenshot"
                 style="max-width: 84%; margin: 16px 8%">
-
+                <img src="static/description/banner.png">
             </div>
         </div>
     </section>
@@ -300,13 +303,13 @@
                     管理员可以在Odoo设置中轻松配置微信服务号参数，包括AppID、AppSecret、授权范围和自动用户创建选项。每个用户也可以根据自己的偏好设置微信登录方式。
                 </p>
                 <div class="oe_demo oe_screenshot mt16">
-
+                    <img src="static/description/screenshot_settings.png">
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="contact-section">
+    <section class="oe_dark">
         <div class="oe_container d-flex justify-content-around align-items-lg-center flex-column flex-lg-row">
             <div class="d-flex flex-column m-3 ms-lg-4">
                 <h3 class="oe_slogan mb-3 mt-3 text-left">
@@ -319,7 +322,7 @@
             </div>
             <div class="oe_slogan d-flex flex-column ms-1 me-1 ms-lg-4 me-lg-4 flex-grow-1">
                 <a class="btn btn-primary btn-lg m-3 wechat-green"
-                    href="mailto:info@duodoo.tech?subject=请求报价：Odoo微信登录模块"
+                    href="mailto:zou.jason@qq.com?subject=请求报价：Odoo微信登录模块"
                     style="font-size: 1.2rem; position: relative; overflow: hidden; border: none;">
                     <i class="fa fa-envelope me-1"></i>请求报价
                 </a>
@@ -330,41 +333,71 @@
     <section class="oe_container">
         <div class="oe_row oe_spaced">
             <h3 class="oe_slogan">我们的服务</h3>
-            <div class="service-grid">
-                <div class="service-item">
-                    <div class="service-icon">
-                        <i class="fa fa-code"></i>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div>
+                        <div class="service-icon">
+                            <i class="fa fa-code"></i>
+                        </div>
+                        <h3
+                            class="oe_slogan"
+                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
+                        >
+                            Odoo <br>开发
+                        </h3>
                     </div>
-                    <h3>Odoo开发</h3>
-                    <p>定制功能与模块开发</p>
                 </div>
-                <div class="service-item">
-                    <div class="service-icon">
-                        <i class="fa fa-plug"></i>
+                <div>
+                    <div>
+                        <div class="service-icon">
+                            <i class="fa fa-plug"></i>
+                        </div>
+                        <h3
+                            class="oe_slogan"
+                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
+                        >
+                            Odoo <br>集成
+                        </h3>
                     </div>
-                    <h3>Odoo集成</h3>
-                    <p>第三方系统集成服务</p>
                 </div>
-                <div class="service-item">
-                    <div class="service-icon">
-                        <i class="fa fa-server"></i>
+                <div>
+                    <div>
+                        <div class="service-icon">
+                            <i class="fa fa-server"></i>
+                        </div>
+                        <h3
+                            class="oe_slogan"
+                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
+                        >
+                            Odoo <br>部署
+                        </h3>
                     </div>
-                    <h3>Odoo部署</h3>
-                    <p>系统部署与优化</p>
                 </div>
-                <div class="service-item">
-                    <div class="service-icon">
-                        <i class="fa fa-graduation-cap"></i>
+                <div>
+                    <div>
+                        <div class="service-icon">
+                            <i class="fa fa-graduation-cap"></i>
+                        </div>
+                        <h3
+                            class="oe_slogan"
+                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
+                        >
+                            Odoo <br>培训
+                        </h3>
                     </div>
-                    <h3>Odoo培训</h3>
-                    <p>用户与管理員培训</p>
                 </div>
-                <div class="service-item">
-                    <div class="service-icon">
-                        <i class="fa fa-life-ring"></i>
+                <div>
+                    <div>
+                        <div class="service-icon">
+                            <i class="fa fa-life-ring"></i>
+                        </div>
+                        <h3
+                            class="oe_slogan"
+                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
+                        >
+                            Odoo <br>支持
+                        </h3>
                     </div>
-                    <h3>Odoo支持</h3>
-                    <p>技术支持与维护</p>
                 </div>
             </div>
         </div>
