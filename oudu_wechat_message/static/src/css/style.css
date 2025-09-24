@@ -1,0 +1,64 @@
+/* 微信消息模块样式 */
+.wechat-message-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.wechat-message-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.wechat-message-header {
+    background: linear-gradient(135deg, #07C160 0%, #09BB07 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+.wechat-message-content {
+    padding: 15px;
+    background: white;
+}
+
+.message-content {
+    line-height: 1.6;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .wechat-message-card {
+        margin-bottom: 10px;
+    }
+
+    .wechat-message-header h3 {
+        font-size: 18px;
+    }
+}
+
+/* 状态标签样式 */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-draft {
+    background: #ffc107;
+    color: #212529;
+}
+
+.status-sent {
+    background: #28a745;
+    color: white;
+}
+
+.status-failed {
+    background: #dc3545;
+    color: white;
+}

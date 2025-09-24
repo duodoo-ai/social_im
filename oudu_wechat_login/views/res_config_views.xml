@@ -74,6 +74,19 @@
                                 </div>
                             </group>
                         </page>
+                        <page string="模板消息">
+                            <group>
+                                <field name="template_id"/>
+                                <!-- 模板消息 -->
+                                <div class="oe_edit_only" style="margin-top: 16px;">
+                                    <label for="template_id" class="o_form_label" string="配置说明"/>
+                                    <div>
+                                        <p>1. 需要先配置消息模板，才能发送模板消息</p>
+                                        <p>2. 配置微信模板消息，用于发送登录成功、登录失败等通知</p>
+                                    </div>
+                                </div>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

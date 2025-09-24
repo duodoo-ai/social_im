@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wechat_message_list" model="ir.ui.view">
+        <field name="name">wechat.message.list</field>
+        <field name="model">wechat.message</field>
+        <field name="arch" type="xml">
+            <list string="微信消息记录">
+                <field name="message_sequence" string="编号"/>
+                <field name="message_title" string="标题"/>
+                <field name="message_type" string="类型"/>
+                <field name="state" string="状态" widget="statusbar"/>
+                <field name="total_recipients" string="目标用户"/>
+                <field name="sent_count" string="成功发送"/>
+                <field name="open_count" string="打开次数"/>
+                <field name="actual_send_time" string="发送时间"/>
+                <field name="create_uid" string="创建人"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_wechat_message_form" model="ir.ui.view">
+        <field name="name">wechat.message.form</field>
+        <field name="model">wechat.message</field>
+        <field name="arch" type="xml">
+            <form string="微信消息">
+                <header>
+                    <button name="action_send_message" type="object"
+                            string="发送消息" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_view_user_messages" type="object"
+                            string="查看发送记录" class="btn-secondary"
+                            invisible="state == 'draft'"/>
+                    <button name="action_preview_message" type="object"
+                            string="预览消息" class="btn-default"
+                            invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,sending,sent,failed,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <!--草稿状态消息可以编辑，其他状态消息只能查看-->
+                        <group>
+                            <field name="message_sequence" readonly="1"/>
+                            <field name="message_title" readonly="state != 'draft'"/>
+                            <field name="message_type" readonly="state != 'draft'"/>
+                            <field name="wechat_config_id" readonly="state != 'draft'"/>
+                            <field name="redirect_model" placeholder="例如: crm.lead" readonly="state != 'draft'"/>
+                            <field name="redirect_res_id" placeholder="关联记录ID" readonly="state != 'draft'"/>
+                            <field name="state" invisible="1" readonly="state != 'draft'"/>
+                            <field name="scheduled_send_time" readonly="state != 'draft'"/>
+                            <field name="actual_send_time" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="发送状态" name="send_status">
+                            <group string="发送统计" name="send_stats">
+                                <field name="total_recipients" readonly="1"/>
+                                <field name="sent_count" readonly="state != 'draft'"/>
+                                <field name="failed_count" readonly="state != 'draft'"/>
+                                <field name="open_count" readonly="state != 'draft'"/>
+                            </group>
+                            <separator string="错误信息" invisible="state != 'failed'"/>
+                            <group string="错误详情" name="error_info" invisible="state != 'failed'">
+                                <field name="error_message" nolabel="1" readonly="1" widget="textarea"
+                                       placeholder="无错误信息" style="height: 80px;"/>
+                            </group>
+                        </group>
+                    </group>
+                    <group name="user_messages_group">
+                        <group string="消息文本" name="report_context_group">
+                            <field name="report_title" readonly="state != 'draft'"/>
+                            <field name="report_type" readonly="state != 'draft'"/>
+                            <field name="report_target" readonly="state != 'draft'"/>
+                            <field name="report_time" readonly="state != 'draft'"/>
+                            <field name="report_content" placeholder="请输入报告内容..."
+                                   widget="textarea" style="height: 120px;" rows="4"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                        <group string="跳转链接" name="redirect_url_group">
+                            <field name="redirect_url"
+                                   widget="textarea" rows="5"
+                                   placeholder="例如: /web 或 https://example.com"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_wechat_message_search" model="ir.ui.view">
+        <field name="name">wechat.message.search</field>
+        <field name="model">wechat.message</field>
+        <field name="arch" type="xml">
+            <search string="微信消息搜索">
+                <field name="message_sequence"/>
+                <field name="message_title"/>
+                <field name="message_type"/>
+                <field name="state"/>
+                <field name="create_uid"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- 动作和菜单 -->
+    <record id="action_wechat_message" model="ir.actions.act_window">
+        <field name="name">微信消息记录</field>
+        <field name="res_model">wechat.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_wechat_message_list"/>
+        <field name="search_view_id" ref="view_wechat_message_search"/>
+        <field name="context">{'default_state': 'draft'}</field>
+    </record>
+
+    <menuitem id="menu_wechat_message_root"
+              name="微信通知消息"
+              parent="base.menu_administration"
+              action="action_wechat_message"
+              sequence="620"/>
+</odoo>

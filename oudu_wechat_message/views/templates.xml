@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="message_list_template" name="消息列表页">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>我的消息</h2>
+                        <div class="alert alert-info" role="alert">
+                            以下是您接收到的微信消息通知
+                        </div>
+
+                        <t t-if="messages">
+                            <div class="list-group">
+                                <t t-foreach="messages" t-as="message">
+                                    <a t-attf-href="/wechat/message/detail/#{message.id}"
+                                       class="list-group-item list-group-item-action wechat-message-card">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1" t-field="message.report_title"/>
+                                            <small t-field="message.report_time"/>
+                                        </div>
+                                        <p class="mb-1" t-field="message.report_content"/>
+                                        <small>
+                                            类型: <span t-field="message.report_type"/>
+                                            | 状态:
+                                            <span t-if="message.user_message_ids[0].state == 'clicked'"
+                                                  class="badge badge-success">已查看</span>
+                                            <span t-else="" class="badge badge-secondary">未查看</span>
+                                        </small>
+                                    </a>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-warning" role="alert">
+                                暂无消息
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="message_detail_template" name="消息详情页">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/wechat/message/list">消息列表</a>
+                                </li>
+                                <li class="breadcrumb-item active" t-field="message.report_title"/>
+                            </ol>
+                        </nav>
+
+                        <div class="card wechat-message-card">
+                            <div class="card-header wechat-message-header">
+                                <h3 t-field="message.report_title"/>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>报告类型:</strong> <span t-field="message.report_type"/></p>
+                                        <p><strong>报告对象:</strong> <span t-field="message.report_target"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>报告时间:</strong> <span t-field="message.report_time"/></p>
+                                        <p><strong>发送状态:</strong>
+                                            <span t-if="message.state == 'sent'"
+                                                  class="badge badge-success">已发送</span>
+                                            <span t-else="" class="badge badge-warning">未发送</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <h5>报告内容</h5>
+                                    <div class="message-content" t-field="message.report_content"/>
+                                </div>
+
+                                <div class="mt-3" t-if="message.redirect_url">
+                                    <a t-att-href="message.redirect_url"
+                                       class="btn btn-primary" target="_blank">
+                                        查看详情
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="access_denied_template" name="权限拒绝页面">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h3 class="text-danger">权限拒绝</h3>
+                                <p t-esc="error_message"/>
+                                <a href="/wechat/message/list" class="btn btn-primary">返回消息列表</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="error_template" name="错误页面">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h3 class="text-danger">系统错误</h3>
+                                <p t-esc="error_message"/>
+                                <a href="/wechat/message/list" class="btn btn-primary">返回消息列表</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

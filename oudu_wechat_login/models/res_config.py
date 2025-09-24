@@ -61,6 +61,9 @@ class WechatConfig(models.Model):
         default="Ã,Â,â,é­å½¬,€,ç,¢,£,¥",
         help="用于检测微信昵称乱码的字符列表，用逗号分隔。系统会检测这些字符的存在以判断是否需要修复。"
     )
+    template_id = fields.Char(string='模板ID',
+                              default='XGJp1jOypqrjRrjzok6FLbUnzTIKH2EAdirPRcr6By8',
+                              help='微信模板消息的模板ID，用于发送报告消息')
 
     @api.depends('company_id')
     def _compute_redirect_uri(self):

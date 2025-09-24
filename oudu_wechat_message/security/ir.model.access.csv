@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wechat_message_user,wechat.message.user,model_wechat_message,base.group_user,1,1,1,0
+access_wechat_message_manager,wechat.message.manager,model_wechat_message,base.group_system,1,1,1,1
+access_wechat_user_message_user,wechat.user.message.user,model_wechat_user_message,base.group_user,1,0,0,0
+access_wechat_user_message_portal,wechat.user.message.portal,model_wechat_user_message,base.group_portal,1,0,0,0
+access_wechat_user_message_manager,wechat.user.message.manager,model_wechat_user_message,base.group_system,1,1,1,1
+access_wechat_notification_service,wechat.notification.service,model_wechat_notification_service,base.group_system,1,0,0,0

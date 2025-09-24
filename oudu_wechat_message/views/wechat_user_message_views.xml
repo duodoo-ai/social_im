@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 树形视图 -->
+    <record id="view_wechat_user_message_list" model="ir.ui.view">
+        <field name="name">wechat.user.message.list</field>
+        <field name="model">wechat.user.message</field>
+        <field name="arch" type="xml">
+            <list string="微信用户消息记录"
+                  decoration-success="state == 'clicked'"
+                  decoration-warning="state == 'sent'"
+                  decoration-danger="state == 'failed'">
+                <field name="wechat_message_id" string="消息标题"/>
+                <field name="user_id" string="用户"/>
+                <field name="wechat_openid" string="OpenID"/>
+                <field name="state" string="状态"/>
+                <field name="send_time" string="发送时间"/>
+                <field name="click_time" string="点击时间"/>
+                <field name="click_count" string="点击次数"/>
+                <field name="message_id" string="微信消息ID" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 表单视图 -->
+    <record id="view_wechat_user_message_form" model="ir.ui.view">
+        <field name="name">wechat.user.message.form</field>
+        <field name="model">wechat.user.message</field>
+        <field name="arch" type="xml">
+            <form string="微信用户消息记录">
+                <header>
+                    <button name="mark_as_clicked" type="object"
+                            string="标记为已点击" class="btn-success"
+                            invisible="state == 'clicked'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="sent,delivered,read,clicked,failed"/>
+                </header>
+
+                <sheet>
+                    <group string="基本信息" colspan="4">
+                        <group string="主要信息">
+                            <field name="wechat_message_id" string="关联消息"
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   readonly="1"/>
+                            <field name="user_id" string="用户"
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   readonly="1"/>
+                            <field name="wechat_openid" string="微信OpenID" readonly="1"/>
+                        </group>
+                        <group string="状态信息">
+                            <field name="state" string="状态" readonly="1"/>
+                            <field name="message_id" string="微信消息ID" readonly="1"/>
+                            <field name="click_count" string="点击次数" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="时间信息" colspan="4">
+                        <group string="时间线">
+                            <field name="send_time" string="发送时间" readonly="1"/>
+                            <field name="read_time" string="阅读时间" readonly="1"/>
+                            <field name="click_time" string="点击时间" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="错误信息" colspan="4" invisible="state != 'failed'">
+                        <field name="error_message" string="错误详情"
+                               widget="textarea" readonly="1" nolabel="1"/>
+                    </group>
+
+                    <group string="统计概览" colspan="4" invisible="state == 'draft'">
+                        <field name="click_count" readonly="1" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 搜索视图 -->
+    <record id="view_wechat_user_message_search" model="ir.ui.view">
+        <field name="name">wechat.user.message.search</field>
+        <field name="model">wechat.user.message</field>
+        <field name="arch" type="xml">
+            <search string="微信用户消息搜索">
+                <field name="wechat_message_id" string="消息标题"/>
+                <field name="user_id" string="用户"/>
+                <field name="wechat_openid" string="OpenID"/>
+                <field name="state" string="状态"/>
+                <field name="send_time" string="发送时间"/>
+
+                <filter string="今日发送" name="today_sent"
+                        domain="[('send_time', '>=', context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <filter string="已点击" name="clicked" domain="[('state', '=', 'clicked')]"/>
+                <filter string="发送失败" name="failed" domain="[('state', '=', 'failed')]"/>
+                <filter string="最近7天" name="last_7_days"
+                        domain="[('send_time', '>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d 00:00:00'))]"/>
+
+                <group string="分组查看">
+                    <filter string="按状态分组" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="按用户分组" name="group_by_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="按消息分组" name="group_by_message" context="{'group_by': 'wechat_message_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- 动作定义 -->
+    <record id="action_wechat_user_message" model="ir.actions.act_window">
+        <field name="name">微信用户消息记录</field>
+        <field name="res_model">wechat.user.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_wechat_user_message_list"/>
+        <field name="search_view_id" ref="view_wechat_user_message_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                暂无用户消息记录
+            </p>
+            <p>
+                这里显示所有微信用户消息的发送状态和用户行为记录。
+            </p>
+        </field>
+    </record>
+
+    <!-- 菜单定义 -->
+    <menuitem id="menu_wechat_user_message"
+              name="用户消息记录"
+              parent="base.menu_administration"
+              action="action_wechat_user_message"
+              sequence="622"/>
+
+    <!-- 在微信消息表单中添加关联视图 -->
+    <record id="view_wechat_message_form_inherit" model="ir.ui.view">
+        <field name="name">wechat.message.form.inherit.user.messages</field>
+        <field name="model">wechat.message</field>
+        <field name="inherit_id" ref="oudu_wechat_message.view_wechat_message_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[@name='user_messages_group']" position="after">
+                <group string="用户消息记录" colspan="4" invisible="state == 'draft'">
+                    <field name="user_message_ids" nolabel="1" readonly="1">
+                        <list>
+                            <field name="user_id" string="用户" readonly="1"/>
+                            <field name="wechat_openid" string="OpenID" readonly="1"/>
+                            <field name="state" string="状态" readonly="1"/>
+                            <field name="send_time" string="发送时间" readonly="1"/>
+                            <field name="click_time" string="点击时间" readonly="1"/>
+                            <field name="click_count" string="点击次数" readonly="1"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
