@@ -158,7 +158,7 @@ class WechatNotificationService(models.Model):
         return self.env['res.users'].search([
             ('wechat_openid', '!=', False),
             ('active', '=', True),
-            ('wechat_openid', '=', 'o0CMV2NfIVkzQRwX2Jp-xnJiRVQ0'),
+            # ('wechat_openid', '=', 'o0CMV2NfIVkzQRwX2Jp-xnJiRVQ0'),      # 测试用
         ])
 
     def _format_report_time(self, report_time):

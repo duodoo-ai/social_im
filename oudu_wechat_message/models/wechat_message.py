@@ -11,9 +11,29 @@ from odoo.exceptions import ValidationError, UserError
 import logging
 from urllib.parse import quote
 from datetime import datetime
+import pytz
 
 _logger = logging.getLogger(__name__)
 
+# 在类顶部添加新方法
+def format_to_eight(dt_str, format_str="%Y年%m月%d日 %H:%M:%S"):
+    """统一将UTC时间转换为东8区时间"""
+    if not dt_str:
+        return ""
+    try:
+        # 转换为datetime对象（UTC时区）
+        utc_dt = fields.Datetime.from_string(dt_str)
+        # 设置目标时区（东8区）
+        target_tz = pytz.timezone('Asia/Shanghai')
+        # 转换时区
+        local_dt = utc_dt.astimezone(target_tz)
+        # 格式化为字符串
+        # 东8区时间
+        _logger.debug("东8区时间转换: %s", local_dt.strftime(format_str))
+        return local_dt.strftime(format_str)
+    except Exception as e:
+        _logger.error("东8区时间转换失败: %s", str(e))
+        return dt_str  # 出错时返回原始值
 
 class WechatMessage(models.Model):
     _name = 'wechat.message'
@@ -48,7 +68,9 @@ class WechatMessage(models.Model):
     report_title = fields.Char(string='主题名称', required=True, help='单据的报告的主题名称，如"新增商机通知"')
     report_type = fields.Char(string='单据状态', required=True, help='单据的订单状态，如"自主采购"、"报备线索"等')
     report_target = fields.Char(string='交货地址', required=True, help='单据的交货地址，如"中国-北京"')
-    report_time = fields.Datetime(string='单据日期', required=True, help='单据的截止日期，格式为YYYY-MM-DD HH:MM:SS')
+    report_time = fields.Datetime(string='截止日期', required=True,
+                                  default=lambda self: self.format_to_eight(fields.Datetime.now()),
+                                  help='单据的截止日期，格式为YYYY-MM-DD HH:MM:SS')
     report_content = fields.Text(string='报告内容',
                                  help='单据的报告的详细内容，如"新增商机名称：XX公司，交货地址：中国-北京，截止日期：2025-09-23 10:00:00"')
 
