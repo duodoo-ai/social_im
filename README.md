@@ -17,12 +17,6 @@
     下载本项目代码：git clone https://gitee.com/duodoo-ai/social_im.git --depth 1 --branch 18.0 --single-branch social_im
 
 
-2. 推送模块：
-    
-    添加gitee远程仓库：git remote add gitee https://gitee.com/duodoo-ai/social_im.git
-
-    强制推送代码：git push -f gitee 18.0
-
 
 <h3 class="oe_slogan">联系我们</h3>
 <p><strong>电话：</strong>18951631470</p>
