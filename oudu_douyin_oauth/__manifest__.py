@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': '抖音开放平台集成 Odoo Douyin Service Account SSO',
+    'name': '抖音扫码登录 Odoo Douyin Service Account SSO',
     'version': '18.0.3.0.0',
     'summary': '抖音OAuth2.0登录和API集成',
     'description': """

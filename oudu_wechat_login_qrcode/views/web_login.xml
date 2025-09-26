@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- 最简单的社交登录按钮 -->
     <template id="wechat_qr_login_button" inherit_id="web.login">
         <xpath expr="//div[hasclass('oe_login_buttons')]" position="inside">
-            <div class="oe_login_wechat_qr mt-3">
-                <a href="/wechat/qr/login" class="btn btn-secondary btn-block">
-                    <i class="fa fa-weixin mr-2"></i>微信二维码登录
-                </a>
+            <div class="oe_login_buttons" style="margin-top: 20px;">
+                <div style="text-align: center; margin-bottom: 15px; color: #666;">
+                    或使用第三方登录账号
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="/wechat/qr/login"
+                       style="display: block; padding: 12px; background: #09bb07; color: white; text-decoration: none; border-radius: 4px; text-align: center;">
+                        <i class="fa fa-wechat" style="margin-right: 8px;"></i>微信扫码登录
+                    </a>
+                </div>
+
             </div>
         </xpath>
     </template>

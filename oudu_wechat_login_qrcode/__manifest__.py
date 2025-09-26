@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': '微信扫描二维码登录 Odoo WeChat QRCode Login',
+    'name': '微信扫码登录 Odoo WeChat QRCode Login',
     'version': '18.0.2.0',
     'summary': 'WeChat QRCode Single Sign-On for Odoo',
     'description': """
