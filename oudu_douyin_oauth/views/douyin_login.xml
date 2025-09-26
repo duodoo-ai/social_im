@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 最简单的社交登录按钮 -->
+    <template id="douyin_qr_login_button" inherit_id="web.login">
+        <xpath expr="//div[hasclass('oe_login_buttons')]" position="inside">
+            <div class="oe_login_buttons" style="margin-top: 20px;">
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="/douyin/auth/qrcode/login"
+                       style="display: block; padding: 12px; background: #000; color: white; text-decoration: none; border-radius: 4px; text-align: center;">
+                        <i class="fa fa-music" style="margin-right: 8px;"></i>抖音扫码登录
+                    </a>
+                </div>
+
+                <div style="text-align: center; margin-top: 10px; color: #999; font-size: 12px;">
+                    安全便捷的第三方登录方式
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

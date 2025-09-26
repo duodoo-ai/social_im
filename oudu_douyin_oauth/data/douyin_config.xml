@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 默认抖音配置记录 -->
+        <record id="default_douyin_config" model="oudu.douyin.config">
+            <field name="name">默认抖音配置</field>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+            <field name="client_key">awf4xgy8cibvhzuv</field>
+            <field name="client_secret">your_client_secret_here</field>
+            <field name="redirect_uri">https://yourdomain.com/douyin/auth/callback</field>
+            <field name="api_base_url">https://open.douyin.com</field>
+            <field name="auth_url">https://open.douyin.com/platform/oauth/connect/</field>
+            <field name="token_url">https://open.douyin.com/oauth/access_token/</field>
+            <field name="refresh_token_url">https://open.douyin.com/oauth/refresh_token/</field>
+            <field name="client_token_url">https://open.douyin.com/oauth/client_token/</field>
+            <field name="scope">user_info,mobile,*</field>
+            <field name="state">draft</field>
+        </record>
+    </data>
+</odoo>

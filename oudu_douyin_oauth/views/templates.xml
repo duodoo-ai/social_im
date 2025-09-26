@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="douyin_auth_success" name="抖音授权成功">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1>授权成功！</h1>
+                        <p>抖音账号已成功绑定。</p>
+                        <a href="/web" class="btn btn-primary">返回系统</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="douyin_auth_error" name="抖音授权错误">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1>授权失败</h1>
+                        <p>错误代码: <span t-field="error"/></p>
+                        <p>错误描述: <span t-field="error_description"/></p>
+                        <a href="/web" class="btn btn-primary">返回系统</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="douyin_config_missing" name="抖音配置缺失">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1>系统配置错误</h1>
+                        <p>抖音开放平台配置缺失，请联系系统管理员。</p>
+                        <a href="/web" class="btn btn-primary">返回登录页面</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="douyin_qrcode_page" name="抖音二维码登录">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 text-center">
+                        <h1>抖音扫码登录</h1>
+                        <div id="douyin_qrcode" class="mb-3"></div>
+                        <p>请使用抖音APP扫描上方二维码</p>
+                        <div class="alert alert-info">
+                            <p>首次登录需要授权访问您的公开信息</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var qrcode = new QRCode(document.getElementById("douyin_qrcode"), {
+                        text: '<t t-esc="auth_url"/>',
+                        width: 256,
+                        height: 256,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

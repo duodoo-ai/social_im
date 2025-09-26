@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_douyin_auth_code" model="ir.sequence">
+            <field name="name">抖音授权码序列</field>
+            <field name="code">oudu.douyin.auth.code</field>
+            <field name="prefix">DOUYIN_AUTH_</field>
+            <field name="padding">6</field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+    </data>
+</odoo>
