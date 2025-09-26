@@ -1,6 +1,6 @@
 # social_im
 
-欧度（Odoo）与微信服务号、微信小程度、企业微信、抖音小程序、H5等多端集成
+# Odoo社交集成 微信服务号、微信小程序、企业微信、抖音号、抖音小程序、飞书、H5、钉钉等
 
 
 git remote add gitee https://gitee.com/duodoo-ai/social_im.git
