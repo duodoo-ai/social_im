@@ -288,11 +288,7 @@ class WechatQRLoginController(http.Controller):
     def _find_or_create_user(self, wechat_user_info, config):
         """查找或创建用户"""
         try:
-            # 修复昵称编码
-            fixed_nickname = request.env['res.users'].fix_wechat_nickname(
-                wechat_user_info.get('nickname')
-            )
-
+            nickname = wechat_user_info.get('nickname')
             openid = wechat_user_info.get('openid')
             unionid = wechat_user_info.get('unionid')
             login_name = f"wechat_{openid}"
@@ -329,7 +325,7 @@ class WechatQRLoginController(http.Controller):
                 user.write({
                     'wechat_openid': openid,
                     'wechat_unionid': unionid,
-                    'wechat_nickname': fixed_nickname,
+                    'wechat_nickname': nickname,
                     'wechat_sex': str(wechat_user_info.get('sex', '0')),
                     'wechat_city': wechat_user_info.get('city'),
                     'wechat_province': wechat_user_info.get('province'),
@@ -344,12 +340,12 @@ class WechatQRLoginController(http.Controller):
 
                 # 创建门户用户
                 portal_user = request.env['res.users'].sudo().create({
-                    'name': fixed_nickname or f"微信用户_{openid[:8]}",
+                    'name': nickname or f"微信用户_{openid[:8]}",
                     'login': login_name,
                     'password': str(uuid.uuid4()),  # 随机密码
                     'wechat_openid': openid,
                     'wechat_unionid': unionid,
-                    'wechat_nickname': fixed_nickname,
+                    'wechat_nickname': nickname,
                     'wechat_sex': str(wechat_user_info.get('sex', '0')),
                     'wechat_city': wechat_user_info.get('city'),
                     'wechat_province': wechat_user_info.get('province'),
