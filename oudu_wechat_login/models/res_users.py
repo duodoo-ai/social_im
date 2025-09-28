@@ -11,8 +11,10 @@ from odoo.exceptions import UserError, ValidationError, AccessDenied
 from odoo.modules.registry import Registry
 import requests, json
 import logging
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Tuple
 from odoo.exceptions import MissingError
+import chardet
+import re
 
 _logger = logging.getLogger(__name__)
 
@@ -20,6 +22,7 @@ _logger = logging.getLogger(__name__)
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
+    # 现有字段保持不变
     wechat_user_id = fields.Char(string='微信用户ID', copy=False, index=True)
     wechat_unionid = fields.Char(string='微信UnionID', copy=False, index=True)
     wechat_openid = fields.Char(string='微信OpenID', copy=False, index=True)
@@ -36,140 +39,12 @@ class ResUsers(models.Model):
     wechat_privilege = fields.Text(string='微信特权信息')
 
     # 添加密码字段的覆盖
-    password = fields.Char(default='wechat', groups="base.group_user")  # 设置为不可见
+    password = fields.Char(default='wechat', groups="base.group_user")
 
     def _check_credentials(self, password, env):
-        # 如果password是一个字典，并且包含type字段为'wechat'，则跳过密码检查
         if isinstance(password, dict) and password.get('type') == 'wechat':
-            # 这里可以添加额外的验证，比如检查openid等
-            # 因为我们已经在auth_wechat方法中验证过用户，所以这里直接返回True
             return True
         return super(ResUsers, self)._check_credentials(password, env)
-
-    def fix_all_wechat_nicknames(self):
-        """修复所有微信用户的昵称乱码问题"""
-        users = self.search([('wechat_nickname', '!=', False)])
-
-        for user in users:
-            original = user.wechat_nickname
-            fixed = self.fix_wechat_nickname(original)
-
-            if fixed != original:
-                user.write({'wechat_nickname': fixed, 'name': fixed})
-                _logger.info("修复用户 %s 昵称: %s → %s", user.id, original, fixed)
-
-    def fix_all_wechat_nicknames(self):
-        """修复所有微信用户的昵称乱码问题"""
-        users = self.search([('wechat_nickname', '!=', False)])
-
-        for user in users:
-            original = user.wechat_nickname
-            fixed = self.fix_wechat_nickname(original)
-
-            if fixed != original:
-                user.write({'wechat_nickname': fixed})
-                # 同时更新用户名称（可选）
-                if not user.name or user.name == original:
-                    user.write({'name': fixed})
-                _logger.info("修复用户 %s 昵称: %s → %s", user.id, original, fixed)
-
-    @api.model
-    def fix_wechat_nickname(self, original_nickname: Optional[str]) -> str:
-        """
-        修复微信昵称的编码问题，支持更广泛的字符集和更稳健的异常处理。
-        针对双重编码乱码问题优化处理流程
-        :param original_nickname: 原始昵称字符串
-        :return: 修复后的昵称字符串
-        """
-        if not original_nickname:
-            return _("微信用户")
-
-        try:
-            # 获取乱码字符配置
-            garbled_chars = self._get_garbled_chars()
-
-            # 第一步：处理常见双重编码问题（优先处理）
-            if isinstance(original_nickname, str):
-                # 检测双重编码特征（Latin-1存储的UTF-8字节）
-                if any(char in original_nickname for char in garbled_chars):
-                    try:
-                        fixed_bytes = original_nickname.encode('latin1')
-                        fixed_nickname = fixed_bytes.decode('utf-8')
-                        _logger.debug("双重编码修复: %s -> %s", original_nickname, fixed_nickname)
-                        return fixed_nickname
-                    except (UnicodeEncodeError, UnicodeDecodeError):
-                        # 尝试Windows-1252编码
-                        try:
-                            fixed_bytes = original_nickname.encode('windows-1252')
-                            fixed_nickname = fixed_bytes.decode('utf-8')
-                            _logger.debug("Windows-1252修复: %s -> %s", original_nickname, fixed_nickname)
-                            return fixed_nickname
-                        except (UnicodeEncodeError, UnicodeDecodeError):
-                            pass
-
-            # 第二步：处理字节数据
-            if isinstance(original_nickname, bytes):
-                # 尝试多种编码解码
-                encodings_to_try = ['utf-8', 'gbk', 'gb2312', 'gb18030', 'big5', 'latin1', 'iso-8859-1', 'windows-1252']
-                for encoding in encodings_to_try:
-                    try:
-                        return original_nickname.decode(encoding)
-                    except UnicodeDecodeError:
-                        continue
-                _logger.warning("无法解码微信昵称字节数据: %s", original_nickname)
-                return _("微信用户")
-
-            # 第三步：处理字符串的其他乱码情况
-            if isinstance(original_nickname, str):
-                # 尝试清理无效字节
-                try:
-                    # 先尝试UTF-8清理
-                    cleaned = original_nickname.encode('utf-8', 'ignore').decode('utf-8')
-                    if cleaned != original_nickname:
-                        _logger.debug("UTF-8清理: %s -> %s", original_nickname, cleaned)
-                        return cleaned
-
-                    # 如果无效，尝试GBK清理
-                    cleaned = original_nickname.encode('gbk', 'ignore').decode('gbk', 'ignore')
-                    if cleaned != original_nickname:
-                        _logger.debug("GBK清理: %s -> %s", original_nickname, cleaned)
-                        return cleaned
-                except UnicodeError:
-                    pass
-
-                # 如果包含无法解码的字符，尝试替换
-                try:
-                    return original_nickname.encode('utf-8', 'replace').decode('utf-8')
-                except UnicodeError:
-                    pass
-
-            # 第四步：处理其他类型
-            if not isinstance(original_nickname, (str, bytes)):
-                try:
-                    return str(original_nickname)
-                except Exception:
-                    pass
-
-            # 所有尝试失败后返回原始值
-            return original_nickname
-
-        except Exception as e:
-            _logger.error("修复微信昵称时发生异常: %s", str(e), exc_info=True)
-            return _("微信用户")
-
-    def _get_garbled_chars(self):
-        """获取配置的乱码字符列表"""
-        try:
-            # 获取微信配置
-            config = self.env['wechat.sso.config'].sudo().get_active_config()
-            if config and config.garbled_chars:
-                # 分割并清理字符
-                return [char.strip() for char in config.garbled_chars.split(',') if char.strip()]
-        except Exception as e:
-            _logger.error("获取乱码配置失败: %s", str(e))
-
-        # 默认乱码字符
-        return ['Ã', 'Â', 'â', 'é­å½¬', '€', 'ç', '¢', '£', '¥']
 
     def auth_wechat(self, provider, code, params):
         # 需要包含以下关键步骤：
@@ -219,7 +94,12 @@ class ResUsers(models.Model):
 
             response = requests.get(user_info_url, params=user_info_params, timeout=10)
             response.raise_for_status()
+            # 获取原始字节数据
+            raw_data = response.content
             user_info = response.json()
+            # 记录原始响应，便于调试
+            _logger.info("原始参数: %s", params)
+            _logger.debug("微信API原始响应: %s", raw_data)
             _logger.info("获取用户信息: %s", user_info)
 
             if 'errcode' in user_info and user_info['errcode'] != 0:
@@ -229,11 +109,11 @@ class ResUsers(models.Model):
 
             # 3. 准备用户数据
             # 修复昵称编码
-            fixed_nickname = self.fix_wechat_nickname(user_info.get('nickname'))
+            nickname = user_info["nickname"].encode("ISO-8859-1").decode("utf-8")
             user_vals = {
                 'wechat_unionid': user_info.get('unionid'),
                 'wechat_openid': openid,
-                'wechat_nickname': fixed_nickname,
+                'wechat_nickname': nickname,
                 'wechat_sex': str(user_info.get('sex', '0')),  # 确保是字符串
                 'wechat_city': user_info.get('city'),
                 'wechat_province': user_info.get('province'),
@@ -279,7 +159,7 @@ class ResUsers(models.Model):
 
                 # 自动创建新用户
                 user_login = f"wechat_{wechat_user_id}"[:64]  # 确保登录名不超长
-                user_name = fixed_nickname or f"微信用户_{wechat_user_id[:8]}"
+                user_name = nickname or f"微信用户_{wechat_user_id[:8]}"
 
                 create_vals = {
                     'login': user_login,

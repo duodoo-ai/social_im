@@ -138,7 +138,7 @@ class WechatAccessTokenTester:
 if __name__ == "__main__":
     # 初始化测试器 (请替换为你的AppID和AppSecret)
     appid = "wx065d1d2cac29ab41"  # 替换为你的AppID
-    secret = "8fab07c28b90737fbcfd5c931e522f38"  # 替换为你的AppSecret
+    secret = "6961da76f8438ec1cba76bac583794f2"  # 替换为你的AppSecret
 
     tester = WechatAccessTokenTester(appid, secret)
 
