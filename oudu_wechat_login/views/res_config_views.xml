@@ -59,21 +59,6 @@
                                 <field name="refresh_token_expires"/>
                             </group>
                         </page>
-                        <!-- 在适当位置添加新字段 -->
-                        <page string="乱码处理配置">
-                            <group>
-                                <field name="garbled_chars" widget="textarea"/>
-                                <!-- 修复标签错误 -->
-                                <div class="oe_edit_only" style="margin-top: 16px;">
-                                    <label for="garbled_chars" class="o_form_label" string="配置说明"/>
-                                    <div>
-                                        <p>1. 用逗号分隔的乱码字符列表</p>
-                                        <p>2. 系统会检测这些字符的存在以判断是否需要修复</p>
-                                        <p>3. 默认值：Ã,Â,â,é­å½¬,€,ç,¢,£,¥</p>
-                                    </div>
-                                </div>
-                            </group>
-                        </page>
                         <page string="模板消息">
                             <group>
                                 <field name="template_id"/>

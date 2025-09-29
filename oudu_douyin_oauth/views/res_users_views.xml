@@ -9,17 +9,17 @@
                 <page string="抖音认证">
                     <group>
                         <group>
-                            <field name="douyin_open_id"/>
-                            <field name="douyin_union_id"/>
+                            <field name="douyin_open_id" readonly="1"/>
+                            <field name="douyin_union_id" readonly="1"/>
                         </group>
                         <group>
-                            <field name="douyin_nickname"/>
-                            <field name="douyin_avatar"/>
+                            <field name="douyin_nickname" readonly="1"/>
+                            <field name="douyin_avatar" readonly="1" widget="url"/>
                         </group>
                     </group>
-                    <field name="douyin_auth_ids">
+                    <field name="douyin_auth_ids" string="授权历史">
                         <list>
-                            <field name="code"/>
+                            <field name="config_id"/>
                             <field name="open_id"/>
                             <field name="nickname"/>
                             <field name="status"/>

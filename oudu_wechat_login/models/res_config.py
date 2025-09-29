@@ -54,13 +54,6 @@ class WechatConfig(models.Model):
     force_refresh = fields.Boolean(string='强制刷新', default=False)
     access_token_expires = fields.Char(string='Access Token过期时间', help='access_token过期时间戳')
     refresh_token_expires = fields.Char(string='Refresh Token过期时间', help='refresh_token过期时间戳')
-
-    # 添加乱码字符配置字段
-    garbled_chars = fields.Text(
-        string='乱码字符配置',
-        default="Ã,Â,â,é­å½¬,€,ç,¢,£,¥",
-        help="用于检测微信昵称乱码的字符列表，用逗号分隔。系统会检测这些字符的存在以判断是否需要修复。"
-    )
     template_id = fields.Char(string='模板ID',
                               default='XGJp1jOypqrjRrjzok6FLbUnzTIKH2EAdirPRcr6By8',
                               help='微信模板消息的模板ID，用于发送报告消息')

@@ -239,7 +239,7 @@
 
                         <!-- 状态消息 -->
                         <div class="status-message status-pending" id="status_message">
-                            打开微信扫一扫，快速登录
+                            请使用微信APP扫描上方二维码
                         </div>
 
                         <!-- 倒计时容器 -->
@@ -460,7 +460,7 @@
                                 updateStatus('expired', '二维码已过期，请刷新页面重新生成');
                             } else if (data.status === 'pending') {
                                 // 等待扫码状态，继续轮询
-                                updateStatus('pending', '打开微信扫一扫，快速登录');
+                                updateStatus('pending', '请使用微信APP扫描上方二维码');
                                 setTimeout(checkLoginStatus, pollInterval);
                             } else if (data.status === 'error') {
                                 // 错误状态，显示错误信息

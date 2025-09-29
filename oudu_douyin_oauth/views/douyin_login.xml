@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- 最简单的社交登录按钮 -->
+    <!-- 抖音扫码登录按钮 -->
     <template id="douyin_qr_login_button" inherit_id="web.login">
         <xpath expr="//div[hasclass('oe_login_buttons')]" position="inside">
             <div class="oe_login_buttons" style="margin-top: 20px;">
 
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <a href="/douyin/auth/qrcode/login"
+                    <a href="/douyin/auth/direct" class="douyin-login-btn"
                        style="display: block; padding: 12px; background: #000; color: white; text-decoration: none; border-radius: 4px; text-align: center;">
                         <i class="fa fa-music" style="margin-right: 8px;"></i>抖音扫码登录
                     </a>
@@ -16,6 +16,27 @@
                     安全便捷的第三方登录方式
                 </div>
             </div>
+
+            <!-- 内联 JavaScript 用于按钮效果 -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var buttons = document.querySelectorAll('.douyin-login-btn');
+                    buttons.forEach(function(button) {
+                        button.addEventListener('click', function(e) {
+                            var originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>加载中...';
+                            this.style.opacity = '0.7';
+                            this.style.pointerEvents = 'none';
+
+                            setTimeout(function() {
+                                this.innerHTML = originalText;
+                                this.style.opacity = '1';
+                                this.style.pointerEvents = 'auto';
+                            }.bind(this), 3000);
+                        });
+                    });
+                });
+            </script>
         </xpath>
     </template>
 </odoo>

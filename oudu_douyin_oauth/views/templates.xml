@@ -1,73 +1,543 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- 抖音授权成功页面模板 -->
     <template id="douyin_auth_success" name="抖音授权成功">
         <t t-call="website.layout">
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <h1>授权成功！</h1>
-                        <p>抖音账号已成功绑定。</p>
-                        <a href="/web" class="btn btn-primary">返回系统</a>
+            <t t-set="title">抖音授权成功</t>
+
+            <style>
+                .douyin-container {
+                    max-width: 480px;
+                    margin: 3rem auto;
+                    padding: 20px;
+                }
+                .douyin-card {
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    overflow: hidden;
+                    text-align: center;
+                    transition: transform 0.3s ease;
+                }
+                .douyin-card:hover {
+                    transform: translateY(-5px);
+                }
+                .douyin-card-header {
+                    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+                    color: white;
+                    padding: 25px 20px;
+                    border-bottom: 0;
+                }
+                .douyin-card-header h1 {
+                    font-weight: 600;
+                    margin: 0;
+                    font-size: 1.8rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .douyin-icon {
+                    margin-right: 10px;
+                    font-size: 1.5em;
+                }
+                .douyin-card-body {
+                    padding: 30px 25px;
+                }
+                .success-icon {
+                    color: #00d65a;
+                    font-size: 64px;
+                    margin-bottom: 20px;
+                }
+                .status-message {
+                    font-size: 18px;
+                    color: #555;
+                    margin-bottom: 25px;
+                    line-height: 1.5;
+                }
+                .btn-douyin {
+                    background: #000000;
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: inline-block;
+                }
+                .btn-douyin:hover {
+                    background: #333333;
+                    color: white;
+                    transform: translateY(-2px);
+                    text-decoration: none;
+                }
+            </style>
+
+            <div class="douyin-container">
+                <div class="douyin-card">
+                    <div class="douyin-card-header">
+                        <h1>
+                            <span class="douyin-icon">🎵</span>
+                            抖音授权成功
+                        </h1>
+                    </div>
+                    <div class="douyin-card-body">
+                        <div class="success-icon">✓</div>
+                        <p class="status-message">抖音账号已成功绑定，可以开始使用相关功能</p>
+                        <a href="/web" class="btn btn-douyin">进入系统</a>
                     </div>
                 </div>
             </div>
         </t>
     </template>
 
+    <!-- 抖音授权错误页面模板 -->
     <template id="douyin_auth_error" name="抖音授权错误">
         <t t-call="website.layout">
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <h1>授权失败</h1>
-                        <p>错误代码: <span t-field="error"/></p>
-                        <p>错误描述: <span t-field="error_description"/></p>
-                        <a href="/web" class="btn btn-primary">返回系统</a>
+            <t t-set="title">抖音授权错误</t>
+
+            <style>
+                .douyin-container {
+                    max-width: 480px;
+                    margin: 3rem auto;
+                    padding: 20px;
+                }
+                .douyin-card {
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    overflow: hidden;
+                    text-align: center;
+                    transition: transform 0.3s ease;
+                }
+                .douyin-card:hover {
+                    transform: translateY(-5px);
+                }
+                .douyin-card-header {
+                    background: linear-gradient(135deg, #ff375f 0%, #ff0040 100%);
+                    color: white;
+                    padding: 25px 20px;
+                    border-bottom: 0;
+                }
+                .douyin-card-header h1 {
+                    font-weight: 600;
+                    margin: 0;
+                    font-size: 1.8rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .douyin-icon {
+                    margin-right: 10px;
+                    font-size: 1.5em;
+                }
+                .douyin-card-body {
+                    padding: 30px 25px;
+                }
+                .error-icon {
+                    color: #ff375f;
+                    font-size: 64px;
+                    margin-bottom: 20px;
+                }
+                .error-details {
+                    background: #fff5f5;
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    text-align: left;
+                }
+                .error-item {
+                    margin-bottom: 10px;
+                    font-size: 14px;
+                }
+                .error-label {
+                    font-weight: 600;
+                    color: #333;
+                }
+                .error-value {
+                    color: #666;
+                }
+                .btn-douyin {
+                    background: #000000;
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: inline-block;
+                }
+                .btn-douyin:hover {
+                    background: #333333;
+                    color: white;
+                    transform: translateY(-2px);
+                    text-decoration: none;
+                }
+            </style>
+
+            <div class="douyin-container">
+                <div class="douyin-card">
+                    <div class="douyin-card-header">
+                        <h1>
+                            <span class="douyin-icon">🎵</span>
+                            授权失败
+                        </h1>
+                    </div>
+                    <div class="douyin-card-body">
+                        <div class="error-icon">✗</div>
+                        <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
+                            抖音账号授权过程中出现问题
+                        </p>
+
+                        <div class="error-details">
+                            <div class="error-item">
+                                <span class="error-label">错误代码:</span>
+                                <span class="error-value" t-field="error"/>
+                            </div>
+                            <div class="error-item">
+                                <span class="error-label">错误描述:</span>
+                                <span class="error-value" t-field="error_description"/>
+                            </div>
+                        </div>
+
+                        <a href="/web" class="btn btn-douyin">返回系统</a>
                     </div>
                 </div>
             </div>
         </t>
     </template>
 
+    <!-- 抖音配置缺失页面模板 -->
     <template id="douyin_config_missing" name="抖音配置缺失">
         <t t-call="website.layout">
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-12 text-center">
+            <t t-set="title">系统配置错误</t>
+
+            <style>
+                .douyin-container {
+                    max-width: 480px;
+                    margin: 3rem auto;
+                    padding: 20px;
+                }
+                .douyin-card {
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    overflow: hidden;
+                    text-align: center;
+                    transition: transform 0.3s ease;
+                }
+                .douyin-card:hover {
+                    transform: translateY(-5px);
+                }
+                .douyin-card-header {
+                    background: linear-gradient(135deg, #ff9500 0%, #ff7b00 100%);
+                    color: white;
+                    padding: 25px 20px;
+                    border-bottom: 0;
+                }
+                .douyin-card-header h1 {
+                    font-weight: 600;
+                    margin: 0;
+                    font-size: 1.8rem;
+                }
+                .douyin-card-body {
+                    padding: 30px 25px;
+                }
+                .warning-icon {
+                    color: #ff9500;
+                    font-size: 64px;
+                    margin-bottom: 20px;
+                }
+                .status-message {
+                    font-size: 16px;
+                    color: #555;
+                    margin-bottom: 25px;
+                    line-height: 1.5;
+                }
+                .btn-douyin {
+                    background: #000000;
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: inline-block;
+                }
+                .btn-douyin:hover {
+                    background: #333333;
+                    color: white;
+                    transform: translateY(-2px);
+                    text-decoration: none;
+                }
+            </style>
+
+            <div class="douyin-container">
+                <div class="douyin-card">
+                    <div class="douyin-card-header">
                         <h1>系统配置错误</h1>
-                        <p>抖音开放平台配置缺失，请联系系统管理员。</p>
-                        <a href="/web" class="btn btn-primary">返回登录页面</a>
+                    </div>
+                    <div class="douyin-card-body">
+                        <div class="warning-icon">⚠️</div>
+                        <p class="status-message">
+                            抖音开放平台配置缺失，无法完成授权流程。<br/>
+                            请联系系统管理员检查相关配置。
+                        </p>
+                        <a href="/web/login" class="btn btn-douyin">返回登录页面</a>
                     </div>
                 </div>
             </div>
         </t>
     </template>
 
+    <!-- 抖音二维码登录页面模板 -->
     <template id="douyin_qrcode_page" name="抖音二维码登录">
         <t t-call="website.layout">
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-6 text-center">
-                        <h1>抖音扫码登录</h1>
-                        <div id="douyin_qrcode" class="mb-3"></div>
-                        <p>请使用抖音APP扫描上方二维码</p>
-                        <div class="alert alert-info">
-                            <p>首次登录需要授权访问您的公开信息</p>
+            <t t-set="title">抖音扫码登录</t>
+
+            <style>
+                .douyin-container {
+                    max-width: 420px;
+                    margin: 2rem auto;
+                    padding: 20px;
+                }
+                .douyin-card {
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    overflow: hidden;
+                    transition: transform 0.3s ease;
+                }
+                .douyin-card:hover {
+                    transform: translateY(-5px);
+                }
+                .douyin-card-header {
+                    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+                    color: white;
+                    text-align: center;
+                    padding: 20px;
+                    border-bottom: 0;
+                }
+                .douyin-card-header h1 {
+                    font-weight: 600;
+                    margin: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                }
+                .douyin-icon {
+                    margin-right: 10px;
+                    font-size: 1.3em;
+                }
+                .douyin-card-body {
+                    padding: 25px;
+                    text-align: center;
+                }
+                .qrcode-container {
+                    margin: 20px auto;
+                    width: 256px;
+                    height: 256px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f9f9f9;
+                    border-radius: 16px;
+                    padding: 20px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                    border: 2px solid #e0e0e0;
+                }
+                .instruction-text {
+                    color: #555;
+                    font-size: 16px;
+                    margin: 15px 0;
+                    font-weight: 500;
+                }
+                .info-box {
+                    background: #f0f8ff;
+                    border-radius: 10px;
+                    padding: 15px;
+                    margin: 20px 0;
+                    border-left: 4px solid #007AFF;
+                }
+                .info-text {
+                    color: #555;
+                    font-size: 14px;
+                    line-height: 1.4;
+                    margin: 0;
+                }
+                .status-message {
+                    margin: 15px 0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                }
+                .status-waiting {
+                    background: #fff3cd;
+                    color: #856404;
+                    border: 1px solid #ffeaa7;
+                }
+                .status-success {
+                    background: #d1ecf1;
+                    color: #0c5460;
+                    border: 1px solid #bee5eb;
+                }
+                .status-error {
+                    background: #f8d7da;
+                    color: #721c24;
+                    border: 1px solid #f5c6cb;
+                }
+                .status-expired {
+                    background: #e2e3e5;
+                    color: #383d41;
+                    border: 1px solid #d6d8db;
+                }
+                .btn {
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin: 0 5px;
+                }
+                .btn:hover {
+                    transform: translateY(-2px);
+                }
+                .btn-secondary {
+                    background: #6c757d;
+                    color: white;
+                }
+                .btn-secondary:hover {
+                    background: #5a6268;
+                    color: white;
+                }
+                .btn-douyin {
+                    background: #000000;
+                    color: white;
+                }
+                .btn-douyin:hover {
+                    background: #333333;
+                    color: white;
+                }
+            </style>
+
+            <div class="douyin-container">
+                <div class="douyin-card">
+                    <div class="douyin-card-header">
+                        <h1>
+                            抖音扫码登录
+                        </h1>
+                    </div>
+                    <div class="douyin-card-body">
+                        <div class="qrcode-container" id="douyin_qrcode">
+                            <!-- 二维码将通过JavaScript生成 -->
+                        </div>
+
+                        <p class="instruction-text">请使用抖音APP扫描上方二维码</p>
+
+                        <div class="qr-actions">
+                            <button class="btn btn-secondary" onclick="window.location.href='/web/login'">
+                                返回登录页面
+                            </button>
+                            <button class="btn btn-douyin" id="refresh_btn">
+                                刷新二维码
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+
+            <!-- 内联 JavaScript -->
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    var qrcode = new QRCode(document.getElementById("douyin_qrcode"), {
-                        text: '<t t-esc="auth_url"/>',
-                        width: 256,
-                        height: 256,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
+                    // 生成二维码
+                    var authUrl = '<t t-esc="auth_url"/>';
+                    var state = '<t t-esc="state"/>';
+
+                    if (authUrl &amp;&amp; typeof QRCode !== 'undefined') {
+                        new QRCode(document.getElementById("douyin_qrcode"), {
+                            text: authUrl,
+                            width: 200,
+                            height: 200,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                    }
+
+                    // 状态轮询
+                    var pollInterval = 3000;
+                    var timeout = 300000; // 5分钟
+                    var startTime = Date.now();
+
+                    function checkLoginStatus() {
+                        if (Date.now() - startTime > timeout) {
+                            updateStatus('expired', '二维码已过期，请刷新页面');
+                            return;
+                        }
+
+                        fetch('/douyin/auth/check_status', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({state: state})
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.status === 'success') {
+                                updateStatus('success', '登录成功，正在跳转...');
+                                setTimeout(function() {
+                                    window.location.href = result.redirect_url || '/web';
+                                }, 2000);
+                            } else if (result.status === 'waiting') {
+                                updateStatus('waiting', result.message);
+                                setTimeout(checkLoginStatus, pollInterval);
+                            } else if (result.status === 'invalid') {
+                                updateStatus('expired', result.message);
+                            } else {
+                                updateStatus('error', result.message);
+                                setTimeout(checkLoginStatus, pollInterval);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('检查登录状态失败:', error);
+                            updateStatus('error', '网络错误，重试中...');
+                            setTimeout(checkLoginStatus, pollInterval);
+                        });
+                    }
+
+                    function updateStatus(status, message) {
+                        var statusElement = document.createElement('div');
+                        statusElement.className = 'status-message status-' + status;
+                        statusElement.textContent = message;
+
+                        var existingStatus = document.querySelector('.status-message');
+                        if (existingStatus) {
+                            existingStatus.remove();
+                        }
+
+                        document.querySelector('.douyin-card-body').insertBefore(
+                            statusElement,
+                            document.querySelector('.qr-actions')
+                        );
+                    }
+
+                    // 刷新按钮事件
+                    document.getElementById('refresh_btn').addEventListener('click', function() {
+                        location.reload();
                     });
+
+                    // 开始轮询
+                    checkLoginStatus();
                 });
             </script>
         </t>

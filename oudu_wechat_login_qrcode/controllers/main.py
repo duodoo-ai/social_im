@@ -81,7 +81,7 @@ class WechatQRLoginController(http.Controller):
         user_agent = request.httprequest.headers.get('User-Agent', '').lower()
         if 'micromessenger' not in user_agent:
             _logger.warning("Not in WeChat environment: %s", user_agent)
-            return Response("打开微信扫一扫，快速登录")
+            return Response("请使用微信APP扫描上方二维码")
 
         code = kwargs.get('code')
         state = kwargs.get('state')

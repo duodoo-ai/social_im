@@ -7,7 +7,7 @@
             <field name="prefix">DOUYIN_AUTH_</field>
             <field name="padding">6</field>
             <field name="number_increment">1</field>
-            <field name="number_next_actual">1</field>
+            <field name="implementation">standard</field>
         </record>
     </data>
 </odoo>
