@@ -248,7 +248,7 @@ class DouyinAuthController(http.Controller):
             _logger.warning('获取用户信息失败: %s', str(e))
 
     def _handle_user_login(self, auth_record):
-        """处理用户登录逻辑"""
+        """处理用户登录逻辑 - 兼容性版本"""
         try:
             # 清理session
             request.session.pop('douyin_auth_state', None)
@@ -264,11 +264,20 @@ class DouyinAuthController(http.Controller):
             if user:
                 auth_record.sudo().write({'user_id': user.id})
 
-                # 使用 Odoo 的标准认证
-                request.session.authenticate(request.db, user.login, '')
-                _logger.info('用户登录成功: %s (ID: %s)', user.name, user.id)
+                # 使用 Odoo 18 的标准方式设置登录
+                # 直接重定向到web，让Odoo处理会话
+                login_token = f"douyin_{user.id}_{auth_record.open_id}"
 
-                return request.redirect('/web')
+                # 将令牌存储在配置参数中临时使用
+                request.env['ir.config_parameter'].sudo().set_param(
+                    f'douyin_login_{login_token}',
+                    str(user.id)
+                )
+
+                # 重定向到自定义登录端点
+                redirect_url = f"/web?douyin_login={login_token}"
+                _logger.info('重定向到: %s', redirect_url)
+                return request.redirect(redirect_url)
 
             return request.redirect('/web/login?error=user_creation_failed')
 
