@@ -11,10 +11,6 @@
                         <i class="fa fa-music" style="margin-right: 8px;"></i>抖音扫码登录
                     </a>
                 </div>
-
-                <div style="text-align: center; margin-top: 10px; color: #999; font-size: 12px;">
-                    安全便捷的第三方登录方式
-                </div>
             </div>
 
             <!-- 内联 JavaScript 用于按钮效果 -->
