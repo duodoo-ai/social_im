@@ -22,57 +22,47 @@ class ResUsers(models.Model):
     )
 
     @api.model
-    def douyin_auth(self, auth_data):
-        """抖音授权登录处理"""
+    # 在 res_users.py 的 douyin_auth 方法中修改
+    def douyin_auth(self, values):
+        """抖音授权登录"""
         try:
-            open_id = auth_data.get('open_id')
-            union_id = auth_data.get('union_id')
-            nickname = auth_data.get('nickname', '抖音用户')
-
+            open_id = values.get('open_id')
             if not open_id:
-                raise UserError(_('无效的授权数据: 缺少OpenID'))
+                raise UserError(_('缺少open_id参数'))
 
-            # 首先通过union_id查找用户
-            user = None
-            if union_id:
-                user = self.search([('douyin_union_id', '=', union_id)], limit=1)
+            # 查找已存在的用户
+            user = self.search([('douyin_open_id', '=', open_id)], limit=1)
+            if user:
+                return user
 
-            # 如果没找到，再通过open_id查找
-            if not user:
-                user = self.search([('douyin_open_id', '=', open_id)], limit=1)
+            # 生成用户名称 - 确保不为空
+            nickname = values.get('nickname') or f"抖音用户_{open_id[-8:]}"
+            login = f"douyin_{open_id}"  # 确保登录名唯一
 
-            if not user:
-                # 生成唯一的登录名
-                login = f'douyin_{open_id}'
-                counter = 1
-                while self.search([('login', '=', login)]):
-                    login = f'douyin_{open_id}_{counter}'
-                    counter += 1
+            # 创建用户
+            user_vals = {
+                'name': nickname,  # 确保名称不为空
+                'login': login,
+                'password': self._generate_random_password(),
+                'douyin_open_id': open_id,
+                'douyin_union_id': values.get('union_id'),
+            }
 
-                # 创建新用户
-                user_vals = {
-                    'name': nickname,
-                    'login': login,
-                    'douyin_open_id': open_id,
-                    'douyin_union_id': union_id,
-                    'douyin_nickname': nickname,
-                    'douyin_avatar': auth_data.get('avatar'),
-                    'active': True,
-                }
+            user = self.sudo().create(user_vals)
 
-                user = self.sudo().create(user_vals)
-                _logger.info('创建新的抖音用户: %s (ID: %s)', user.name, user.id)
-            else:
-                # 更新用户信息
-                update_vals = {
-                    'douyin_nickname': nickname,
-                    'douyin_avatar': auth_data.get('avatar'),
-                }
-                if union_id and not user.douyin_union_id:
-                    update_vals['douyin_union_id'] = union_id
+            # 更新头像
+            if values.get('avatar'):
+                try:
+                    # 下载并设置头像
+                    import requests
+                    from odoo.tools import image_process
 
-                user.write(update_vals)
-                _logger.info('更新抖音用户信息: %s (ID: %s)', user.name, user.id)
+                    response = requests.get(values['avatar'], timeout=10)
+                    if response.status_code == 200:
+                        avatar_image = image_process(response.content, size=(192, 192))
+                        user.sudo().write({'image_1920': avatar_image})
+                except Exception as e:
+                    _logger.warning('设置用户头像失败: %s', str(e))
 
             return user
 
