@@ -223,8 +223,8 @@
     <!-- 抖音授权记录菜单 -->
     <menuitem id="menu_douyin_auth"
               name="抖音授权记录"
-              parent="menu_douyin_config"
+              parent="base.menu_administration"
               action="action_douyin_auth"
-              sequence="10"
+              sequence="710"
     />
 </odoo>
