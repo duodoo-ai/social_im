@@ -42,7 +42,7 @@ class ResUsers(models.Model):
             user_vals = {
                 'name': nickname,  # 确保名称不为空
                 'login': login,
-                'password': self._generate_random_password(),
+                'password': 'DouYin',
                 'douyin_open_id': open_id,
                 'douyin_union_id': values.get('union_id'),
             }
