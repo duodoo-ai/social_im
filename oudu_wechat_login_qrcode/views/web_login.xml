@@ -4,7 +4,7 @@
     <template id="wechat_qr_login_button" inherit_id="web.login">
         <xpath expr="//div[hasclass('oe_login_buttons')]" position="inside">
             <div class="oe_login_buttons" style="margin-top: 20px;">
-                <div style="text-align: center; margin-bottom: 15px; color: #666;">
+                <div style="text-align: center; margin-top: 10px; color: #999; font-size: 12px;">
                     或使用第三方登录账号
                 </div>
 
