@@ -248,7 +248,7 @@ class DouyinAuthController(http.Controller):
             _logger.warning('获取用户信息失败: %s', str(e))
 
     def _handle_user_login(self, auth_record):
-        """处理用户登录逻辑 - 使用内部登录"""
+        """处理用户登录逻辑 - 直接会话设置"""
         try:
             # 清理session
             request.session.pop('douyin_auth_state', None)
@@ -264,14 +264,17 @@ class DouyinAuthController(http.Controller):
             if user:
                 auth_record.sudo().write({'user_id': user.id})
 
-                # 使用Odoo的内部登录机制
-                # 生成一个临时密码重置令牌
-                token = user.sudo()._get_login_token()
+                # 直接设置会话
+                request.session.uid = user.id
+                request.session.login = user.login
+                request.session.db = request.db
+                request.session.modified = True
 
-                # 重定向到密码重置页面自动登录
-                reset_url = f"/web/reset_password?token={token}&user_id={user.id}"
-                _logger.info('使用密码重置方式登录: %s', user.name)
-                return request.redirect(reset_url)
+                # 更新环境
+                request.update_env(user=user.id)
+
+                _logger.info('用户登录成功: %s (ID: %s)', user.name, user.id)
+                return request.redirect('/snatch_hall')
 
             return request.redirect('/web/login?error=user_creation_failed')
 

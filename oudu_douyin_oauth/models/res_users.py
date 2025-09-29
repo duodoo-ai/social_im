@@ -21,12 +21,6 @@ class ResUsers(models.Model):
         string='抖音授权记录'
     )
 
-    def _get_login_token(self):
-        """生成登录令牌"""
-        self.ensure_one()
-        # 使用Odoo的密码重置机制
-        return self.sudo()._get_reset_token()
-
     @api.model
     def douyin_auth(self, values):
         """抖音授权登录"""
