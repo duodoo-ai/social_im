@@ -174,12 +174,13 @@ class WechatMessage(models.Model):
                 raise ValidationError(_('计划发送时间不能早于当前时间'))
 
     # 序列号生成逻辑
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """创建时生成序列号"""
-        if vals.get('message_sequence', _('New')) == _('New'):
-            vals['message_sequence'] = self.env['ir.sequence'].next_by_code('wechat.message') or _('New')
-        return super().create(vals)
+        for vals in vals_list:
+            if vals.get('message_sequence', _('New')) == _('New'):
+                vals['message_sequence'] = self.env['ir.sequence'].next_by_code('wechat.message') or _('New')
+        return super().create(vals_list)
 
     def _prepare_redirect_url(self):
         """准备跳转URL - 动态构建微信OAuth授权URL"""
