@@ -249,26 +249,32 @@ class DouyinAuthController(http.Controller):
 
     def _handle_user_login(self, auth_record):
         """处理用户登录逻辑"""
-        # 清理session
-        request.session.pop('douyin_auth_state', None)
+        try:
+            # 清理session
+            request.session.pop('douyin_auth_state', None)
 
-        # 创建或查找用户并登录
-        user = request.env['res.users'].sudo().douyin_auth({
-            'open_id': auth_record.open_id,
-            'union_id': auth_record.union_id,
-            'nickname': auth_record.nickname,
-            'avatar': auth_record.avatar,
-        })
+            # 创建或查找用户
+            user = request.env['res.users'].sudo().douyin_auth({
+                'open_id': auth_record.open_id,
+                'union_id': auth_record.union_id,
+                'nickname': auth_record.nickname or f"抖音用户_{auth_record.open_id[-8:]}",
+                'avatar': auth_record.avatar,
+            })
 
-        if user:
-            auth_record.sudo().write({'user_id': user.id})
-            request.session.uid = user.id
-            request.env.user = user
+            if user:
+                auth_record.sudo().write({'user_id': user.id})
 
-            _logger.info('用户登录成功: %s (ID: %s)', user.name, user.id)
-            return request.redirect('/web')
+                # 使用 Odoo 的标准认证
+                request.session.authenticate(request.db, user.login, '')
+                _logger.info('用户登录成功: %s (ID: %s)', user.name, user.id)
 
-        return request.redirect('/web/login')
+                return request.redirect('/web')
+
+            return request.redirect('/web/login?error=user_creation_failed')
+
+        except Exception as e:
+            _logger.error('用户登录处理失败: %s', str(e))
+            return request.redirect('/web/login?error=login_failed')
 
     @http.route('/douyin/auth/success', type='http', auth='user', website=True)
     def douyin_success(self, **kwargs):
