@@ -459,3 +459,8 @@ class DouyinAuthController(http.Controller):
         except Exception as e:
             _logger.error('检查登录状态失败: %s', str(e))
             return {'status': 'error', 'message': '系统错误'}
+
+
+
+
+# 抖音白名单用户登录验证成功 时间2025年09月20日 231600
