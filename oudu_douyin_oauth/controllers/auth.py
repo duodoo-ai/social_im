@@ -248,7 +248,7 @@ class DouyinAuthController(http.Controller):
             _logger.warning('获取用户信息失败: %s', str(e))
 
     def _handle_user_login(self, auth_record):
-        """处理用户登录逻辑 - 使用内部登录机制"""
+        """处理用户登录逻辑 - 完整修复版"""
         try:
             # 清理session
             request.session.pop('douyin_auth_state', None)
@@ -263,29 +263,38 @@ class DouyinAuthController(http.Controller):
 
             if user:
                 auth_record.sudo().write({'user_id': user.id})
+                _logger.info('开始用户登录流程: %s (ID: %s)', user.name, user.id)
 
-                # 方法1：使用内部登录API
+                # 方案1：标准认证
                 try:
-                    # 使用Odoo的内部登录
-                    from odoo.http import db_monodb, root
+                    credentials = {
+                        'login': user.login,
+                        'password': user.password,
+                    }
 
-                    # 获取数据库连接
-                    db = request.db
+                    uid = request.session.authenticate(request.db, credentials)
 
-                    # 调用内部登录
-                    session_info = request.env['ir.http'].session_info()
-
-                    # 设置会话
-                    request.session.authenticate(db, user.login, user.password)
-
-                    _logger.info('内部登录成功: %s', user.name)
-                    return request.redirect('/odoo/discuss')
+                    if uid:
+                        _logger.info('标准认证成功: %s (ID: %s)', user.name, uid)
+                        return request.redirect('/web')
+                    else:
+                        raise Exception('Authentication returned None')
 
                 except Exception as auth_error:
-                    _logger.error('内部登录失败: %s', str(auth_error))
+                    _logger.warning('标准认证失败: %s，尝试令牌方案', str(auth_error))
 
-                    # 方法2：创建临时登录令牌
-                    return self._create_login_token(user)
+                    # 方案2：令牌登录
+                    import secrets
+                    token = secrets.token_urlsafe(32)
+
+                    request.env['ir.config_parameter'].sudo().set_param(
+                        f'douyin_temp_login_{token}',
+                        str(user.id)
+                    )
+
+                    login_url = f"/web/douyin_login?token={token}"
+                    _logger.info('重定向到令牌登录: %s', user.name)
+                    return request.redirect(login_url)
 
             return request.redirect('/web/login?error=user_creation_failed')
 
@@ -293,27 +302,116 @@ class DouyinAuthController(http.Controller):
             _logger.error('用户登录处理失败: %s', str(e))
             return request.redirect('/web/login?error=login_failed')
 
-    def _create_login_token(self, user):
-        """创建临时登录令牌"""
+    def _token_login(self, user):
+        """令牌登录方案"""
         try:
             # 生成临时令牌
             import secrets
             token = secrets.token_urlsafe(32)
 
-            # 将令牌存储在临时位置（可以使用ir.config_parameter）
-            self.env['ir.config_parameter'].sudo().set_param(
+            # 使用request.env而不是self.env
+            request.env['ir.config_parameter'].sudo().set_param(
                 f'douyin_temp_login_{token}',
                 str(user.id)
             )
 
             # 重定向到专门的处理页面
             login_url = f"/web/douyin_login?token={token}"
-            _logger.info('使用令牌登录: %s', user.name)
+            _logger.info('使用令牌登录重定向: %s', user.name)
             return request.redirect(login_url)
 
         except Exception as e:
-            _logger.error('创建登录令牌失败: %s', str(e))
-            return request.redirect('/web/login?error=token_failed')
+            _logger.error('令牌登录失败: %s', str(e))
+            # 最后的备选方案：直接设置会话
+            return self._direct_session_setup(user)
+
+    @http.route('/web/douyin_login', type='http', auth='public', website=True)
+    def web_douyin_login(self, token=None, **kwargs):
+        """处理抖音登录令牌"""
+        try:
+            if not token:
+                return request.redirect('/web/login?error=missing_token')
+
+            # 从临时存储中获取用户ID
+            user_id_str = request.env['ir.config_parameter'].sudo().get_param(
+                f'douyin_temp_login_{token}'
+            )
+
+            if not user_id_str:
+                return request.redirect('/web/login?error=invalid_token')
+
+            user_id = int(user_id_str)
+            user = request.env['res.users'].sudo().browse(user_id)
+
+            if not user.exists() or not user.active:
+                return request.redirect('/web/login?error=invalid_user')
+
+            # 清理临时令牌
+            request.env['ir.config_parameter'].sudo().set_param(
+                f'douyin_temp_login_{token}', ''
+            )
+
+            # 尝试标准认证
+            try:
+                credentials = {
+                    'login': user.login,
+                    'password': user.password,
+                }
+
+                uid = request.session.authenticate(request.db, credentials)
+
+                if uid:
+                    _logger.info('令牌登录成功: %s', user.name)
+                    return request.redirect('/web')
+                else:
+                    _logger.warning('令牌认证失败，使用直接会话设置')
+                    raise Exception('Token authentication failed')
+
+            except Exception as auth_error:
+                # 认证失败，使用直接会话设置
+                request.session.logout(keep_db=True)
+                request.session.uid = user.id
+                request.session.login = user.login
+                request.session.db = request.db
+                request.session.modified = True
+                request.update_env(user=user.id)
+
+                _logger.info('令牌登录备选方案成功: %s', user.name)
+                return request.redirect('/web')
+
+        except Exception as e:
+            _logger.error('令牌登录处理失败: %s', str(e))
+            return request.redirect('/web/login?error=system_error')
+
+    def _direct_session_setup(self, user):
+        """直接会话设置 - 最后的备选方案"""
+        try:
+            # 清除当前会话
+            request.session.logout(keep_db=True)
+
+            # 直接设置会话参数
+            request.session.uid = user.id
+            request.session.login = user.login
+            request.session.db = request.db
+
+            # 在Odoo 18中需要设置session_token
+            if hasattr(request.session, 'session_token'):
+                # 使用ir.http的方法生成会话令牌
+                ir_http = request.env['ir.http']
+                request.session.session_token = ir_http._generate_session_token()
+
+            # 强制保存会话
+            request.session.modified = True
+
+            # 更新环境用户
+            request.update_env(user=user.id)
+
+            _logger.info('直接会话设置成功: %s', user.name)
+            return request.redirect('/web')
+
+        except Exception as e:
+            _logger.error('直接会话设置失败: %s', str(e))
+            return request.redirect('/web/login?error=session_failed')
 
     @http.route('/douyin/auth/success', type='http', auth='user', website=True)
     def douyin_success(self, **kwargs):
