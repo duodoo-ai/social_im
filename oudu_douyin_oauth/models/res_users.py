@@ -69,3 +69,4 @@ class ResUsers(models.Model):
         except Exception as e:
             _logger.error('抖音授权登录失败: %s', str(e))
             raise UserError(_('抖音登录失败: %s') % str(e))
+
