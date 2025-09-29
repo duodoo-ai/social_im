@@ -44,7 +44,7 @@
                             <field name="redirect_uri" readonly="1" placeholder="系统自动生成的回调地址"/>
                             <field name="scope"
                                    widget="radio"
-                                   options="{'horizontal': true}"
+                                   options="{'horizontal': false}"
                                    placeholder="授权权限范围，默认：user_info"/>
                         </group>
                     </group>
