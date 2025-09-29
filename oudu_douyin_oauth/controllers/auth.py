@@ -22,6 +22,9 @@ class DouyinAuthController(http.Controller):
             import secrets
             state = secrets.token_urlsafe(16)
             request.session['douyin_auth_state'] = state
+            # 强制保存session
+            request.session.modified = True
+            _logger.info('设置session state: %s', state)
 
             # 获取基础URL用于回调地址
             base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
@@ -31,12 +34,11 @@ class DouyinAuthController(http.Controller):
             redirect_uri_encoded = quote(redirect_uri, safe='')
 
             client_key = "aw0i6ui20ji5rf7y"
-            # 修改：将scope从user_info改为trial.whitelist
             scope = 'trial.whitelist'
 
             # 构建抖音授权URL
             douyin_url = (
-                "https://open.douyin.com/platform/oauth/pc/auth"
+                "https://open.douyin.com/platform/oauth/connect"
                 f"?client_key={client_key}"
                 f"&response_type=code"
                 f"&scope={scope}"
@@ -118,13 +120,17 @@ class DouyinAuthController(http.Controller):
                     'error_description': '授权码缺失'
                 })
 
-            # 验证state参数
+            # 验证state参数 - 增加容错处理
             session_state = request.session.get('douyin_auth_state')
+            _logger.info('State验证: session=%s, callback=%s', session_state, state)
+
             if state != session_state:
                 _logger.warning('State参数不匹配: session=%s, callback=%s', session_state, state)
+                # 对于state不匹配的情况，可以尝试继续处理，但记录警告
+                # 或者返回错误页面
                 return request.render('oudu_douyin_oauth.douyin_auth_error', {
                     'error': 'invalid_state',
-                    'error_description': '无效的会话状态'
+                    'error_description': '会话已过期，请重新授权'
                 })
 
             config = request.env['oudu.douyin.config'].sudo().get_default_config()
@@ -161,8 +167,14 @@ class DouyinAuthController(http.Controller):
             # 创建或更新授权记录
             auth_record = self._find_or_create_auth_record(config, open_id, token_data, state)
 
-            # 获取用户信息
-            self._sync_user_info(config, auth_record, open_id, access_token)
+            # 跳过用户信息获取（测试阶段）
+            # self._sync_user_info(config, auth_record, open_id, access_token)
+
+            # 直接设置默认用户信息
+            auth_record.sudo().write({
+                'nickname': f"抖音用户_{open_id[-8:]}",
+                'status': 'active',
+            })
 
             # 处理用户登录
             return self._handle_user_login(auth_record)

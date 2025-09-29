@@ -22,7 +22,6 @@ class ResUsers(models.Model):
     )
 
     @api.model
-    # 在 res_users.py 的 douyin_auth 方法中修改
     def douyin_auth(self, values):
         """抖音授权登录"""
         try:
@@ -43,26 +42,13 @@ class ResUsers(models.Model):
             user_vals = {
                 'name': nickname,  # 确保名称不为空
                 'login': login,
-                'password': 'DouYin',
+                'password': self._generate_random_password(),
                 'douyin_open_id': open_id,
                 'douyin_union_id': values.get('union_id'),
             }
 
             user = self.sudo().create(user_vals)
-
-            # 更新头像
-            if values.get('avatar'):
-                try:
-                    # 下载并设置头像
-                    import requests
-                    from odoo.tools import image_process
-
-                    response = requests.get(values['avatar'], timeout=10)
-                    if response.status_code == 200:
-                        avatar_image = image_process(response.content, size=(192, 192))
-                        user.sudo().write({'image_1920': avatar_image})
-                except Exception as e:
-                    _logger.warning('设置用户头像失败: %s', str(e))
+            _logger.info('创建抖音用户: %s (ID: %s)', user.name, user.id)
 
             return user
 
