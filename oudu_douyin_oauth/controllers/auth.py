@@ -248,7 +248,7 @@ class DouyinAuthController(http.Controller):
             _logger.warning('获取用户信息失败: %s', str(e))
 
     def _handle_user_login(self, auth_record):
-        """处理用户登录逻辑 - 直接会话设置"""
+        """处理用户登录逻辑 - 使用内部登录机制"""
         try:
             # 清理session
             request.session.pop('douyin_auth_state', None)
@@ -264,23 +264,56 @@ class DouyinAuthController(http.Controller):
             if user:
                 auth_record.sudo().write({'user_id': user.id})
 
-                # 直接设置会话
-                request.session.uid = user.id
-                request.session.login = user.login
-                request.session.db = request.db
-                request.session.modified = True
+                # 方法1：使用内部登录API
+                try:
+                    # 使用Odoo的内部登录
+                    from odoo.http import db_monodb, root
 
-                # 更新环境
-                request.update_env(user=user.id)
+                    # 获取数据库连接
+                    db = request.db
 
-                _logger.info('用户登录成功: %s (ID: %s)', user.name, user.id)
-                return request.redirect('/odoo/discuss')
+                    # 调用内部登录
+                    session_info = request.env['ir.http'].session_info()
+
+                    # 设置会话
+                    request.session.authenticate(db, user.login, user.password)
+
+                    _logger.info('内部登录成功: %s', user.name)
+                    return request.redirect('/odoo/discuss')
+
+                except Exception as auth_error:
+                    _logger.error('内部登录失败: %s', str(auth_error))
+
+                    # 方法2：创建临时登录令牌
+                    return self._create_login_token(user)
 
             return request.redirect('/web/login?error=user_creation_failed')
 
         except Exception as e:
             _logger.error('用户登录处理失败: %s', str(e))
             return request.redirect('/web/login?error=login_failed')
+
+    def _create_login_token(self, user):
+        """创建临时登录令牌"""
+        try:
+            # 生成临时令牌
+            import secrets
+            token = secrets.token_urlsafe(32)
+
+            # 将令牌存储在临时位置（可以使用ir.config_parameter）
+            self.env['ir.config_parameter'].sudo().set_param(
+                f'douyin_temp_login_{token}',
+                str(user.id)
+            )
+
+            # 重定向到专门的处理页面
+            login_url = f"/web/douyin_login?token={token}"
+            _logger.info('使用令牌登录: %s', user.name)
+            return request.redirect(login_url)
+
+        except Exception as e:
+            _logger.error('创建登录令牌失败: %s', str(e))
+            return request.redirect('/web/login?error=token_failed')
 
     @http.route('/douyin/auth/success', type='http', auth='user', website=True)
     def douyin_success(self, **kwargs):
