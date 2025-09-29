@@ -27,7 +27,9 @@ class DouyinConfig(models.Model):
 
     # 权限范围
     scope = fields.Selection([
-        ('user_info', '用户信息授权(user_info)')],
+        ('user_info', '用户信息授权(user_info)'),
+        ('mobile', '手机号授权(mobile)'),
+        ('*', '所有权限(*)')],
         string='授权范围', default='user_info',
         required=True)
 
