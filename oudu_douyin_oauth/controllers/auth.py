@@ -31,7 +31,8 @@ class DouyinAuthController(http.Controller):
             redirect_uri_encoded = quote(redirect_uri, safe='')
 
             client_key = "aw0i6ui20ji5rf7y"
-            scope = 'user_info'
+            # 修改：将scope从user_info改为trial.whitelist
+            scope = 'trial.whitelist'
 
             # 构建抖音授权URL
             douyin_url = (
