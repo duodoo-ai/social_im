@@ -53,7 +53,6 @@ class DouyinAuthController(http.Controller):
                 <meta http-equiv="refresh" content="0; url={douyin_url}">
             </head>
             <body>
-                <p>正在跳转到抖音授权页面...</p>
                 <script>window.location.href = "{douyin_url}";</script>
             </body>
             </html>
