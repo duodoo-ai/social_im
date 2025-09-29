@@ -30,10 +30,10 @@ class DouyinAuthController(http.Controller):
             # 对redirect_uri进行URL编码
             redirect_uri_encoded = quote(redirect_uri, safe='')
 
-            client_key = "aw0i6ui20ji5rf7y"  # 使用您提供的client_key
+            client_key = "aw0i6ui20ji5rf7y"
             scope = 'user_info'
 
-            # 构建抖音授权URL - 使用完整的抖音官方地址
+            # 构建抖音授权URL
             douyin_url = (
                 "https://open.douyin.com/platform/oauth/pc/auth"
                 f"?client_key={client_key}"
@@ -43,7 +43,21 @@ class DouyinAuthController(http.Controller):
                 f"&state={state}"
             )
             _logger.info('直接跳转抖音授权: %s', douyin_url)
-            return request.redirect(douyin_url)
+
+            # 修复：构建完整的HTML重定向页面
+            html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta http-equiv="refresh" content="0; url={douyin_url}">
+            </head>
+            <body>
+                <p>正在跳转到抖音授权页面...</p>
+                <script>window.location.href = "{douyin_url}";</script>
+            </body>
+            </html>
+            """
+            return html
 
         except Exception as e:
             _logger.exception('直接授权跳转异常: %s', str(e))
