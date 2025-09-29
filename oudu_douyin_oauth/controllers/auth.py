@@ -274,7 +274,7 @@ class DouyinAuthController(http.Controller):
                 request.update_env(user=user.id)
 
                 _logger.info('用户登录成功: %s (ID: %s)', user.name, user.id)
-                return request.redirect('/snatch_hall')
+                return request.redirect('/odoo/discuss')
 
             return request.redirect('/web/login?error=user_creation_failed')
 
