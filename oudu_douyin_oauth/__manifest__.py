@@ -40,6 +40,7 @@
         'data/ir_sequence_data.xml',
         'data/douyin_config.xml',
         'data/cron_data.xml',
+        'views/douyin_auth_views.xml',
         'views/douyin_config_views.xml',
         'views/res_users_views.xml',
         'views/templates.xml',
