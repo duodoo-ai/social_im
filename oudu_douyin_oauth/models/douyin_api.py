@@ -92,23 +92,6 @@ class DouyinAPI(models.AbstractModel):
         }
         return self._make_request(endpoint, method='POST', data=data)
 
-    def get_user_info(self, config, open_id, access_token):
-        """获取用户公开信息"""
-        endpoint = '/oauth/userinfo/'
-        data = {
-            'open_id': open_id,
-            'access_token': access_token,
-        }
-        return self._make_request(endpoint, method='GET', data=data)
-
-    def get_user_mobile(self, config, access_token):
-        """获取用户手机号"""
-        endpoint = '/api/douyin/v1/oauth/mobile/'
-        data = {
-            'access_token': access_token,
-        }
-        return self._make_request(endpoint, method='GET', data=data)
-
     def get_user_public_info(self, config, open_id, access_token):
         """
         获取用户公开信息

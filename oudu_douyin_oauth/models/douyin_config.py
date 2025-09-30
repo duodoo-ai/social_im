@@ -117,8 +117,6 @@ class DouyinConfig(models.Model):
 
             if result.get('data', {}).get('access_token'):
                 token_data = result['data']
-                expires_in = token_data.get('expires_in', 7200)
-                expires_time = datetime.now() + timedelta(seconds=expires_in)
 
                 self.write({
                     'access_token': token_data['access_token'],

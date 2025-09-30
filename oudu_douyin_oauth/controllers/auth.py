@@ -65,35 +65,6 @@ class DouyinAuthController(http.Controller):
             _logger.exception('直接授权跳转异常: %s', str(e))
             return request.redirect('/web/login?error=douyin_auth_failed')
 
-    @http.route('/douyin/auth/qrcode/login', type='http', auth='public', website=True)
-    def douyin_qrcode_login(self, **kwargs):
-        """抖音扫码登录页面"""
-        try:
-            config = request.env['oudu.douyin.config'].sudo().get_default_config()
-            if not config:
-                return request.render('oudu_douyin_oauth.douyin_config_missing')
-
-            # 生成唯一state参数
-            import secrets
-            state = secrets.token_urlsafe(16)
-            request.session['douyin_auth_state'] = state
-
-            # 生成授权URL
-            auth_url = config.get_auth_url(state=state)
-            _logger.info('生成抖音授权URL: %s', auth_url)
-
-            return request.render('oudu_douyin_oauth.douyin_qrcode_page', {
-                'auth_url': auth_url,
-                'state': state,
-            })
-
-        except Exception as e:
-            _logger.exception('扫码登录页面异常')
-            return request.render('oudu_douyin_oauth.douyin_auth_error', {
-                'error': 'system_error',
-                'error_description': '系统异常，请稍后重试'
-            })
-
     @http.route('/douyin/auth/callback', type='http', auth='public', website=True, csrf=False)
     def douyin_callback(self, **kwargs):
         """抖音授权回调处理"""
@@ -321,54 +292,6 @@ class DouyinAuthController(http.Controller):
         }
         return gender_map.get(str(gender_code), 'unknown')
 
-    @http.route('/douyin/user/info', type='json', auth='user', methods=['POST'])
-    def get_douyin_user_info(self, **kwargs):
-        """获取当前登录用户的抖音信息"""
-        try:
-            user_id = request.session.uid
-            user = request.env['res.users'].sudo().browse(user_id)
-
-            if not user.douyin_open_id:
-                return {
-                    'success': False,
-                    'error': '用户未绑定抖音账号'
-                }
-
-            # 查找授权记录
-            auth_record = request.env['oudu.douyin.auth'].sudo().search([
-                ('open_id', '=', user.douyin_open_id),
-                ('status', '=', 'active')
-            ], limit=1)
-
-            if not auth_record:
-                return {
-                    'success': False,
-                    'error': '未找到授权记录'
-                }
-
-            user_info = {
-                'nickname': auth_record.nickname,
-                'avatar': auth_record.avatar,
-                'open_id': auth_record.open_id,
-                'gender': auth_record.gender,
-                'country': auth_record.country,
-                'province': auth_record.province,
-                'city': auth_record.city,
-                'auth_time': auth_record.auth_time.strftime('%Y-%m-%d %H:%M:%S') if auth_record.auth_time else None,
-            }
-
-            return {
-                'success': True,
-                'data': user_info
-            }
-
-        except Exception as e:
-            _logger.error('获取用户抖音信息失败: %s', str(e))
-            return {
-                'success': False,
-                'error': '系统错误'
-            }
-
     @http.route('/douyin/user/refresh', type='json', auth='user', methods=['POST'])
     def refresh_douyin_user_info(self, **kwargs):
         """刷新用户抖音信息"""
@@ -497,29 +420,6 @@ class DouyinAuthController(http.Controller):
         except Exception as e:
             _logger.error('用户登录处理失败: %s', str(e))
             return request.redirect('/web/login?error=login_failed')
-
-    def _token_login(self, user):
-        """令牌登录方案"""
-        try:
-            # 生成临时令牌
-            import secrets
-            token = secrets.token_urlsafe(32)
-
-            # 使用request.env而不是self.env
-            request.env['ir.config_parameter'].sudo().set_param(
-                f'douyin_temp_login_{token}',
-                str(user.id)
-            )
-
-            # 重定向到专门的处理页面
-            login_url = f"/web/douyin_login?token={token}"
-            _logger.info('使用令牌登录重定向: %s', user.name)
-            return request.redirect(login_url)
-
-        except Exception as e:
-            _logger.error('令牌登录失败: %s', str(e))
-            # 最后的备选方案：直接设置会话
-            return self._direct_session_setup(user)
 
     @http.route('/web/douyin_login', type='http', auth='public', website=True)
     def web_douyin_login(self, token=None, **kwargs):
@@ -656,7 +556,17 @@ class DouyinAuthController(http.Controller):
             _logger.error('检查登录状态失败: %s', str(e))
             return {'status': 'error', 'message': '系统错误'}
 
-
+    @http.route('/douyin/auth/get_config', type='json', auth='public')
+    def get_douyin_config(self, **kwargs):
+        """获取抖音配置（前端调用）"""
+        config = request.env['oudu.douyin.config'].search([('active', '=', True)], limit=1)
+        if config:
+            return {
+                'client_key': config.client_key,
+                'auth_url': config.get_auth_url(),
+                'scope': config.scope,
+            }
+        return {}
 
 
 # 抖音白名单用户登录验证成功 时间2025年09月20日 231600

@@ -93,12 +93,3 @@ class DouyinClient:
             'refresh_token': refresh_token,
         }
         return self._request(endpoint, method='POST', data=data)
-
-    def get_user_info(self, open_id: str, access_token: str) -> Dict[str, Any]:
-        """获取用户信息"""
-        endpoint = '/oauth/userinfo/'
-        params = {
-            'open_id': open_id,
-            'access_token': access_token,
-        }
-        return self._request(endpoint, method='GET', params=params)
