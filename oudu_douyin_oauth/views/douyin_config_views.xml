@@ -46,6 +46,10 @@
                                    widget="radio"
                                    options="{'horizontal': false}"
                                    placeholder="授权权限范围，默认：user_info"/>
+                            <field name="access_token" readonly="1" placeholder="抖音开放平台应用的Access Token"/>
+                            <field name="refresh_token" readonly="1" placeholder="抖音开放平台应用的Refresh Token"/>
+                            <field name="refresh_token_expires" readonly="1" placeholder="Refresh Token过期时间"/>
+                            <field name="access_scope" readonly="1" placeholder="抖音开放平台应用的Access Scope"/>
                         </group>
                     </group>
 
