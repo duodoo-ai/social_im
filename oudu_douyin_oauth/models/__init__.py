@@ -3,7 +3,6 @@
 from . import douyin_config
 from . import douyin_auth
 from . import res_users
-from . import douyin_api
 
 import logging
 _logger = logging.getLogger(__name__)
