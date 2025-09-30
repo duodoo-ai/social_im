@@ -539,4 +539,107 @@
             </script>
         </t>
     </template>
+
+    <!-- 用户信息页面模板 -->
+    <template id="douyin_user_profile" name="抖音用户信息">
+        <t t-call="web.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">抖音用户信息</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <t t-if="user_info.avatar">
+                                            <img t-att-src="user_info.avatar"
+                                                 class="img-fluid rounded-circle mb-3"
+                                                 style="max-width: 150px;"
+                                                 alt="用户头像"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3"
+                                                 style="width: 150px; height: 150px; margin: 0 auto;">
+                                                <i class="fa fa-user fa-3x text-muted"></i>
+                                            </div>
+                                        </t>
+                                        <button class="btn btn-primary btn-sm" onclick="refreshUserInfo()">
+                                            <i class="fa fa-refresh"></i> 刷新信息
+                                        </button>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <th width="30%">昵称:</th>
+                                                <td><span t-field="user_info.nickname"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th>OpenID:</th>
+                                                <td><small class="text-muted" t-field="user_info.open_id"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th>性别:</th>
+                                                <td>
+                                                    <t t-if="user_info.gender == 'male'">男</t>
+                                                    <t t-elif="user_info.gender == 'female'">女</t>
+                                                    <t t-else="">未知</t>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>地区:</th>
+                                                <td>
+                                                    <span t-field="user_info.country"/>
+                                                    <span t-field="user_info.province"/>
+                                                    <span t-field="user_info.city"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>授权时间:</th>
+                                                <td><span t-field="user_info.auth_time"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function refreshUserInfo() {
+                    var button = event.target;
+                    var originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 刷新中...';
+                    button.disabled = true;
+
+                    fetch('/douyin/user/refresh', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('刷新失败: ' + data.error);
+                            button.innerHTML = originalText;
+                            button.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('刷新失败');
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                    });
+                }
+            </script>
+        </t>
+    </template>
 </odoo>

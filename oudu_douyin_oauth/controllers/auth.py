@@ -120,14 +120,12 @@ class DouyinAuthController(http.Controller):
                     'error_description': '授权码缺失'
                 })
 
-            # 验证state参数 - 增加容错处理
+            # 验证state参数
             session_state = request.session.get('douyin_auth_state')
             _logger.info('State验证: session=%s, callback=%s', session_state, state)
 
             if state != session_state:
                 _logger.warning('State参数不匹配: session=%s, callback=%s', session_state, state)
-                # 对于state不匹配的情况，可以尝试继续处理，但记录警告
-                # 或者返回错误页面
                 return request.render('oudu_douyin_oauth.douyin_auth_error', {
                     'error': 'invalid_state',
                     'error_description': '会话已过期，请重新授权'
@@ -167,14 +165,8 @@ class DouyinAuthController(http.Controller):
             # 创建或更新授权记录
             auth_record = self._find_or_create_auth_record(config, open_id, token_data, state)
 
-            # 跳过用户信息获取（测试阶段）
-            # self._sync_user_info(config, auth_record, open_id, access_token)
-
-            # 直接设置默认用户信息
-            auth_record.sudo().write({
-                'nickname': f"抖音用户_{open_id[-8:]}",
-                'status': 'active',
-            })
+            # 同步用户公开信息
+            user_info = self._sync_user_info(config, auth_record, open_id, access_token)
 
             # 处理用户登录
             return self._handle_user_login(auth_record)
@@ -191,6 +183,44 @@ class DouyinAuthController(http.Controller):
                 'error': 'system_error',
                 'error_description': '系统异常，请稍后重试'
             })
+
+    @http.route('/douyin/user/profile', type='http', auth='user', website=True)
+    def douyin_user_profile(self, **kwargs):
+        """抖音用户信息页面"""
+        try:
+            user_id = request.session.uid
+            user = request.env['res.users'].sudo().browse(user_id)
+
+            if not user.douyin_open_id:
+                return request.redirect('/web?error=no_douyin_account')
+
+            # 查找授权记录
+            auth_record = request.env['oudu.douyin.auth'].sudo().search([
+                ('open_id', '=', user.douyin_open_id),
+                ('status', '=', 'active')
+            ], limit=1)
+
+            if not auth_record:
+                return request.redirect('/web?error=no_auth_record')
+
+            user_info = {
+                'nickname': auth_record.nickname,
+                'avatar': auth_record.avatar,
+                'open_id': auth_record.open_id,
+                'gender': auth_record.gender,
+                'country': auth_record.country,
+                'province': auth_record.province,
+                'city': auth_record.city,
+                'auth_time': auth_record.auth_time.strftime('%Y-%m-%d %H:%M:%S') if auth_record.auth_time else '未知',
+            }
+
+            return request.render('oudu_douyin_oauth.douyin_user_profile', {
+                'user_info': user_info
+            })
+
+        except Exception as e:
+            _logger.error('显示用户信息页面失败: %s', str(e))
+            return request.redirect('/web?error=profile_error')
 
     def _find_or_create_auth_record(self, config, open_id, token_data, state):
         """查找或创建授权记录"""
@@ -228,24 +258,190 @@ class DouyinAuthController(http.Controller):
         return auth_record
 
     def _sync_user_info(self, config, auth_record, open_id, access_token):
-        """同步用户信息"""
+        """同步用户公开信息"""
         try:
-            DouyinAPI = request.env['oudu.douyin.api']
-            user_info = DouyinAPI.get_user_info(config, open_id, access_token)
+            _logger.info('开始同步用户公开信息: %s', open_id)
 
-            if user_info.get('data'):
+            DouyinAPI = request.env['oudu.douyin.api']
+            user_info = DouyinAPI.get_user_public_info(config, open_id, access_token)
+
+            if user_info.get('data') and user_info['data'].get('error_code') == 0:
                 user_data = user_info['data']
-                auth_record.sudo().write({
+
+                # 解析用户信息
+                user_info_data = {
                     'nickname': user_data.get('nickname'),
                     'avatar': user_data.get('avatar'),
-                    'gender': str(user_data.get('gender', '0')),
+                    'gender': self._parse_gender(user_data.get('gender')),
                     'country': user_data.get('country'),
                     'province': user_data.get('province'),
                     'city': user_data.get('city'),
-                })
-                _logger.info('同步用户信息成功: %s', user_data.get('nickname'))
+                }
+
+                # 更新授权记录
+                auth_record.sudo().write(user_info_data)
+                _logger.info('同步用户公开信息成功: %s', user_data.get('nickname'))
+
+                return user_info_data
+            else:
+                error_data = user_info.get('data', {})
+                error_code = error_data.get('error_code', 'unknown')
+                error_msg = error_data.get('description', '获取用户信息失败')
+                _logger.warning('获取用户公开信息失败: %s - %s', error_code, error_msg)
+
+                # 设置默认用户信息
+                default_info = {
+                    'nickname': f"抖音用户_{open_id[-8:]}",
+                    'avatar': None,
+                }
+                auth_record.sudo().write(default_info)
+                _logger.info('设置默认用户信息: %s', default_info['nickname'])
+
+                return default_info
+
         except Exception as e:
-            _logger.warning('获取用户信息失败: %s', str(e))
+            _logger.warning('同步用户公开信息异常: %s', str(e))
+
+            # 发生异常时设置默认信息
+            default_info = {
+                'nickname': f"抖音用户_{open_id[-8:]}",
+                'avatar': None,
+            }
+            auth_record.sudo().write(default_info)
+            _logger.info('异常情况下设置默认用户信息: %s', default_info['nickname'])
+
+            return default_info
+
+    def _parse_gender(self, gender_code):
+        """解析性别代码"""
+        gender_map = {
+            '0': 'unknown',
+            '1': 'male',
+            '2': 'female',
+        }
+        return gender_map.get(str(gender_code), 'unknown')
+
+    @http.route('/douyin/user/info', type='json', auth='user', methods=['POST'])
+    def get_douyin_user_info(self, **kwargs):
+        """获取当前登录用户的抖音信息"""
+        try:
+            user_id = request.session.uid
+            user = request.env['res.users'].sudo().browse(user_id)
+
+            if not user.douyin_open_id:
+                return {
+                    'success': False,
+                    'error': '用户未绑定抖音账号'
+                }
+
+            # 查找授权记录
+            auth_record = request.env['oudu.douyin.auth'].sudo().search([
+                ('open_id', '=', user.douyin_open_id),
+                ('status', '=', 'active')
+            ], limit=1)
+
+            if not auth_record:
+                return {
+                    'success': False,
+                    'error': '未找到授权记录'
+                }
+
+            user_info = {
+                'nickname': auth_record.nickname,
+                'avatar': auth_record.avatar,
+                'open_id': auth_record.open_id,
+                'gender': auth_record.gender,
+                'country': auth_record.country,
+                'province': auth_record.province,
+                'city': auth_record.city,
+                'auth_time': auth_record.auth_time.strftime('%Y-%m-%d %H:%M:%S') if auth_record.auth_time else None,
+            }
+
+            return {
+                'success': True,
+                'data': user_info
+            }
+
+        except Exception as e:
+            _logger.error('获取用户抖音信息失败: %s', str(e))
+            return {
+                'success': False,
+                'error': '系统错误'
+            }
+
+    @http.route('/douyin/user/refresh', type='json', auth='user', methods=['POST'])
+    def refresh_douyin_user_info(self, **kwargs):
+        """刷新用户抖音信息"""
+        try:
+            user_id = request.session.uid
+            user = request.env['res.users'].sudo().browse(user_id)
+
+            if not user.douyin_open_id:
+                return {
+                    'success': False,
+                    'error': '用户未绑定抖音账号'
+                }
+
+            # 查找授权记录
+            auth_record = request.env['oudu.douyin.auth'].sudo().search([
+                ('open_id', '=', user.douyin_open_id),
+                ('status', '=', 'active')
+            ], limit=1)
+
+            if not auth_record:
+                return {
+                    'success': False,
+                    'error': '未找到授权记录'
+                }
+
+            config = request.env['oudu.douyin.config'].sudo().get_default_config()
+            if not config:
+                return {
+                    'success': False,
+                    'error': '抖音配置缺失'
+                }
+
+            # 刷新用户信息
+            DouyinAPI = request.env['oudu.douyin.api']
+            user_info = DouyinAPI.get_user_public_info(config, auth_record.open_id, auth_record.access_token)
+
+            if user_info.get('data') and user_info['data'].get('error_code') == 0:
+                user_data = user_info['data']
+
+                # 更新授权记录
+                update_data = {
+                    'nickname': user_data.get('nickname'),
+                    'avatar': user_data.get('avatar'),
+                    'gender': self._parse_gender(user_data.get('gender')),
+                    'country': user_data.get('country'),
+                    'province': user_data.get('province'),
+                    'city': user_data.get('city'),
+                    'last_sync_time': datetime.now(),
+                }
+
+                auth_record.sudo().write(update_data)
+
+                return {
+                    'success': True,
+                    'message': '用户信息刷新成功',
+                    'data': update_data
+                }
+            else:
+                error_data = user_info.get('data', {})
+                error_code = error_data.get('error_code', 'unknown')
+                error_msg = error_data.get('description', '刷新用户信息失败')
+
+                return {
+                    'success': False,
+                    'error': f'{error_code}: {error_msg}'
+                }
+
+        except Exception as e:
+            _logger.error('刷新用户抖音信息失败: %s', str(e))
+            return {
+                'success': False,
+                'error': '系统错误'
+            }
 
     def _handle_user_login(self, auth_record):
         """处理用户登录逻辑 - 完整修复版"""
