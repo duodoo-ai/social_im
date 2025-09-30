@@ -33,9 +33,6 @@ class DouyinConfig(models.Model):
         string='授权范围', default='user_info',
         required=True)
     access_token = fields.Char(string='Access Token', help='抖音开放平台应用的Access Token')
-    # refresh_token = fields.Char(string='Refresh Token', help='抖音开放平台应用的Refresh Token')
-    # refresh_token_expires = fields.Datetime(string='Refresh Token Expires', help='Refresh Token过期时间')
-    # access_scope = fields.Char(string='Access Scope', help='抖音开放平台应用的Access Scope')
 
     # 状态信息
     state = fields.Selection([
@@ -125,9 +122,6 @@ class DouyinConfig(models.Model):
 
                 self.write({
                     'access_token': token_data['access_token'],
-                    # 'refresh_token': token_data['refresh_token'],
-                    # 'refresh_token_expires': expires_time,
-                    # 'access_scope': token_data['scope'],
                 })
                 return token_data['access_token']
         except Exception as e:
