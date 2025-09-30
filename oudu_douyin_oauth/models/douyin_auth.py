@@ -7,6 +7,7 @@
 @Website: http://www.duodoo.tech
 """
 import logging
+import requests
 from datetime import datetime, timedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
@@ -92,6 +93,34 @@ class DouyinAuth(models.Model):
                 'refresh_token': False,
             })
             _logger.info('撤销授权: %s', record.code)
+
+    @api.model
+    def refresh_access_token(self, config, refresh_token):
+        """刷新Access Token"""
+        try:
+            url = "https://open.douyin.com/oauth/refresh_token/"
+            data = {
+                'client_key': config.client_key,
+                'client_secret': config.client_secret,
+                'refresh_token': refresh_token,
+                'grant_type': 'refresh_token',
+            }
+
+            response = requests.post(url, data=data, timeout=10)
+            result = response.json()
+
+            _logger.info('刷新Token响应: %s', result)
+            return result
+
+        except Exception as e:
+            _logger.error('刷新Token失败: %s', str(e))
+            return {
+                'data': {
+                    'error_code': 'request_failed',
+                    'description': str(e)
+                },
+                'message': 'error'
+            }
 
     @api.model
     def cleanup_expired_tokens(self):
