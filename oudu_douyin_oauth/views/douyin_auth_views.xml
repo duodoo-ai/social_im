@@ -24,7 +24,7 @@
             <form string="抖音授权记录">
                 <header>
                     <button name="refresh_access_token" type="object" string="刷新Token" class="btn-primary"/>
-                    <button name="get_user_info" type="object" string="同步用户信息"/>
+                    <button name="get_user_public_info" type="object" string="同步用户信息"/>
                     <button name="action_revoke_auth" type="object" string="撤销授权" class="btn-danger"/>
                 </header>
                 <sheet>
