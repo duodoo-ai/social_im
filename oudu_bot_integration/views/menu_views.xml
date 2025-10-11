@@ -18,10 +18,11 @@
                   parent="menu_ai_gateway"
                   action="action_ai_tool"
                   sequence="20"/>
+        <!-- 为余额记录添加菜单 -->
         <menuitem id="menu_ai_provider_balance"
-                  name="余额历史记录"
-                  parent="menu_ai_gateway"
-                  action="action_ai_provider_balance"
-                  sequence="30"/>
+              name="Balance History"
+              parent="menu_ai_gateway"
+              action="action_ai_provider_balance"
+              sequence="30"/>
     </data>
 </odoo>

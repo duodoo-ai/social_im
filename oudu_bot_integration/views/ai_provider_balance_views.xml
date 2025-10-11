@@ -39,9 +39,15 @@
                         <field name="critical_balance_threshold"/>
                     </group>
                     <group string="Error Information" invisible="is_success">
-                        <field name="error_message" nolabel="1"/>
+                        <field name="error_message" nolabel="1" readonly="1"/>
                     </group>
                 </sheet>
+                <!-- 简化页脚按钮 -->
+                <footer>
+                    <button name="action_check_provider_balance" type="object" string="Check Balance Now" class="btn-primary"/>
+                    <button name="action_view_provider" type="object" string="View Provider" class="btn-secondary"/>
+                    <button special="cancel" string="Close" class="btn-default"/>
+                </footer>
             </form>
         </field>
     </record>
@@ -52,27 +58,65 @@
         <field name="model">oudu.bot.provider</field>
         <field name="inherit_id" ref="oudu_bot_integration.view_ai_provider_form"/>
         <field name="arch" type="xml">
-            <button name='test_connection' position="after">
+            <!-- 修正按钮位置 -->
+            <xpath expr="//button[@name='test_connection']" position="after">
                 <button name="check_balance_now" type="object" string="Check Balance Now" class="btn-secondary"/>
                 <button name="action_view_balance_history" type="object" string="View Balance History" class="btn-secondary"/>
-            </button>
+            </xpath>
+
+            <!-- 添加余额监控信息到provider表单 -->
             <xpath expr="//sheet" position="inside">
                 <group string="Balance Monitoring" colspan="2">
                     <group string="Current Balance">
-                        <field name="current_balance" readonly="1"/>
-                        <field name="currency" readonly="1"/>
-                        <field name="balance_status" readonly="1"/>
+                        <label for="current_balance" string="Latest Balance"/>
+                        <div>
+                            <field name="current_balance" readonly="1" nolabel="1"/>
+                            <field name="currency" readonly="1" nolabel="1"/>
+                        </div>
+                        <field name="balance_status" readonly="1" widget="badge"
+                               options="{'success': 'sufficient', 'warning': 'low', 'danger': 'insufficient', 'secondary': 'unknown'}"/>
                     </group>
                     <group string="Balance Settings">
-                        <field name="low_balance_threshold"/>
-                        <field name="critical_balance_threshold"/>
-                        <field name="auto_deactivate_low_balance"/>
+                        <field name="low_balance_threshold"
+                               help="Threshold for low balance warning"/>
+                        <field name="critical_balance_threshold"
+                               help="Threshold for critical balance warning"/>
+                        <field name="auto_deactivate_low_balance"
+                               help="Automatically deactivate provider when balance is low"/>
                         <field name="balance_check_frequency"
                                widget="radio"
-                               options="{'horizontal': true}"/>
+                               options="{'horizontal': true}"
+                               help="How often to check balance automatically"/>
+                    </group>
+                    <!-- 添加最后检查时间 -->
+                    <group string="Last Check">
+                        <field name="last_balance_check" readonly="1"/>
+                        <field name="last_balance_check_result" readonly="1"/>
                     </group>
                 </group>
             </xpath>
+        </field>
+    </record>
+
+    <!-- 为余额历史添加搜索视图 -->
+    <record id="view_ai_provider_balance_search" model="ir.ui.view">
+        <field name="name">ai.provider.balance.search</field>
+        <field name="model">oudu.bot.provider.balance</field>
+        <field name="arch" type="xml">
+            <search string="Search Balance Records">
+                <field name="provider_id"/>
+                <field name="balance_status"/>
+                <field name="is_success"/>
+                <field name="check_date"/>
+                <filter string="Today" name="today" domain="[('check_date', '>=', context_today())]"/>
+                <filter string="Successful Checks" name="successful" domain="[('is_success', '=', True)]"/>
+                <filter string="Low Balance" name="low_balance" domain="[('balance_status', 'in', ['low', 'insufficient'])]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Provider" name="group_by_provider" context="{'group_by': 'provider_id'}"/>
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'balance_status'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'check_date:day'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
@@ -80,7 +124,17 @@
     <record id="action_ai_provider_balance" model="ir.actions.act_window">
         <field name="name">AI Provider Balance History</field>
         <field name="res_model">oudu.bot.provider.balance</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="view_id" ref="view_ai_provider_balance_tree"/>
+        <field name="search_view_id" ref="view_ai_provider_balance_search"/>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No balance records found.
+            </p>
+            <p>
+                Check balances manually or wait for scheduled checks.
+            </p>
+        </field>
     </record>
 </odoo>

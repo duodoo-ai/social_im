@@ -107,6 +107,23 @@ class AITool(models.Model):
         default=True,
         help="Enable or disable this tool"
     )
+    # 新增字段：演示执行结果
+    demo_execution_history = fields.One2many(
+        'oudu.bot.tool.demo.result',
+        'tool_id',
+        string='Demo Execution History',
+        readonly=True
+    )
+    last_demo_result = fields.Text(
+        string='Last Demo Result',
+        compute='_compute_last_demo_result',
+        store=True
+    )
+    last_demo_status = fields.Selection([
+        ('success', 'Success'),
+        ('failed', 'Failed'),
+        ('not_tested', 'Not Tested')
+    ], string='Last Demo Status', default='not_tested', compute='_compute_last_demo_result', store=True)
 
     # Constraints
     _sql_constraints = [
@@ -143,8 +160,23 @@ class AITool(models.Model):
             _logger.error(f"Tool execution failed: {str(e)}")
             raise UserError(f"Tool execution failed: {str(e)}")
 
+    @api.depends('demo_execution_history')
+    def _compute_last_demo_result(self):
+        """计算最后一次演示执行的结果和状态"""
+        for tool in self:
+            last_execution = self.env['oudu.bot.tool.demo.result'].search([
+                ('tool_id', '=', tool.id)
+            ], order='execution_date desc', limit=1)
+
+            if last_execution:
+                tool.last_demo_result = last_execution.result
+                tool.last_demo_status = 'success' if last_execution.is_success else 'failed'
+            else:
+                tool.last_demo_result = ''
+                tool.last_demo_status = 'not_tested'
+
     def execute_demo_tool(self):
-        """Execute tool with demo arguments for testing."""
+        """Execute tool with demo arguments for testing and store results."""
         self.ensure_one()
 
         # 根据工具类型提供默认参数
@@ -155,14 +187,31 @@ class AITool(models.Model):
                 demo_arguments = {'expression': '2 + 2 * 3'}
             elif self.function_name == 'get_weather':
                 demo_arguments = {'city': 'Beijing'}
+            else:
+                # 为其他 Python 工具提供通用参数
+                demo_arguments = {'input': 'test'}
         elif self.tool_type == 'api':
             if self.function_name == 'get_weather':
                 demo_arguments = {'city': 'Beijing'}
+            else:
+                demo_arguments = {'data': 'test'}
         elif self.tool_type == 'odoo_method':
             demo_arguments = {'search_term': 'demo', 'limit': 5}
+        else:
+            demo_arguments = {}
 
         try:
             result = self.execute_tool(demo_arguments, {})
+            result_str = str(result)
+
+            # 存储执行结果到历史记录
+            demo_record = self.env['oudu.bot.tool.demo.result'].create({
+                'tool_id': self.id,
+                'arguments': json.dumps(demo_arguments, ensure_ascii=False),
+                'result': result_str,
+                'is_success': True,
+                'execution_date': fields.Datetime.now()
+            })
 
             # 显示结果通知
             return {
@@ -170,22 +219,49 @@ class AITool(models.Model):
                 'tag': 'display_notification',
                 'params': {
                     'title': f'Tool Execution: {self.name}',
-                    'message': f'Execution successful! Result: {str(result)}',
+                    'message': f'Execution successful! Result: {result_str}',
                     'type': 'success',
                     'sticky': False,
                 }
             }
         except Exception as e:
+            error_msg = str(e)
+
+            # 存储错误结果到历史记录
+            demo_record = self.env['oudu.bot.tool.demo.result'].create({
+                'tool_id': self.id,
+                'arguments': json.dumps(demo_arguments, ensure_ascii=False),
+                'result': error_msg,
+                'is_success': False,
+                'execution_date': fields.Datetime.now()
+            })
+
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
                     'title': f'Tool Execution Failed: {self.name}',
-                    'message': str(e),
+                    'message': error_msg,
                     'type': 'danger',
                     'sticky': False,
                 }
             }
+
+    def clear_demo_history(self):
+        """Clear all demo execution history for this tool."""
+        self.ensure_one()
+        self.demo_execution_history.unlink()
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Demo History Cleared',
+                'message': f'All demo execution history for {self.name} has been cleared.',
+                'type': 'info',
+                'sticky': False,
+            }
+        }
 
     def _check_permissions(self, context: Dict[str, Any]) -> bool:
         """Check if current user has permission to use this tool."""
@@ -332,3 +408,33 @@ class AITool(models.Model):
             raise UserError(f"Tool with code '{tool_code}' not found or inactive")
 
         return tool.execute_tool(arguments or {}, context or {})
+
+
+class AIToolDemoResult(models.Model):
+    _name = 'oudu.bot.tool.demo.result'
+    _description = 'AI Tool Demo Execution Result'
+    _order = 'execution_date desc'
+
+    tool_id = fields.Many2one(
+        'oudu.bot.tool',
+        string='Tool',
+        required=True,
+        ondelete='cascade'
+    )
+    execution_date = fields.Datetime(
+        string='Execution Date',
+        default=fields.Datetime.now,
+        required=True
+    )
+    arguments = fields.Text(
+        string='Arguments',
+        help='Arguments used in the demo execution'
+    )
+    result = fields.Text(
+        string='Result',
+        help='Execution result'
+    )
+    is_success = fields.Boolean(
+        string='Success',
+        help='Whether the execution was successful'
+    )

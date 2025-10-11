@@ -13,6 +13,8 @@
                     <field name="tool_type"/>
                     <field name="function_name"/>
                     <field name="is_active"/>
+                    <field name="last_demo_status" widget="badge"
+                           options="{'success': 'success', 'warning': 'not_tested', 'danger': 'failed'}"/>
                 </list>
             </field>
         </record>
@@ -28,6 +30,11 @@
                             type="object"
                             string="Test Demo"
                             class="btn-secondary"/>
+                        <button name="clear_demo_history"
+                            type="object"
+                            string="Clear History"
+                            class="btn-warning"
+                            invisible="not demo_execution_history"/>
                         <field name="is_active" widget="boolean_toggle"/>
                     </header>
                     <sheet>
@@ -43,6 +50,8 @@
                                 <field name="is_active"/>
                                 <field name="require_authentication"/>
                                 <field name="allowed_groups" widget="many2many_tags"/>
+                                <field name="last_demo_status" widget="badge"
+                                       options="{'success': 'success', 'warning': 'not_tested', 'danger': 'failed'}"/>
                             </group>
                         </group>
 
@@ -51,6 +60,37 @@
                         </group>
 
                         <notebook>
+                            <!-- 演示执行结果页面 -->
+                            <page string="Demo Results">
+                                <group string="Execution History">
+                                    <field name="demo_execution_history" nolabel="1">
+                                        <list>
+                                            <field name="execution_date"/>
+                                            <field name="is_success" widget="boolean"/>
+                                            <field name="arguments" widget="text"/>
+                                            <field name="result" widget="text"/>
+                                        </list>
+                                        <form>
+                                            <group>
+                                                <group>
+                                                    <field name="execution_date" readonly="1"/>
+                                                    <field name="is_success" readonly="1"/>
+                                                </group>
+                                                <group>
+                                                    <field name="tool_id" readonly="1"/>
+                                                </group>
+                                            </group>
+                                            <group string="Arguments">
+                                                <field name="arguments" nolabel="1" readonly="1" widget="text"/>
+                                            </group>
+                                            <group string="Result">
+                                                <field name="result" nolabel="1" readonly="1" widget="text"/>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+
                             <page string="Parameters">
                                 <group>
                                     <field name="parameters" widget="json" nolabel="1"/>
@@ -62,7 +102,7 @@
                                     <field name="tool_type" invisible="1"/>
 
                                     <group string="Python Code" invisible="tool_type != 'python'">
-                                        <field name="python_code" nolabel="1" widget="ace" options="{'mode': 'python'}"/>
+                                        <field name="python_code" nolabel="1" options="{'mode': 'python'}"/>
                                     </group>
 
                                     <group string="Odoo Method" invisible="tool_type != 'odoo_method'">

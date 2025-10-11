@@ -81,21 +81,7 @@ except Exception as e:
                 },
                 "required": ["expression"]
             }</field>
-            <field name="python_code"><![CDATA[
-# Simple calculator implementation
-try:
-    # Security: Only allow basic math operations
-    allowed_chars = set('0123456789+-*/.() ')
-    if not all(c in allowed_chars for c in arguments['expression']):
-        result = "Error: Only basic math operations are allowed"
-    else:
-        # Use eval with limited globals and locals for safety
-        result = eval(arguments['expression'], {'__builtins__': {}}, {})
-except ZeroDivisionError:
-    result = "Error: Division by zero"
-except Exception as e:
-    result = f"Error: {str(e)}"
-            ]]></field>
+            <field name="python_code"></field>
             <field name="is_active">True</field>
         </record>
 
@@ -108,11 +94,6 @@ except Exception as e:
             <field name="parameters">{
                 "type": "object",
                 "properties": {
-                    "recipients": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": "List of email addresses"
-                    },
                     "subject": {
                         "type": "string",
                         "description": "Email subject"
@@ -124,26 +105,7 @@ except Exception as e:
                 },
                 "required": ["recipients", "subject", "body"]
             }</field>
-            <field name="python_code"><![CDATA[
-# 模拟发送邮件功能
-try:
-    recipients = arguments.get('recipients', [])
-    subject = arguments.get('subject', 'No Subject')
-    body = arguments.get('body', '')
-    
-    # 模拟发送邮件
-    result = {
-        'success': True,
-        'message': f"Email sent to {', '.join(recipients)}",
-        'subject': subject,
-        'recipients_count': len(recipients)
-    }
-except Exception as e:
-    result = {
-        'success': False,
-        'error': f"Failed to send email: {str(e)}"
-    }
-            ]]></field>
+            <field name="python_code"></field>
             <field name="is_active">True</field>
         </record>
 
@@ -153,20 +115,7 @@ except Exception as e:
             <field name="description">Search for products in the system</field>
             <field name="tool_type">python</field>
             <field name="function_name">search_products</field>
-            <field name="parameters">{
-                "type": "object",
-                "properties": {
-                    "search_term": {
-                        "type": "string",
-                        "description": "Product name or description to search for"
-                    },
-                    "limit": {
-                        "type": "number",
-                        "description": "Maximum number of results (default: 10)"
-                    }
-                },
-                "required": ["search_term"]
-            }</field>
+            <field name="parameters"></field>
             <field name="python_code"><![CDATA[
 # 模拟产品搜索功能
 try:
