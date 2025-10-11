@@ -18,7 +18,7 @@
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
     'category': 'Authentication',
-    'price': 29.99,
+    'price': 55.55,
     'currency': 'USD',
     'depends': ['base', 'web', 'website', 'auth_oauth', 'oudu_wechat_login'],
     'data': [

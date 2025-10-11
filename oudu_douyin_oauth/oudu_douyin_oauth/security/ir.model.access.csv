@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_oudu_douyin_config_manager,oudu.douyin.config.manager,model_oudu_douyin_config,base.group_system,1,1,1,1
+access_oudu_douyin_config_user,oudu.douyin.config.user,model_oudu_douyin_config,base.group_user,1,0,0,0
+access_oudu_douyin_auth_manager,oudu.douyin.auth.manager,model_oudu_douyin_auth,base.group_system,1,1,1,1
+access_oudu_douyin_auth_user,oudu.douyin.auth.user,model_oudu_douyin_auth,base.group_user,1,1,0,1

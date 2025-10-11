@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_douyin_auth_list" model="ir.ui.view">
+        <field name="name">oudu.douyin.auth.list</field>
+        <field name="model">oudu.douyin.auth</field>
+        <field name="arch" type="xml">
+            <list string="抖音授权记录">
+                <field name="code"/>
+                <field name="open_id"/>
+                <field name="nickname"/>
+                <field name="status"/>
+                <field name="auth_time"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_douyin_auth_form" model="ir.ui.view">
+        <field name="name">oudu.douyin.auth.form</field>
+        <field name="model">oudu.douyin.auth</field>
+        <field name="arch" type="xml">
+            <form string="抖音授权记录">
+                <header>
+                    <button name="refresh_access_token" type="object" string="刷新Token" class="btn-primary"/>
+                    <button name="get_user_info" type="object" string="同步用户信息"/>
+                    <button name="get_user_mobile" type="object" string="获取手机号"/>
+                    <button name="get_enterprise_info" type="object" string="经营身份信息"/>
+                    <button name="action_revoke_auth" type="object" string="撤销授权" class="btn-danger"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="config_id"/>
+                            <field name="user_id"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="open_id"/>
+                            <field name="union_id"/>
+                            <field name="nickname"/>
+                            <field name="auth_time"/>
+                        </group>
+                    </group>
+                    <group string="Token信息">
+                        <field name="access_token" password="True"/>
+                        <field name="refresh_token" password="True"/>
+                        <field name="token_expires"/>
+                    </group>
+                    <group>
+                        <group string="用户信息">
+                            <field name="avatar"/>
+                            <field name="gender"/>
+                            <field name="country"/>
+                            <field name="province"/>
+                            <field name="city"/>
+                        </group>
+                        <group string="手机号">
+                            <field name="mobile"/>
+                            <field name="mobile_code"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="经营身份信息">
+                            <field name="enterprise_info" widget="json"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_douyin_auth_search" model="ir.ui.view">
+        <field name="name">oudu.douyin.auth.search</field>
+        <field name="model">oudu.douyin.auth</field>
+        <field name="arch" type="xml">
+            <search string="抖音授权记录搜索">
+                <field name="open_id"/>
+                <field name="nickname"/>
+                <field name="status"/>
+                <filter string="已授权" name="active" domain="[('status','=','active')]"/>
+                <filter string="已过期" name="expired" domain="[('status','=','expired')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_douyin_auth" model="ir.actions.act_window">
+        <field name="name">抖音授权记录</field>
+        <field name="res_model">oudu.douyin.auth</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_active':1}</field>
+    </record>
+
+    <menuitem id="menu_douyin_auth"
+              name="授权记录"
+              action="action_douyin_auth"
+              parent="base.menu_administration"
+              sequence="702"
+    />
+</odoo>

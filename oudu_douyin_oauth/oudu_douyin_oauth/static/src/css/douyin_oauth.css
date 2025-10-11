@@ -1,0 +1,27 @@
+.douyin-connect-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.douyin-connect-btn:hover {
+    background-color: #333;
+}
+
+.douyin-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* 二维码页面样式 */
+#douyin_qrcode {
+    display: inline-block;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}

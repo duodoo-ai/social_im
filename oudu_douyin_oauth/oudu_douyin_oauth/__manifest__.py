@@ -26,7 +26,7 @@
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
     'category': 'Authentication',
-    'price': 55.55,
+    'price': 100,
     'currency': 'USD',
     'depends': [
         'base',
@@ -48,6 +48,15 @@
     'images': [
         'static/description/banner.png',
     ],
+    # 'assets': {
+        # 'web.assets_frontend': [
+        #     'oudu_douyin_oauth/static/src/js/social_login.js',
+        #     'oudu_douyin_oauth/static/src/js/douyin_qrcode.js',
+        # ],
+        # 'web.assets_backend': [
+        #     'oudu_douyin_oauth/static/src/js/douyin_oauth.js',
+        # ],
+    # },
     'demo': [],
     'installable': True,
     'application': True,

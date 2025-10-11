@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from datetime import datetime, timedelta
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 
@@ -66,24 +66,24 @@ class DouyinConfig(models.Model):
             config.redirect_uri = f"{base_url}/douyin/auth/callback"
 
     def get_auth_url(self, state=None):
-        """生成授权URL - 根据抖音官方文档格式"""
-        self.ensure_one()
+        """生成抖音授权URL"""
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        redirect_uri = f"{base_url}/douyin/auth/callback"
+        redirect_uri_encoded = quote(redirect_uri, safe='')
 
-        # 使用抖音官方文档中的PC端授权地址
-        auth_base_url = "https://open.douyin.com/platform/oauth/pc/auth"
+        # 更新授权URL和scope
+        auth_url = (
+            "https://open.douyin.com/platform/oauth/connect"
+            f"?client_key={self.client_key}"
+            f"&response_type=code"
+            f"&scope=trial.whitelist"  # 修改为测试白名单权限
+            f"&redirect_uri={redirect_uri_encoded}"
+        )
 
-        params = {
-            'client_key': self.client_key,
-            'response_type': 'code',
-            'scope': self.scope,
-            'redirect_uri': self.redirect_uri,
-            'state': state or f"douyin_{int(datetime.now().timestamp())}",
-        }
+        if state:
+            auth_url += f"&state={state}"
 
-        # 过滤空值参数
-        params = {k: v for k, v in params.items() if v}
-
-        return f"{auth_base_url}?{urlencode(params)}"
+        return auth_url
 
     def action_test_connection(self):
         """测试连接配置"""

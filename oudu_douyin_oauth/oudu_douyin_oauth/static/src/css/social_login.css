@@ -1,0 +1,44 @@
+/* 社交登录基础样式 */
+.oe_login_buttons .social-login-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px 20px !important;
+    margin: 8px 0 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    background: white !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+.oe_login_buttons .social-login-btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+/* 微信按钮样式 */
+.oe_login_wechat_qr .btn {
+    background: #07c160 !important;
+    border-color: #07c160 !important;
+    color: white !important;
+}
+
+.oe_login_wechat_qr .btn:hover {
+    background: #06ae56 !important;
+    border-color: #06ae56 !important;
+}
+
+/* 抖音按钮样式 */
+.oe_login_douyin_qr .btn {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: white !important;
+}
+
+.oe_login_douyin_qr .btn:hover {
+    background: #333333 !important;
+    border-color: #333333 !important;
+}
