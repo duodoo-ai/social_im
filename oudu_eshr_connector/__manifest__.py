@@ -13,7 +13,7 @@
         Employee Information Integration
         Odoo与金蝶e-shr组织架构、职工信息集成
         """,
-    "version": "18.0.3.0",
+    'version': '18.0.3.0.0',
     'author': 'DuodooTEKr多度科技',
     'phone': '18951631470',
     'email': 'zou.jason@qq.com',
