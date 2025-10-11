@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odoo微信服务号模板消息模块 - DuodooTEKr</title>
+    <title>Odoo金蝶e-sHR集成模块 - DuodooTEKr</title>
     <style>
         * {
             margin: 0;
@@ -159,78 +159,127 @@
         .justify-content-between {
             justify-content: space-between;
         }
-        .wechat-green {
-            background-color: #07C160;
+        .kingdee-blue {
+            background-color: #2D64B3;
             color: white;
-            border-color: #07C160;
+            border-color: #2D64B3;
         }
-        .wechat-green:hover {
-            background-color: #05a54e;
-            border-color: #05a54e;
+        .kingdee-blue:hover {
+            background-color: #255499;
+            border-color: #255499;
         }
         .module-header {
             text-align: center;
-            padding: 40px 0;
-            background: linear-gradient(135deg, #07C160 0%, #05a54e 100%);
+            padding: 60px 0;
+            background: linear-gradient(135deg, #2D64B3 0%, #1E4A8C 100%);
             color: white;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
         }
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            gap: 25px;
+            margin: 40px 0;
         }
         .feature-card {
             background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
         }
         .feature-card h4 {
-            color: #07C160;
+            color: #2D64B3;
             margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
         }
         .service-section {
             text-align: center;
-            padding: 40px 0;
+            padding: 50px 0;
         }
         .service-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            gap: 25px;
+            margin-top: 40px;
         }
         .service-item {
             text-align: center;
         }
         .service-icon {
-            width: 75px;
-            height: 75px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin: 0 auto 15px;
-            background: #f5f7f9;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #2D64B3 0%, #1E4A8C 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            color: #07C160;
+            font-size: 32px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(45, 100, 179, 0.3);
         }
         .contact-section {
-            background: #e8f5e9;
-            padding: 40px;
-            border-radius: 8px;
-            margin: 40px 0;
+            background: linear-gradient(135deg, #e8f0fe 0%, #e3f2fd 100%);
+            padding: 50px;
+            border-radius: 12px;
+            margin: 50px 0;
+            text-align: center;
         }
-        .code-block {
-            background: #f8f9fa;
-            border-left: 4px solid #07C160;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
+        .integration-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .architecture-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            margin: 30px 0;
+        }
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .tech-item {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #475569;
+        }
+        .benefit-list {
+            list-style: none;
+            padding: 0;
+        }
+        .benefit-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .benefit-list li:before {
+            content: "✓";
+            color: #2D64B3;
+            font-weight: bold;
+            margin-right: 10px;
         }
         @media (max-width: 768px) {
             .feature-grid, .service-grid {
@@ -239,60 +288,65 @@
             .d-flex {
                 flex-direction: column;
             }
+            .tech-stack {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
     <section class="oe_container">
         <div class="module-header">
-            <h2 class="oe_slogan">Odoo微信服务号模板消息模块</h2>
-            <h3 class="oe_slogan mb-0">完整的微信服务号消息发送与管理系统</h3>
-            <h4 class="oe_slogan mt-0" style="font-size: 23px">DuodooTEKr多度科技 - www.duodoo.tech</h4>
-            <h3 class="oe_slogan">支持多种消息类型与智能跳转</h3>
-            <div class="oe_demo oe_screenshot"
-                style="max-width: 30%; margin: 16px auto;">
-                <img src="qrcode.jpg">
+            <h2 class="oe_slogan" style="color: white; font-size: 2.5rem;">Odoo金蝶e-sHR集成模块</h2>
+            <h3 class="oe_slogan mb-0" style="color: white; font-size: 1.5rem;">企业级人力资源系统无缝集成解决方案</h3>
+            <h4 class="oe_slogan mt-0" style="font-size: 1.2rem; color: #e3f2fd;">DuodooTEKr多度科技 - www.duodoo.tech</h4>
+            <div class="tech-stack">
+                <span class="tech-item">金蝶e-sHR</span>
+                <span class="tech-item">Odoo HR</span>
+                <span class="tech-item">SQL Server</span>
+                <span class="tech-item">实时同步</span>
+                <span class="tech-item">双向集成</span>
             </div>
         </div>
     </section>
 
     <section class="oe_container">
         <div class="oe_row oe_spaced">
-            <div class="text-justify" style="max-width: 84%; margin: 16px auto;">
+            <div class="text-justify" style="max-width: 84%; margin: 16px 8%;">
                 <h3 class="oe_slogan">概述</h3>
                 <p class="oe_mt32">
-                    <strong>oudu_wechat_message</strong> 模块为Odoo系统提供了完整的微信服务号模板消息发送与管理解决方案。该模块允许其他业务模块调用其公共服务方法发送模板消息，包含完整的消息存储、权限控制和运营分析功能。
+                    Odoo金蝶e-sHR集成模块是一个企业级的人力资源系统集成解决方案，实现金蝶e-sHR与Odoo系统之间的组织架构、员工信息的实时同步。该模块通过自动化的数据同步机制，确保两个系统之间数据的一致性和准确性。
                 </p>
                 <p>
-                    无论是系统通知、业务报告、预警提醒还是自定义消息，本模块都能提供稳定可靠的消息发送服务。特别适用于需要与微信生态深度集成的企业，能够显著提升用户触达效率和消息管理能力。
+                    特别适用于使用金蝶e-sHR作为主人力资源管理系统，同时使用Odoo进行业务管理的企业。通过本模块，企业可以避免数据重复录入，提高数据准确性，降低人工维护成本。
                 </p>
 
                 <div class="feature-grid">
                     <div class="feature-card">
-                        <h4>消息管理</h4>
-                        <p>完整的消息生命周期管理，从创建、发送到统计分析的完整流程</p>
+                        <h4><i class="fas fa-sync-alt"></i> 实时数据同步</h4>
+                        <p>支持定时自动同步，确保金蝶e-sHR与Odoo系统数据的实时一致性，减少人工干预</p>
                     </div>
                     <div class="feature-card">
-                        <h4>智能跳转</h4>
-                        <p>支持自定义跳转链接和模型关联，用户点击后自动跳转到对应页面</p>
+                        <h4><i class="fas fa-sitemap"></i> 组织架构同步</h4>
+                        <p>完整同步部门层级结构、职位信息，保持组织架构在两个系统中的一致性</p>
                     </div>
                     <div class="feature-card">
-                        <h4>权限控制</h4>
-                        <p>精细的权限管理，确保用户只能查看自己有权限访问的消息</p>
+                        <h4><i class="fas fa-users"></i> 员工信息同步</h4>
+                        <p>自动同步员工基本信息、岗位、上级关系、联系方式等关键人力资源数据</p>
                     </div>
                     <div class="feature-card">
-                        <h4>统计分析</h4>
-                        <p>完整的发送统计、打开次数和点击行为分析，助力运营决策</p>
+                        <h4><i class="fas fa-database"></i> 双向数据映射</h4>
+                        <p>建立金蝶e-sHR与Odoo系统间的数据映射关系，支持字段级别的数据转换</p>
                     </div>
-                </div>
-                <div class="oe_demo oe_screenshot mt16">
-                    <img src="screenshot.png">
-                </div>
-                <div class="oe_demo oe_screenshot mt16">
-                    <img src="screenshot1.png">
-                </div>
-                <div class="oe_demo oe_screenshot mt16">
-                    <img src="screenshot2.png">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-shield-alt"></i> 数据安全可靠</h4>
+                        <p>采用安全的数据库连接方式，确保数据传输安全，支持错误重试机制</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-cogs"></i> 灵活配置</h4>
+                        <p>支持同步频率自定义、字段映射配置、同步日志查看等灵活配置选项</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -300,88 +354,57 @@
 
     <section class="oe_container">
         <div class="oe_row oe_spaced">
-            <div class="text-justify" style="max-width:84%; margin:16px auto">
-                <h3 class="oe_slogan">核心功能</h3>
+            <div class="text-justify" style="max-width:84%; margin:16px 8%">
+                <h3 class="oe_slogan">核心功能特性</h3>
 
-                <h4 class="mt16">1. 消息模板与发送</h4>
-                <p>模块提供标准化的消息模板，支持多种消息类型：</p>
-                <ul>
-                    <li><strong>系统通知</strong> - 系统级重要通知</li>
-                    <li><strong>业务报告</strong> - 业务数据报表和统计信息</li>
-                    <li><strong>预警提醒</strong> - 异常情况和预警信息</li>
-                    <li><strong>自定义消息</strong> - 灵活配置的自定义内容</li>
-                </ul>
-
-                <div class="code-block">
-// 快速发送消息示例
-success = self.env['wechat.notification.service'].send_quick_notification(
-    title="新订单通知",
-    content="您有一个新的采购订单需要处理",
-    message_type="采购通知",
-    target="采购部门",
-    redirect_url="/purchase/orders/123"
-)
+                <div class="architecture-diagram">
+                    <h4 style="text-align: center; color: #2D64B3; margin-bottom: 20px;">
+                        <i class="fas fa-sitemap"></i> 系统集成架构
+                    </h4>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="display: inline-block; text-align: left;">
+                            <div style="margin: 10px 0;"><strong>🔹 数据源层</strong>: 金蝶e-sHR SQL Server数据库</div>
+                            <div style="margin: 10px 0;"><strong>🔹 集成中间件</strong>: Odoo同步服务 + 数据映射引擎</div>
+                            <div style="margin: 10px 0;"><strong>🔹 目标系统层</strong>: Odoo HR模块（部门、员工、职位）</div>
+                            <div style="margin: 10px 0;"><strong>🔹 监控管理层</strong>: 同步日志、错误处理、性能监控</div>
+                        </div>
+                    </div>
                 </div>
 
-                <h4 class="mt16">2. 用户权限与访问控制</h4>
-                <p>精细的权限管理体系，确保信息安全：</p>
-                <ul>
-                    <li>用户只能查看自己接收到的消息</li>
-                    <li>支持消息详情页面的权限验证</li>
-                    <li>完整的消息列表权限过滤</li>
-                </ul>
+                <h4>同步数据范围</h4>
+                <div style="text-align: center; margin: 20px 0;">
+                    <span class="integration-badge">部门组织架构</span>
+                    <span class="integration-badge">员工基本信息</span>
+                    <span class="integration-badge">职位岗位信息</span>
+                    <span class="integration-badge">上下级关系</span>
+                    <span class="integration-badge">联系方式</span>
+                    <span class="integration-badge">入职信息</span>
+                </div>
 
-                <h4 class="mt16">3. 智能跳转与OAuth集成</h4>
-                <p>智能跳转机制，提升用户体验：</p>
-                <ul>
-                    <li>支持自定义URL跳转</li>
-                    <li>支持模型关联记录自动跳转</li>
-                    <li>与微信OAuth无缝集成，实现自动登录</li>
-                    <li>未登录用户自动跳转登录页面</li>
-                </ul>
+                <h4>主要业务价值</h4>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-line"></i> 提升数据准确性</h4>
+                        <p>消除人工录入错误，确保人力资源数据的准确性和及时性</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-clock"></i> 节约人工成本</h4>
+                        <p>自动化数据同步，大幅减少人工维护工作量，提高工作效率</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-tasks"></i> 业务流程优化</h4>
+                        <p>实现HR系统与业务系统的无缝对接，优化整体业务流程</p>
+                    </div>
+                </div>
 
-                <h4 class="mt16">4. 统计分析与运营支持</h4>
-                <p>完整的运营数据分析功能：</p>
-                <ul>
-                    <li>发送成功率统计</li>
-                    <li>消息打开次数统计</li>
-                    <li>用户点击行为记录</li>
-                    <li>失败消息重试机制</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section class="oe_container">
-        <div class="oe_row oe_spaced">
-            <div class="text-justify" style="max-width:84%; margin:16px auto">
-                <h3 class="oe_slogan">技术架构</h3>
-
-                <h4 class="mt16">模块依赖</h4>
-                <p>本模块基于以下Odoo模块构建：</p>
-                <ul>
-                    <li><strong>base</strong> - Odoo基础模块</li>
-                    <li><strong>web</strong> - Web界面支持</li>
-                    <li><strong>website</strong> - 网站功能支持</li>
-                    <li><strong>auth_oauth</strong> - OAuth认证支持</li>
-                    <li><strong>oudu_wechat_login</strong> - 微信登录集成</li>
-                </ul>
-
-                <h4 class="mt16">核心模型</h4>
-                <p>模块包含三个核心数据模型：</p>
-                <ul>
-                    <li><strong>wechat.message</strong> - 微信消息主记录</li>
-                    <li><strong>wechat.user.message</strong> - 用户消息关联记录</li>
-                    <li><strong>wechat.notification.service</strong> - 消息发送服务</li>
-                </ul>
-
-                <h4 class="mt16">API集成</h4>
-                <p>与微信服务号API深度集成：</p>
-                <ul>
-                    <li>微信模板消息API</li>
-                    <li>OAuth 2.0授权流程</li>
-                    <li>Access Token管理</li>
-                    <li>错误处理和重试机制</li>
+                <h4>技术特性</h4>
+                <ul class="benefit-list">
+                    <li>基于金蝶e-sHR官方数据库结构开发，确保兼容性</li>
+                    <li>支持SQL Server数据库直连，数据传输高效稳定</li>
+                    <li>自动处理中文字符编码，确保数据完整性</li>
+                    <li>完善的错误处理和日志记录机制</li>
+                    <li>支持增量同步和全量同步两种模式</li>
+                    <li>可配置的同步频率和触发条件</li>
                 </ul>
             </div>
         </div>
@@ -391,18 +414,18 @@ success = self.env['wechat.notification.service'].send_quick_notification(
         <div class="oe_container d-flex justify-content-around align-items-lg-center flex-column flex-lg-row">
             <div class="d-flex flex-column m-3 ms-lg-4">
                 <h3 class="oe_slogan mb-3 mt-3 text-left">
-                    <i class="fa fa-comments mr8"></i>需要更多功能？
+                    <i class="fas fa-cogs mr8"></i>需要定制开发？
                 </h3>
                 <p>
-                    您的Odoo集成遇到问题了吗？或者感觉系统缺少关键功能？<br>如果以上任一问题的答案是<b>是</b>，
-                    请随时联系我们并提出您的需求。<br>我们期待与您讨论需求并规划下一步合作。<br>
+                    您的企业有特殊的HR系统集成需求吗？或者需要与其他系统进行集成？<br>如果以上任一问题的答案是<b>是</b>，
+                    请随时联系我们并提出您的需求。<br>我们拥有丰富的企业系统集成经验，期待为您提供专业的解决方案。<br>
                 </p>
             </div>
             <div class="oe_slogan d-flex flex-column ms-1 me-1 ms-lg-4 me-lg-4 flex-grow-1">
-                <a class="btn btn-primary btn-lg m-3 wechat-green"
-                    href="mailto:zou.jason@qq.com?subject=请求报价：Odoo微信登录模块"
+                <a class="btn btn-primary btn-lg m-3 kingdee-blue"
+                    href="mailto:zou.jason@qq.com?subject=Odoo金蝶e-sHR集成模块咨询"
                     style="font-size: 1.2rem; position: relative; overflow: hidden; border: none;">
-                    <i class="fa fa-envelope me-1"></i>请求报价
+                    <i class="fas fa-envelope me-1"></i>立即咨询
                 </a>
             </div>
         </div>
@@ -411,71 +434,51 @@ success = self.env['wechat.notification.service'].send_quick_notification(
     <section class="oe_container">
         <div class="oe_row oe_spaced">
             <h3 class="oe_slogan">我们的服务</h3>
-            <div class="d-flex justify-content-between">
-                <div>
-                    <div>
-                        <div class="service-icon">
-                            <i class="fa fa-code"></i>
-                        </div>
-                        <h3
-                            class="oe_slogan"
-                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
-                        >
-                            Odoo <br>开发
-                        </h3>
+            <div class="service-grid">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-database"></i>
                     </div>
+                    <h3 class="oe_slogan" style="text-align: center; font-size: 16px; margin: 10px 0; color: #000 !important;">
+                        系统集成<br>开发
+                    </h3>
+                    <p style="text-align: center; color: #666;">金蝶、用友、SAP等ERP系统与Odoo集成</p>
                 </div>
-                <div>
-                    <div>
-                        <div class="service-icon">
-                            <i class="fa fa-plug"></i>
-                        </div>
-                        <h3
-                            class="oe_slogan"
-                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
-                        >
-                            Odoo <br>集成
-                        </h3>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-plug"></i>
                     </div>
+                    <h3 class="oe_slogan" style="text-align: center; font-size: 16px; margin: 10px 0; color: #000 !important;">
+                        数据同步<br>解决方案
+                    </h3>
+                    <p style="text-align: center; color: #666;">实时数据同步、批量数据处理、数据清洗</p>
                 </div>
-                <div>
-                    <div>
-                        <div class="service-icon">
-                            <i class="fa fa-server"></i>
-                        </div>
-                        <h3
-                            class="oe_slogan"
-                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
-                        >
-                            Odoo <br>部署
-                        </h3>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-project-diagram"></i>
                     </div>
+                    <h3 class="oe_slogan" style="text-align: center; font-size: 16px; margin: 10px 0; color: #000 !important;">
+                        业务流程<br>优化
+                    </h3>
+                    <p style="text-align: center; color: #666;">系统对接、流程再造、效率提升</p>
                 </div>
-                <div>
-                    <div>
-                        <div class="service-icon">
-                            <i class="fa fa-graduation-cap"></i>
-                        </div>
-                        <h3
-                            class="oe_slogan"
-                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
-                        >
-                            Odoo <br>培训
-                        </h3>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
+                    <h3 class="oe_slogan" style="text-align: center; font-size: 16px; margin: 10px 0; color: #000 !important;">
+                        技术培训<br>支持
+                    </h3>
+                    <p style="text-align: center; color: #666;">系统使用培训、技术指导、最佳实践</p>
                 </div>
-                <div>
-                    <div>
-                        <div class="service-icon">
-                            <i class="fa fa-life-ring"></i>
-                        </div>
-                        <h3
-                            class="oe_slogan"
-                            style="text-align: center; font-size: 14px; width: 100%; margin: 0; margin-top: 5px; color: #000 !important; opacity: 1 !important; line-height: 17px"
-                        >
-                            Odoo <br>支持
-                        </h3>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-life-ring"></i>
                     </div>
+                    <h3 class="oe_slogan" style="text-align: center; font-size: 16px; margin: 10px 0; color: #000 !important;">
+                        运维<br>支持
+                    </h3>
+                    <p style="text-align: center; color: #666;">系统维护、故障排查、性能优化</p>
                 </div>
             </div>
         </div>
@@ -485,10 +488,21 @@ success = self.env['wechat.notification.service'].send_quick_notification(
         <div class="oe_row oe_spaced">
             <div class="contact-section">
                 <h3 class="oe_slogan">联系我们</h3>
-                <p><strong>电话：</strong>18951631470</p>
-                <p><strong>邮箱：</strong>zou.jason@qq.com</p>
-                <p><strong>网站：</strong>http://www.duodoo.tech</p>
-                <p>欢迎随时联系我们，获取更多关于Odoo微信消息模块的详细信息和技术支持。</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+                    <div>
+                        <i class="fas fa-phone" style="color: #2D64B3; font-size: 24px; margin-bottom: 10px;"></i>
+                        <p><strong>电话：</strong>18951631470</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-envelope" style="color: #2D64B3; font-size: 24px; margin-bottom: 10px;"></i>
+                        <p><strong>邮箱：</strong>zou.jason@qq.com</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-globe" style="color: #2D64B3; font-size: 24px; margin-bottom: 10px;"></i>
+                        <p><strong>网站：</strong>http://www.duodoo.tech</p>
+                    </div>
+                </div>
+                <p style="margin-top: 30px; font-size: 1.1rem;">欢迎随时联系我们，获取更多关于Odoo金蝶e-sHR集成模块的详细信息、技术演示和定制开发服务。</p>
             </div>
         </div>
     </section>
