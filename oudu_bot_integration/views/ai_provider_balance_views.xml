@@ -1,0 +1,86 @@
+<odoo>
+    <!-- Balance History Tree View -->
+    <record id="view_ai_provider_balance_tree" model="ir.ui.view">
+        <field name="name">ai.provider.balance.tree</field>
+        <field name="model">oudu.bot.provider.balance</field>
+        <field name="arch" type="xml">
+            <list string="Balance History">
+                <field name="check_date"/>
+                <field name="provider_id"/>
+                <field name="balance"/>
+                <field name="currency"/>
+                <field name="balance_status" widget="selection"/>
+                <field name="is_success" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Balance History Form View -->
+    <record id="view_ai_provider_balance_form" model="ir.ui.view">
+        <field name="name">ai.provider.balance.form</field>
+        <field name="model">oudu.bot.provider.balance</field>
+        <field name="arch" type="xml">
+            <form string="Balance Record">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="provider_id"/>
+                            <field name="check_date"/>
+                            <field name="is_success"/>
+                        </group>
+                        <group>
+                            <field name="balance"/>
+                            <field name="currency"/>
+                            <field name="balance_status"/>
+                        </group>
+                    </group>
+                    <group col="2" string="Thresholds">
+                        <field name="low_balance_threshold"/>
+                        <field name="critical_balance_threshold"/>
+                    </group>
+                    <group string="Error Information" invisible="is_success">
+                        <field name="error_message" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Add balance fields to provider form view -->
+    <record id="view_ai_provider_form_inherit_balance" model="ir.ui.view">
+        <field name="name">ai.provider.form.inherit.balance</field>
+        <field name="model">oudu.bot.provider</field>
+        <field name="inherit_id" ref="oudu_bot_integration.view_ai_provider_form"/>
+        <field name="arch" type="xml">
+            <button name='test_connection' position="after">
+                <button name="check_balance_now" type="object" string="Check Balance Now" class="btn-secondary"/>
+                <button name="action_view_balance_history" type="object" string="View Balance History" class="btn-secondary"/>
+            </button>
+            <xpath expr="//sheet" position="inside">
+                <group string="Balance Monitoring" colspan="2">
+                    <group string="Current Balance">
+                        <field name="current_balance" readonly="1"/>
+                        <field name="currency" readonly="1"/>
+                        <field name="balance_status" readonly="1"/>
+                    </group>
+                    <group string="Balance Settings">
+                        <field name="low_balance_threshold"/>
+                        <field name="critical_balance_threshold"/>
+                        <field name="auto_deactivate_low_balance"/>
+                        <field name="balance_check_frequency"
+                               widget="radio"
+                               options="{'horizontal': true}"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action for Balance History -->
+    <record id="action_ai_provider_balance" model="ir.actions.act_window">
+        <field name="name">AI Provider Balance History</field>
+        <field name="res_model">oudu.bot.provider.balance</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_ai_provider_balance_tree"/>
+    </record>
+</odoo>

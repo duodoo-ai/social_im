@@ -1,0 +1,1327 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* oudu_bot_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 08:00+0000\n"
+"PO-Revision-Date: 2025-10-10 08:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: oudu_bot_integration
+#: model:res.groups,name:oudu_bot_integration.group_ai_admin
+msgid "AI Administrator"
+msgstr "AI管理员"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__agent_id
+msgid "AI Agent"
+msgstr "AI代理"
+
+#. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_agent
+msgid "AI Agent Configuration"
+msgstr "AI代理配置"
+
+#. module: oudu_bot_integration
+#: model:ir.module.category,name:oudu_bot_integration.category_ai_agent
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_agent
+msgid "AI Agent Integration"
+msgstr "AI代理集成"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_agent
+msgid "AI Agents"
+msgstr "AI代理"
+
+#. module: oudu_bot_integration
+#: model:res.groups,name:oudu_bot_integration.group_ai_developer
+msgid "AI Developer"
+msgstr "AI开发者"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__provider_id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__provider_id
+msgid "AI Provider"
+msgstr "AI提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.server,name:oudu_bot_integration.cron_ai_provider_balance_check_ir_actions_server
+msgid "AI Provider Balance Check"
+msgstr "AI提供商余额检查"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_provider_balance
+msgid "AI Provider Balance History"
+msgstr "AI提供商余额历史记录"
+
+#. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_provider_balance
+msgid "AI Provider Balance Monitoring"
+msgstr "AI提供商余额监控"
+
+#. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_provider
+msgid "AI Provider Configuration"
+msgstr "AI提供商配置"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_provider
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_provider
+msgid "AI Providers"
+msgstr "AI提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_tool
+msgid "AI Tool Definition"
+msgstr "AI工具定义"
+
+#. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_tool_execute_wizard
+msgid "AI Tool Execution Wizard"
+msgstr "AI工具执行向导"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_tool
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_tool
+msgid "AI Tools"
+msgstr "AI工具"
+
+#. module: oudu_bot_integration
+#: model:res.groups,name:oudu_bot_integration.group_ai_user
+msgid "AI User"
+msgstr "AI用户"
+
+#. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_workflow
+msgid "AI Workflow Automation"
+msgstr "AI工作流自动化"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_workflow
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_workflow
+msgid "AI Workflows"
+msgstr "AI工作流"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__agent_id
+msgid "AI agent that executes this workflow"
+msgstr "执行此工作流的AI代理"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__provider_id
+msgid "AI service provider for this agent"
+msgstr "此代理的AI服务提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__api
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "API Call"
+msgstr "API调用"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form
+msgid "API Configuration"
+msgstr "API配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__api_endpoint
+msgid "API Endpoint"
+msgstr "API端点"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__api_key
+msgid "API Key"
+msgstr "API密钥"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__api_method
+msgid "API Method"
+msgstr "API方法"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__api_version
+msgid "API Version"
+msgstr "API版本"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__api_endpoint
+msgid "API endpoint URL (for api type)"
+msgstr "API端点URL（用于API类型）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__is_active
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__is_active
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__is_active
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__is_active
+msgid "Active"
+msgstr "激活"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__request_config
+msgid "Additional request parameters"
+msgstr "附加请求参数"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form
+msgid "Advanced Configuration"
+msgstr "高级配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__model_config
+msgid "Advanced model-specific configuration"
+msgstr "高级模型特定配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__code
+msgid "Agent Code"
+msgstr "代理代码"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__name
+msgid "Agent Name"
+msgstr "代理名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_agent_code_unique
+msgid "Agent code must be unique!"
+msgstr "代理代码必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_agent_name_unique
+msgid "Agent name must be unique!"
+msgstr "代理名称必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__alibaba
+msgid "Alibaba Tongyi Qianwen"
+msgstr "阿里通义千问"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__allow_auto_execution
+msgid "Allow Auto Execution"
+msgstr "允许自动执行"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__enable_tool_calling
+msgid "Allow agent to call external tools"
+msgstr "允许代理调用外部工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__enable_knowledge_retrieval
+msgid "Allow agent to search knowledge bases"
+msgstr "允许代理搜索知识库"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__allow_auto_execution
+msgid "Allow automatic execution of tool calls"
+msgstr "允许自动执行工具调用"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__allowed_groups
+msgid "Allowed Groups"
+msgstr "允许的群组"
+
+#. module: oudu_bot_integration
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_gateway
+msgid "Artificial Intelligence"
+msgstr "人工智能"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__api_key
+msgid "Authentication key for the AI service"
+msgstr "AI服务的认证密钥"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__auto_deactivate_low_balance
+msgid "Auto Deactivate on Low Balance"
+msgstr "自动停用余额过低的提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__auto_deactivate_low_balance
+msgid "Automatically deactivate provider when balance is too low"
+msgstr "当余额过低时自动停用提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__available_models
+msgid "Available Models"
+msgstr "可用模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__tools_ids
+msgid "Available Tools"
+msgstr "可用工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__baidu
+msgid "Baidu Wenxin Yiyan"
+msgstr "百度文心一言"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__balance
+msgid "Balance"
+msgstr "余额"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__balance_check_frequency
+msgid "Balance Check Frequency"
+msgstr "余额检查频率"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__balance_history
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_provider_balance
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_tree
+msgid "Balance History"
+msgstr "余额历史记录"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
+msgid "Balance Monitoring"
+msgstr "余额监控"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
+msgid "Balance Record"
+msgstr "余额记录"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
+msgid "Balance Settings"
+msgstr "余额设置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__balance_status
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__balance_status
+msgid "Balance Status"
+msgstr "余额状态"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_balance_balance_positive
+msgid "Balance must be positive or zero"
+msgstr "余额必须为正值或零"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__critical_balance_threshold
+msgid "Balance threshold for critical balance warning"
+msgstr "临界余额警告阈值"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__low_balance_threshold
+msgid "Balance threshold for low balance warning"
+msgstr "低余额警告阈值"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__base_url
+msgid "Base URL"
+msgstr "基础URL"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__base_url
+msgid "Base endpoint URL for the AI service"
+msgstr "AI服务的基础端点URL"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__bytedance
+msgid "ByteDance Doubao"
+msgstr "字节跳动豆包"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Cancel"
+msgstr "取消"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Capabilities"
+msgstr "能力"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
+msgid "Check Balance Now"
+msgstr "立即检查余额"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__check_date
+msgid "Check Date"
+msgstr "检查日期"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__is_success
+msgid "Check Successful"
+msgstr "检查是否成功"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__concurrent_executions
+msgid "Concurrent Executions"
+msgstr "并发执行"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Configuration"
+msgstr "配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__temperature
+msgid "Controls randomness (0 = deterministic, 2 = creative)"
+msgstr "控制随机性（0 = 确定性，2 = 创造性）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__temperature
+msgid "Controls randomness in responses (0-2)"
+msgstr "控制响应中的随机性（0-2）"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_agent
+msgid "Create your first AI Agent!"
+msgstr "创建您的第一个AI代理！"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_provider
+msgid "Create your first AI Provider!"
+msgstr "创建您的第一个AI提供商！"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_tool
+msgid "Create your first AI Tool!"
+msgstr "创建您的第一个AI工具！"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_workflow
+msgid "Create your first AI Workflow!"
+msgstr "创建您的第一个AI工作流！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__create_uid
+msgid "Created by"
+msgstr "创建人"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__create_date
+msgid "Created on"
+msgstr "创建时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__critical_balance_threshold
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__critical_balance_threshold
+msgid "Critical Balance Threshold"
+msgstr "临界余额阈值"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__currency
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__currency
+msgid "Currency"
+msgstr "货币"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__currency
+msgid "Currency code (CNY, USD, etc.)"
+msgstr "货币代码（CNY、USD等）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__current_balance
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
+msgid "Current Balance"
+msgstr "当前余额"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__balance
+msgid "Current balance in the provider account"
+msgstr "当前余额在提供商账户中的余额"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__custom
+msgid "Custom Provider"
+msgstr "自定义提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__headers_config
+msgid "Custom headers for API requests"
+msgstr "API请求的自定义头部"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__delete
+msgid "DELETE"
+msgstr "DELETE方法"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_check_frequency__daily
+msgid "Daily"
+msgstr "每日"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__deepseek
+msgid "DeepSeek-R1"
+msgstr "DeepSeek-R1提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__default_model
+msgid "Default Model"
+msgstr "默认模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__default_model
+msgid "Default model to use when not specified"
+msgstr "未指定时使用的默认模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__demo_mode
+msgid "Demo Mode"
+msgstr "演示模式"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__demo_responses
+msgid "Demo Responses"
+msgstr "演示响应"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__description
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__description
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_workflow_form
+msgid "Description"
+msgstr "描述"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__description
+msgid "Detailed description of the workflow"
+msgstr "工作流的详细描述"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__description
+msgid "Detailed description of what the tool does"
+msgstr "工具功能的详细描述"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_test_message
+msgid "Detailed message from the last connection test"
+msgstr "上次连接测试的详细消息"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__name
+msgid "Display name for the AI agent"
+msgstr "AI代理的显示名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__name
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__provider_name
+msgid "Display name for the AI provider"
+msgstr "AI提供商的显示名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__name
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__tool_name
+msgid "Display name for the tool"
+msgstr "工具的显示名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__name
+msgid "Display name for the workflow"
+msgstr "工作流的显示名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__enable_knowledge_retrieval
+msgid "Enable Knowledge Retrieval"
+msgstr "启用知识检索"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__enable_reasoning
+msgid "Enable Reasoning"
+msgstr "启用推理"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__enable_tool_calling
+msgid "Enable Tool Calling"
+msgstr "启用工具调用"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__enable_reasoning
+msgid "Enable complex reasoning capabilities"
+msgstr "启用复杂推理能力"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__demo_mode
+msgid "Enable demo mode for testing without real API calls"
+msgstr "启用演示模式进行测试，无需真实API调用"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__is_active
+msgid "Enable or disable this agent"
+msgstr "启用或禁用此代理"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__is_active
+msgid "Enable or disable this provider"
+msgstr "启用或禁用此提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__is_active
+msgid "Enable or disable this tool"
+msgstr "启用或禁用此工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__is_active
+msgid "Enable or disable this workflow"
+msgstr "启用或禁用此工作流"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__input_arguments
+msgid "Enter arguments in JSON format"
+msgstr "输入参数的JSON格式"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
+msgid "Error Information"
+msgstr "错误信息"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__error_message
+msgid "Error Message"
+msgstr "错误消息"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__error_message
+msgid "Error message if balance check failed"
+msgstr "余额检查失败时的错误消息"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Execute"
+msgstr "执行"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_tool_execute_wizard
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Execute AI Tool"
+msgstr "执行AI工具"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Execute Tool"
+msgstr "执行工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__execution_count
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__execution_count
+msgid "Execution Count"
+msgstr "执行次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__result
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Execution Result"
+msgstr "执行结果"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_workflow_form
+msgid "Execution Settings"
+msgstr "执行设置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__failure_count
+msgid "Failure Count"
+msgstr "失败次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__function
+msgid "Function"
+msgstr "函数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__function_name
+msgid "Function Name"
+msgstr "函数名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__get
+msgid "GET"
+msgstr "GET方法"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__api_method
+msgid "HTTP method for API calls"
+msgstr "API调用的HTTP方法"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__headers_config
+msgid "Headers Configuration"
+msgstr "头部配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__id
+msgid "ID"
+msgstr ""
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Implementation"
+msgstr "实现"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Input Arguments"
+msgstr "输入参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__input_arguments
+msgid "Input Arguments (JSON)"
+msgstr "输入参数的JSON格式"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__input_schema
+msgid "Input Schema"
+msgstr "输入模式"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_workflow_form
+msgid "Input/Output"
+msgstr "输入/输出"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__insufficient
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__insufficient
+msgid "Insufficient"
+msgstr "余额不足"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__code
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__provider_code
+msgid "Internal code for API identification"
+msgstr "用于API识别的内部代码"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__code
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__code
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__code
+msgid "Internal code for system reference"
+msgstr "用于系统引用的内部代码"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__available_models
+msgid "JSON configuration of available models and their capabilities"
+msgstr "可用模型及其能力的JSON配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__workflow_steps
+msgid "JSON definition of workflow steps and logic"
+msgstr "工作流步骤和逻辑的JSON定义"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__parameters
+msgid "JSON schema for function parameters"
+msgstr "函数参数的JSON模式"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__input_schema
+msgid "JSON schema for workflow input validation"
+msgstr "工作流输入验证的JSON模式"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__output_schema
+msgid "JSON schema for workflow output"
+msgstr "工作流输出的JSON模式"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Knowledge"
+msgstr "知识"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__knowledge_base_ids
+msgid "Knowledge Bases"
+msgstr "知识库"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__knowledge_base_ids
+msgid "Knowledge bases for information retrieval"
+msgstr "用于信息检索的知识库"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__last_execution
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__last_execution
+msgid "Last Execution"
+msgstr "最后执行"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_test_message
+msgid "Last Test Message"
+msgstr "上次测试消息"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_test_result
+msgid "Last Test Result"
+msgstr "最后测试结果"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__write_uid
+msgid "Last Updated by"
+msgstr "最后更新人"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__write_date
+msgid "Last Updated on"
+msgstr "最后更新时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_used
+msgid "Last Used"
+msgstr "最后使用"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__low
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__low
+msgid "Low Balance"
+msgstr "低余额"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__low_balance_threshold
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__low_balance_threshold
+msgid "Low Balance Threshold"
+msgstr "低余额阈值"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__max_execution_time
+msgid "Max Execution Time (seconds)"
+msgstr "最大执行时间（秒）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__max_tokens
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__max_tokens
+msgid "Max Tokens"
+msgstr "最大令牌数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__max_execution_time
+msgid "Maximum allowed execution time"
+msgstr "最大允许执行时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__concurrent_executions
+msgid "Maximum concurrent workflow executions"
+msgstr "最大并发工作流执行数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__rate_limit
+msgid "Maximum requests per minute"
+msgstr "每分钟最大请求数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__max_tokens
+msgid "Maximum tokens in response"
+msgstr "响应中的最大令牌数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__max_tokens
+msgid "Maximum tokens per request"
+msgstr "每个请求的最大令牌数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__model_config
+msgid "Model Configuration"
+msgstr "模型配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__model_name
+msgid "Model Name"
+msgstr "模型名称"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Model Parameters"
+msgstr "模型参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_check_frequency__monthly
+msgid "Monthly"
+msgstr "每月"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__function_name
+msgid "Name used in AI function calls"
+msgstr "AI函数调用中使用的名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__top_p
+msgid "Nucleus sampling parameter"
+msgstr "核心采样参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__failure_count
+msgid "Number of failed executions"
+msgstr "失败执行次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__retry_count
+msgid "Number of retry attempts on failure"
+msgstr "失败时的重试次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__success_count
+msgid "Number of successful executions"
+msgstr "成功执行次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__execution_count
+msgid "Number of times this agent has been executed"
+msgstr "此代理已执行的次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__usage_count
+msgid "Number of times this provider has been used"
+msgstr "此提供商已使用的次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__execution_count
+msgid "Number of times this workflow has been executed"
+msgstr "此工作流已执行的次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__odoo_method
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__odoo_method
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Odoo Method"
+msgstr "Odoo方法"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__odoo_model
+msgid "Odoo Model"
+msgstr "Odoo模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__odoo_method
+msgid "Odoo method name to call (for odoo_method type)"
+msgstr "要调用的Odoo方法名称（用于odoo_method类型）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__odoo_model
+msgid "Odoo model name (for odoo_method type)"
+msgstr "Odoo模型名称（用于odoo_method类型）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__openai
+msgid "OpenAI GPT"
+msgstr "OpenAI GPT提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__output_schema
+msgid "Output Schema"
+msgstr "输出模式"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__post
+msgid "POST"
+msgstr "POST方法"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__put
+msgid "PUT"
+msgstr "PUT方法"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Parameters"
+msgstr "参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__parameters
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__parameters_display
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Parameters Schema"
+msgstr "参数模式"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form
+msgid "Performance Settings"
+msgstr "性能设置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__demo_responses
+msgid "Predefined responses for demo mode"
+msgstr "演示模式的预定义响应"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__prompt_template
+msgid "Prompt Template"
+msgstr "提示模板"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__code
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__provider_code
+msgid "Provider Code"
+msgstr "提供商代码"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__provider_name
+msgid "Provider Name"
+msgstr "提供商名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__provider_type
+msgid "Provider Type"
+msgstr "提供商类型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_code_unique
+msgid "Provider code must be unique!"
+msgstr "提供商代码必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_name_unique
+msgid "Provider name must be unique!"
+msgstr "提供商名称必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__python_code
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__python
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Python Code"
+msgstr "Python代码"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__python_code
+msgid "Python code to execute (for python type)"
+msgstr "要执行的Python代码（用于python类型）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__rate_limit
+msgid "Rate Limit (requests/minute)"
+msgstr "速率限制（请求/分钟）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__request_config
+msgid "Request Configuration"
+msgstr "请求配置"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__timeout
+msgid "Request timeout in seconds"
+msgstr "请求超时时间（秒）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__require_authentication
+msgid "Require Authentication"
+msgstr "需要认证"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__require_authentication
+msgid "Require user authentication for tool execution"
+msgstr "工具执行需要用户认证"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_test_result
+msgid "Result of the last connection test"
+msgstr "最后连接测试的结果"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__retry_count
+msgid "Retry Count"
+msgstr "重试次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__provider_type
+msgid "Select the AI service provider"
+msgstr "选择AI服务提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__sequence
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__sequence
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__sequence
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__sequence
+msgid "Sequence"
+msgstr "序列"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__api_version
+msgid "Specific API version if required"
+msgstr "特定API版本（如果需要）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__model_name
+msgid "Specific model to use from the provider"
+msgstr "从提供商使用的特定模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__success_count
+msgid "Success Count"
+msgstr "成功次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__sufficient
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__sufficient
+msgid "Sufficient"
+msgstr "充足"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__system_prompt
+msgid "System Prompt"
+msgstr "系统提示"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "System prompt for the AI agent..."
+msgstr "AI代理的系统提示..."
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__system_prompt
+msgid "System-level instructions for the AI agent"
+msgstr "AI代理的系统级指令"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__temperature
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__temperature
+msgid "Temperature"
+msgstr "温度参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__prompt_template
+msgid "Template for generating prompts with variables"
+msgstr "使用变量生成提示的模板"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__tencent
+msgid "Tencent Hunyuan"
+msgstr "腾讯混元"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form
+msgid "Test Connection"
+msgstr "测试连接"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Test Demo"
+msgstr "测试演示"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Test Execute"
+msgstr "测试执行"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_workflow_form
+msgid "Test Workflow"
+msgstr "测试工作流"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__critical_balance_threshold
+msgid "Threshold for critical balance warning"
+msgstr "临界余额警告阈值"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__low_balance_threshold
+msgid "Threshold for low balance warning"
+msgstr "低余额警告阈值"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
+msgid "Thresholds"
+msgstr "阈值"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__timeout
+msgid "Timeout (seconds)"
+msgstr "超时时间（秒）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__tool_id
+msgid "Tool"
+msgstr "工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__code
+msgid "Tool Code"
+msgstr "工具代码"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_execute_wizard_form
+msgid "Tool Information"
+msgstr "工具信息"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__tool_name
+msgid "Tool Name"
+msgstr "工具名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__tool_type
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__tool_type
+msgid "Tool Type"
+msgstr "工具类型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_tool_code_unique
+msgid "Tool code must be unique!"
+msgstr "工具代码必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_tool_name_unique
+msgid "Tool name must be unique!"
+msgstr "工具名称必须唯一！"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Tools"
+msgstr "工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__tools_ids
+msgid "Tools that this agent can use"
+msgstr "此代理可以使用的工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__top_p
+msgid "Top P"
+msgstr "Top P参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__tool_type
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool_execute_wizard__tool_type
+msgid "Type of tool implementation"
+msgstr "工具实现的类型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__unknown
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__unknown
+msgid "Unknown"
+msgstr "未知"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__usage_count
+msgid "Usage Count"
+msgstr "使用次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__allowed_groups
+msgid "User groups allowed to use this tool"
+msgstr "允许使用此工具的用户群组"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
+msgid "View Balance History"
+msgstr "查看余额历史"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__webhook
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Webhook"
+msgstr "Webhook工具"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__webhook_url
+msgid "Webhook URL"
+msgstr "Webhook URL"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__webhook_url
+msgid "Webhook endpoint URL (for webhook type)"
+msgstr "Webhook端点URL（用于webhook类型）"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_check_frequency__weekly
+msgid "Weekly"
+msgstr "每周"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__last_execution
+msgid "When this agent was last executed"
+msgstr "此代理最后执行的时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_used
+msgid "When this provider was last used"
+msgstr "此提供商最后使用的时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_workflow__last_execution
+msgid "When this workflow was last executed"
+msgstr "此工作流最后执行的时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__is_success
+msgid "Whether the balance check was successful"
+msgstr "是否余额检查成功"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__code
+msgid "Workflow Code"
+msgstr "工作流代码"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_workflow_form
+msgid "Workflow Definition"
+msgstr "工作流定义"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__name
+msgid "Workflow Name"
+msgstr "工作流名称"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_workflow__workflow_steps
+msgid "Workflow Steps"
+msgstr "工作流步骤"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_workflow_code_unique
+msgid "Workflow code must be unique!"
+msgstr "工作流代码必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_workflow_name_unique
+msgid "Workflow name must be unique!"
+msgstr "工作流名称必须唯一！"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_agent__workflow_ids
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_agent_form
+msgid "Workflows"
+msgstr "工作流"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_agent__workflow_ids
+msgid "Workflows associated with this agent"
+msgstr "与此代理关联的工作流"

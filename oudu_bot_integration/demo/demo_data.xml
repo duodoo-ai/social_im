@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- AI Providers Demo Data -->
+        <!-- Note: Main providers are already defined in ai_provider_data.xml -->
+        <record id="provider_demo" model="oudu.bot.provider">
+            <field name="name">Demo Provider</field>
+            <field name="code">DEMO_PROVIDER</field>
+            <field name="provider_type">custom</field>
+            <field name="api_key">demo_api_key_12345</field>
+            <field name="base_url">http://localhost:3000/api/v1</field>
+            <field name="default_model">demo-model</field>
+            <field name="max_tokens">1000</field>
+            <field name="temperature">0.7</field>
+            <field name="timeout">10</field>
+            <field name="rate_limit">1000</field>
+            <field name="is_active">True</field>
+            <field name="demo_mode">True</field>
+        </record>
+
+        <!-- AI Tools Demo Data -->
+        <record id="tool_get_weather" model="oudu.bot.tool">
+            <field name="name">Get Weather Information</field>
+            <field name="code">GET_WEATHER</field>
+            <field name="description">Get current weather information for a specific city</field>
+            <field name="tool_type">python</field>
+            <field name="function_name">get_weather</field>
+            <field name="parameters">{
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string",
+                        "description": "The city name to get weather for"
+                    }
+                },
+                "required": ["city"]
+            }</field>
+            <field name="python_code"><![CDATA[
+# 模拟天气查询 - 实际实现应该调用天气API
+try:
+    city = arguments.get('city', 'Unknown')
+    # 模拟不同的天气响应
+    import random
+    weather_conditions = ['sunny', 'cloudy', 'rainy', 'snowy']
+    temperatures = {
+        'Beijing': random.randint(-5, 35),
+        'Shanghai': random.randint(5, 38),
+        'Guangzhou': random.randint(15, 40),
+        'Shenzhen': random.randint(18, 38)
+    }
+
+    temperature = temperatures.get(city, random.randint(-10, 40))
+    condition = random.choice(weather_conditions)
+
+    result = {
+        'city': city,
+        'temperature': temperature,
+        'condition': condition,
+        'unit': 'celsius',
+        'humidity': f"{random.randint(30, 90)}%",
+        'wind_speed': f"{random.randint(0, 30)} km/h"
+    }
+except Exception as e:
+    result = f"Weather query failed: {str(e)}"
+            ]]></field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="tool_calculate" model="oudu.bot.tool">
+            <field name="name">Calculator</field>
+            <field name="code">CALCULATOR</field>
+            <field name="description">Perform mathematical calculations</field>
+            <field name="tool_type">python</field>
+            <field name="function_name">calculate</field>
+            <field name="parameters">{
+                "type": "object",
+                "properties": {
+                    "expression": {
+                        "type": "string",
+                        "description": "Mathematical expression to calculate"
+                    }
+                },
+                "required": ["expression"]
+            }</field>
+            <field name="python_code"><![CDATA[
+# Simple calculator implementation
+try:
+    # Security: Only allow basic math operations
+    allowed_chars = set('0123456789+-*/.() ')
+    if not all(c in allowed_chars for c in arguments['expression']):
+        result = "Error: Only basic math operations are allowed"
+    else:
+        # Use eval with limited globals and locals for safety
+        result = eval(arguments['expression'], {'__builtins__': {}}, {})
+except ZeroDivisionError:
+    result = "Error: Division by zero"
+except Exception as e:
+    result = f"Error: {str(e)}"
+            ]]></field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="tool_send_email" model="oudu.bot.tool">
+            <field name="name">Send Email</field>
+            <field name="code">SEND_EMAIL</field>
+            <field name="description">Send an email to specified recipients</field>
+            <field name="tool_type">python</field>
+            <field name="function_name">send_email</field>
+            <field name="parameters">{
+                "type": "object",
+                "properties": {
+                    "recipients": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "List of email addresses"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "description": "Email subject"
+                    },
+                    "body": {
+                        "type": "string",
+                        "description": "Email body content"
+                    }
+                },
+                "required": ["recipients", "subject", "body"]
+            }</field>
+            <field name="python_code"><![CDATA[
+# 模拟发送邮件功能
+try:
+    recipients = arguments.get('recipients', [])
+    subject = arguments.get('subject', 'No Subject')
+    body = arguments.get('body', '')
+    
+    # 模拟发送邮件
+    result = {
+        'success': True,
+        'message': f"Email sent to {', '.join(recipients)}",
+        'subject': subject,
+        'recipients_count': len(recipients)
+    }
+except Exception as e:
+    result = {
+        'success': False,
+        'error': f"Failed to send email: {str(e)}"
+    }
+            ]]></field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="tool_search_products" model="oudu.bot.tool">
+            <field name="name">Search Products</field>
+            <field name="code">SEARCH_PRODUCTS</field>
+            <field name="description">Search for products in the system</field>
+            <field name="tool_type">python</field>
+            <field name="function_name">search_products</field>
+            <field name="parameters">{
+                "type": "object",
+                "properties": {
+                    "search_term": {
+                        "type": "string",
+                        "description": "Product name or description to search for"
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum number of results (default: 10)"
+                    }
+                },
+                "required": ["search_term"]
+            }</field>
+            <field name="python_code"><![CDATA[
+# 模拟产品搜索功能
+try:
+    search_term = arguments.get('search_term', '')
+    limit = arguments.get('limit', 10)
+    
+    # 模拟产品数据
+    sample_products = [
+        {'id': 1, 'name': 'Laptop Computer', 'price': 999.99, 'category': 'Electronics'},
+        {'id': 2, 'name': 'Wireless Mouse', 'price': 29.99, 'category': 'Electronics'},
+        {'id': 3, 'name': 'Office Chair', 'price': 199.99, 'category': 'Furniture'},
+        {'id': 4, 'name': 'Desk Lamp', 'price': 49.99, 'category': 'Home'},
+        {'id': 5, 'name': 'Notebook', 'price': 9.99, 'category': 'Stationery'}
+    ]
+    
+    # 模拟搜索逻辑
+    matched_products = [
+        product for product in sample_products 
+        if search_term.lower() in product['name'].lower()
+    ][:limit]
+    
+    result = {
+        'search_term': search_term,
+        'found_count': len(matched_products),
+        'products': matched_products
+    }
+except Exception as e:
+    result = f"Product search failed: {str(e)}"
+            ]]></field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- AI Agents Demo Data -->
+        <record id="agent_customer_service" model="oudu.bot.agent">
+            <field name="name">Customer Service Assistant</field>
+            <field name="code">CUSTOMER_SERVICE</field>
+            <field name="provider_id" ref="provider_demo"/>
+            <field name="model_name">demo-model</field>
+            <field name="system_prompt"><![CDATA[
+You are a helpful customer service assistant for our company. Your role is to:
+1. Answer customer questions about our products and services
+2. Help with order status inquiries
+3. Provide information about shipping and returns
+4. Escalate complex issues to human agents when necessary
+
+Always be polite, professional, and helpful. If you don't know the answer, be honest and offer to connect the customer with a human agent.
+
+Company Information:
+- Name: DemoTech Solutions
+- Products: Software solutions, IT consulting, Cloud services
+- Support Hours: 9 AM - 6 PM, Monday to Friday
+- Contact: support@demotech.com
+            ]]></field>
+            <field name="temperature">0.3</field>
+            <field name="max_tokens">1000</field>
+            <field name="enable_tool_calling">True</field>
+            <field name="enable_knowledge_retrieval">True</field>
+            <field name="allow_auto_execution">False</field>
+            <field name="is_active">True</field>
+            <field eval="[(6, 0, [ref('tool_search_products'), ref('tool_get_weather')])]" name="tools_ids"/>
+        </record>
+
+        <record id="agent_sales_assistant" model="oudu.bot.agent">
+            <field name="name">Sales Assistant</field>
+            <field name="code">SALES_ASSISTANT</field>
+            <field name="provider_id" ref="provider_demo"/>
+            <field name="model_name">demo-model</field>
+            <field name="system_prompt"><![CDATA[
+You are a sales assistant for our company. Your responsibilities include:
+1. Helping customers find the right products for their needs
+2. Providing product information and specifications
+3. Assisting with pricing and quotation requests
+4. Following up on sales leads
+5. Scheduling demo appointments
+
+Be persuasive but not pushy. Focus on understanding customer needs and providing value.
+
+Current Promotions:
+- New customers get 15% off their first order
+- Bulk orders (10+ units) receive volume discounts
+- Free shipping on orders over $500
+            ]]></field>
+            <field name="temperature">0.5</field>
+            <field name="max_tokens">1500</field>
+            <field name="enable_tool_calling">True</field>
+            <field name="enable_knowledge_retrieval">True</field>
+            <field name="allow_auto_execution">False</field>
+            <field name="is_active">True</field>
+            <field eval="[(6, 0, [ref('tool_search_products'), ref('tool_send_email'), ref('tool_calculate')])]" name="tools_ids"/>
+        </record>
+
+        <record id="agent_technical_support" model="oudu.bot.agent">
+            <field name="name">Technical Support Specialist</field>
+            <field name="code">TECH_SUPPORT</field>
+            <field name="provider_id" ref="provider_demo"/>
+            <field name="model_name">demo-model</field>
+            <field name="system_prompt"><![CDATA[
+You are a technical support specialist with expertise in:
+- Software installation and configuration
+- Troubleshooting technical issues
+- Network connectivity problems
+- System performance optimization
+- Security best practices
+
+Provide step-by-step guidance for technical issues. Always start with the simplest solutions first. If the issue is complex, don't hesitate to escalate to senior technicians.
+
+Common Solutions:
+- Restart the application/service
+- Check network connections
+- Verify system requirements
+- Clear cache and temporary files
+            ]]></field>
+            <field name="temperature">0.2</field>
+            <field name="max_tokens">2000</field>
+            <field name="enable_tool_calling">True</field>
+            <field name="enable_knowledge_retrieval">True</field>
+            <field name="enable_reasoning">True</field>
+            <field name="is_active">True</field>
+            <field eval="[(6, 0, [ref('tool_calculate')])]" name="tools_ids"/>
+        </record>
+
+        <!-- AI Workflows Demo Data -->
+        <record id="workflow_customer_onboarding" model="oudu.bot.workflow">
+            <field name="name">Customer Onboarding Workflow</field>
+            <field name="code">CUSTOMER_ONBOARDING</field>
+            <field name="description">Automated workflow for new customer onboarding process</field>
+            <field name="agent_id" ref="agent_customer_service"/>
+            <field name="workflow_steps"><![CDATA[
+[
+    {
+        "type": "llm_call",
+        "name": "Welcome Message",
+        "prompt_template": "Send a welcome message to our new customer: {{customer_name}}. They signed up for our {{service_tier}} service. Include information about next steps and how to get started.",
+        "data_extraction": {
+            "extract_json": true
+        }
+    },
+    {
+        "type": "tool_call",
+        "name": "Send Welcome Email",
+        "tool_name": "send_email",
+        "arguments": {
+            "recipients": ["{{customer_email}}"],
+            "subject": "Welcome to DemoTech Solutions - {{service_tier}}",
+            "body": "{{welcome_message}}"
+        },
+        "output_key": "email_result"
+    },
+    {
+        "type": "condition",
+        "name": "Check Service Tier",
+        "condition": "{{service_tier}} == 'premium'",
+        "true_branch": [
+            {
+                "type": "llm_call",
+                "name": "Schedule Premium Onboarding",
+                "prompt_template": "Create a personalized onboarding message for our premium customer {{customer_name}}. Offer to schedule a 1-on-1 onboarding session and mention the dedicated account manager.",
+                "data_extraction": {
+                    "extract_json": true
+                }
+            }
+        ],
+        "false_branch": [
+            {
+                "type": "llm_call",
+                "name": "Standard Onboarding Info",
+                "prompt_template": "Provide standard onboarding information for {{customer_name}} including documentation links and community support options.",
+                "data_extraction": {
+                    "extract_json": true
+                }
+            }
+        ]
+    }
+]
+            ]]></field>
+            <field name="input_schema"><![CDATA[
+{
+    "type": "object",
+    "properties": {
+        "customer_name": {
+            "type": "string",
+            "description": "Full name of the customer"
+        },
+        "customer_email": {
+            "type": "string",
+            "description": "Email address of the customer"
+        },
+        "service_tier": {
+            "type": "string",
+            "enum": ["basic", "pro", "premium"],
+            "description": "Service tier the customer signed up for"
+        }
+    },
+    "required": ["customer_name", "customer_email", "service_tier"]
+}
+            ]]></field>
+            <field name="output_schema"><![CDATA[
+{
+    "welcome_message": "welcome_message",
+    "onboarding_instructions": "onboarding_instructions",
+    "email_sent": "email_result.success"
+}
+            ]]></field>
+            <field name="max_execution_time">60</field>
+            <field name="retry_count">2</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <record id="workflow_sales_qualification" model="oudu.bot.workflow">
+            <field name="name">Sales Lead Qualification</field>
+            <field name="code">SALES_QUALIFICATION</field>
+            <field name="description">Workflow to qualify sales leads and determine next steps</field>
+            <field name="agent_id" ref="agent_sales_assistant"/>
+            <field name="workflow_steps"><![CDATA[
+[
+    {
+        "type": "llm_call",
+        "name": "Analyze Lead Information",
+        "prompt_template": "Analyze this sales lead and determine their potential: Company: {{company_name}}, Industry: {{industry}}, Employee Count: {{employee_count}}, Budget: {{budget_range}}, Timeline: {{timeline}}. Provide a qualification score (1-10) and recommended next steps.",
+        "data_extraction": {
+            "extract_json": true
+        }
+    },
+    {
+        "type": "condition",
+        "name": "Check Qualification Score",
+        "condition": "{{qualification_score}} >= 7",
+        "true_branch": [
+            {
+                "type": "llm_call",
+                "name": "Create High Priority Response",
+                "prompt_template": "Create a personalized response for this high-potential lead (score: {{qualification_score}}). Offer a product demo and mention relevant case studies from their industry ({{industry}}).",
+                "data_extraction": {
+                    "extract_json": true
+                }
+            },
+            {
+                "type": "tool_call",
+                "name": "Schedule Follow-up",
+                "tool_name": "send_email",
+                "arguments": {
+                    "recipients": ["{{lead_email}}"],
+                    "subject": "Follow-up on your inquiry - {{company_name}}",
+                    "body": "{{high_priority_response}}"
+                }
+            }
+        ],
+        "false_branch": [
+            {
+                "type": "llm_call",
+                "name": "Create Nurture Sequence",
+                "prompt_template": "Create a nurturing email for this lead (score: {{qualification_score}}). Provide educational content and invite them to upcoming webinars. Be helpful but not pushy.",
+                "data_extraction": {
+                    "extract_json": true
+                }
+            }
+        ]
+    }
+]
+            ]]></field>
+            <field name="input_schema"><![CDATA[
+{
+    "type": "object",
+    "properties": {
+        "company_name": {
+            "type": "string",
+            "description": "Name of the company"
+        },
+        "lead_email": {
+            "type": "string",
+            "description": "Email of the lead contact"
+        },
+        "industry": {
+            "type": "string",
+            "description": "Industry of the company"
+        },
+        "employee_count": {
+            "type": "string",
+            "description": "Number of employees"
+        },
+        "budget_range": {
+            "type": "string",
+            "description": "Budget range for the project"
+        },
+        "timeline": {
+            "type": "string",
+            "description": "Project timeline"
+        }
+    },
+    "required": ["company_name", "lead_email", "industry"]
+}
+            ]]></field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- AI Provider Balance Demo Data -->
+        <record id="balance_demo_deepseek" model="oudu.bot.provider.balance">
+            <field name="provider_id" ref="provider_demo"/>
+            <field name="balance">150.75</field>
+            <field name="currency">CNY</field>
+            <field name="balance_status">sufficient</field>
+            <field name="is_success">True</field>
+            <field name="check_date">2025-10-15 10:30:00</field>
+        </record>
+
+        <record id="balance_demo_low" model="oudu.bot.provider.balance">
+            <field name="provider_id" ref="provider_demo"/>
+            <field name="balance">5.20</field>
+            <field name="currency">CNY</field>
+            <field name="balance_status">low</field>
+            <field name="is_success">True</field>
+            <field name="check_date">2025-10-20 14:15:00</field>
+        </record>
+
+    </data>
+</odoo>

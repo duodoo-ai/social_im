@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- DeepSeek-R1 Provider -->
+        <record id="provider_deepseek" model="oudu.bot.provider">
+            <field name="name">DeepSeek-R1</field>
+            <field name="code">DEEPSEEK_R1</field>
+            <field name="provider_type">deepseek</field>
+            <field name="api_key">sk-b080bc4c2e4a42cc9871d008457083dd</field>
+            <field name="base_url">https://api.deepseek.com/v1</field>
+            <field name="api_version">v1</field>
+            <field name="default_model">deepseek-chat</field>
+            <field name="max_tokens">4000</field>
+            <field name="temperature">0.7</field>
+            <field name="timeout">30</field>
+            <field name="rate_limit">60</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Alibaba Tongyi Qianwen Provider -->
+        <record id="provider_alibaba" model="oudu.bot.provider">
+            <field name="name">Alibaba Tongyi Qianwen</field>
+            <field name="code">ALIBABA_QWEN</field>
+            <field name="provider_type">alibaba</field>
+            <field name="api_key">your_alibaba_api_key_here</field>
+            <field name="base_url">https://dashscope.aliyuncs.com/api/v1</field>
+            <field name="api_version">v1</field>
+            <field name="default_model">qwen-turbo</field>
+            <field name="max_tokens">2000</field>
+            <field name="temperature">0.8</field>
+            <field name="timeout">30</field>
+            <field name="rate_limit">100</field>
+            <field name="is_active">False</field>
+        </record>
+
+        <!-- Baidu Wenxin Yiyan Provider -->
+        <record id="provider_baidu" model="oudu.bot.provider">
+            <field name="name">Baidu Wenxin Yiyan</field>
+            <field name="code">BAIDU_WENXIN</field>
+            <field name="provider_type">baidu</field>
+            <field name="api_key">your_baidu_api_key_here</field>
+            <field name="base_url">https://aip.baidubce.com/rpc/2.0/ai_custom/v1</field>
+            <field name="api_version">v1</field>
+            <field name="default_model">ERNIE-Bot-turbo</field>
+            <field name="max_tokens">1024</field>
+            <field name="temperature">0.95</field>
+            <field name="timeout">60</field>
+            <field name="rate_limit">50</field>
+            <field name="is_active">False</field>
+        </record>
+
+        <!-- Tencent Hunyuan Provider -->
+        <record id="provider_tencent" model="oudu.bot.provider">
+            <field name="name">Tencent Hunyuan</field>
+            <field name="code">TENCENT_HUNYUAN</field>
+            <field name="provider_type">tencent</field>
+            <field name="api_key">your_tencent_api_key_here</field>
+            <field name="base_url">https://hunyuan.tencentcloudapi.com</field>
+            <field name="api_version">2023-09-01</field>
+            <field name="default_model">hunyuan-standard</field>
+            <field name="max_tokens">1000</field>
+            <field name="temperature">0.7</field>
+            <field name="timeout">30</field>
+            <field name="rate_limit">100</field>
+            <field name="is_active">False</field>
+        </record>
+
+        <!-- ByteDance Doubao Provider -->
+        <record id="provider_bytedance" model="oudu.bot.provider">
+            <field name="name">ByteDance Doubao</field>
+            <field name="code">BYTEDANCE_DOUBAO</field>
+            <field name="provider_type">bytedance</field>
+            <field name="api_key">your_bytedance_api_key_here</field>
+            <field name="base_url">https://ark.cn-beijing.volces.com/api/v3</field>
+            <field name="api_version">v1</field>
+            <field name="default_model">doubao-1-5k-250115</field>
+            <field name="max_tokens">2000</field>
+            <field name="temperature">0.7</field>
+            <field name="timeout">30</field>
+            <field name="rate_limit">200</field>
+            <field name="is_active">False</field>
+        </record>
+
+        <!-- OpenAI Provider -->
+        <record id="provider_openai" model="oudu.bot.provider">
+            <field name="name">OpenAI GPT</field>
+            <field name="code">OPENAI_GPT</field>
+            <field name="provider_type">openai</field>
+            <field name="api_key">your_openai_api_key_here</field>
+            <field name="base_url">https://api.openai.com/v1</field>
+            <field name="api_version">v1</field>
+            <field name="default_model">gpt-3.5-turbo</field>
+            <field name="max_tokens">4000</field>
+            <field name="temperature">0.7</field>
+            <field name="timeout">30</field>
+            <field name="rate_limit">60</field>
+            <field name="is_active">False</field>
+        </record>
+
+        <!-- Demo Provider for Testing -->
+        <record id="provider_demo" model="oudu.bot.provider">
+            <field name="name">Demo Provider</field>
+            <field name="code">DEMO_PROVIDER</field>
+            <field name="provider_type">custom</field>
+            <field name="api_key">demo_api_key_12345</field>
+            <field name="base_url">http://localhost:3000/api/v1</field>
+            <field name="default_model">demo-model</field>
+            <field name="max_tokens">1000</field>
+            <field name="temperature">0.7</field>
+            <field name="timeout">10</field>
+            <field name="rate_limit">1000</field>
+            <field name="is_active">False</field>
+            <field name="demo_mode">True</field>
+        </record>
+    </data>
+</odoo>

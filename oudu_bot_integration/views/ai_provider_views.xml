@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_ai_provider_list" model="ir.ui.view">
+            <field name="name">oudu.bot.provider.list</field>
+            <field name="model">oudu.bot.provider</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="provider_type"/>
+                    <field name="code"/>
+                    <field name="is_active"/>
+                    <field name="last_test_result"/>
+                    <field name="usage_count"/>
+                    <field name="last_used"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_ai_provider_form" model="ir.ui.view">
+            <field name="name">oudu.bot.provider.form</field>
+            <field name="model">oudu.bot.provider</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="test_connection" type="object" string="Test Connection" class="btn-primary"/>
+                        <field name="is_active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="name"/>
+                                <field name="provider_type"/>
+                                <field name="code"/>
+                                <field name="is_active"/>
+                            </group>
+                            <group>
+                                <field name="last_test_result" widget="boolean_toggle" readonly="1"/>
+                                <field name="usage_count" readonly="1"/>
+                                <field name="last_used" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="API Configuration">
+                                <group>
+                                    <group>
+                                        <field name="api_key" password="True"/>
+                                        <field name="base_url"/>
+                                        <field name="api_version"/>
+                                    </group>
+                                    <group>
+                                        <field name="default_model"/>
+                                        <field name="available_models" widget="json"/>
+                                    </group>
+                                </group>
+                                <group string="Test Connection">
+                                    <field name="last_test_message" rows="5" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+
+                            <page string="Performance Settings">
+                                <group>
+                                    <group>
+                                        <field name="max_tokens"/>
+                                        <field name="temperature"/>
+                                        <field name="timeout"/>
+                                        <field name="rate_limit"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Advanced Configuration">
+                                <group>
+                                    <field name="model_config" widget="json"/>
+                                    <field name="headers_config" widget="json"/>
+                                    <field name="request_config" widget="json"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_ai_provider" model="ir.actions.act_window">
+            <field name="name">AI Providers</field>
+            <field name="res_model">oudu.bot.provider</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_ai_provider_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first AI Provider!
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

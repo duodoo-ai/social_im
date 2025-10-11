@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_ai_tool_list" model="ir.ui.view">
+            <field name="name">oudu.bot.tool.list</field>
+            <field name="model">oudu.bot.tool</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="tool_type"/>
+                    <field name="function_name"/>
+                    <field name="is_active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_ai_tool_form" model="ir.ui.view">
+            <field name="name">oudu.bot.tool.form</field>
+            <field name="model">oudu.bot.tool</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_execute_tool"
+                            type="object"
+                            string="Execute Tool"
+                            class="btn-primary"/>
+                        <button name="execute_demo_tool"
+                            type="object"
+                            string="Test Demo"
+                            class="btn-secondary"/>
+                        <field name="is_active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="tool_type"/>
+                                <field name="function_name"/>
+                            </group>
+                            <group>
+                                <field name="is_active"/>
+                                <field name="require_authentication"/>
+                                <field name="allowed_groups" widget="many2many_tags"/>
+                            </group>
+                        </group>
+
+                        <group string="Description">
+                            <field name="description" nolabel="1"/>
+                        </group>
+
+                        <notebook>
+                            <page string="Parameters">
+                                <group>
+                                    <field name="parameters" widget="json" nolabel="1"/>
+                                </group>
+                            </page>
+
+                            <page string="Implementation">
+                                <group>
+                                    <field name="tool_type" invisible="1"/>
+
+                                    <group string="Python Code" invisible="tool_type != 'python'">
+                                        <field name="python_code" nolabel="1" widget="ace" options="{'mode': 'python'}"/>
+                                    </group>
+
+                                    <group string="Odoo Method" invisible="tool_type != 'odoo_method'">
+                                        <field name="odoo_model"/>
+                                        <field name="odoo_method"/>
+                                    </group>
+
+                                    <group string="API Call" invisible="tool_type != 'api'">
+                                        <field name="api_endpoint"/>
+                                        <field name="api_method" widget="radio" options="{'horizontal': true}"/>
+                                    </group>
+
+                                    <group string="Webhook" invisible="tool_type != 'webhook'">
+                                        <field name="webhook_url"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_ai_tool" model="ir.actions.act_window">
+            <field name="name">AI Tools</field>
+            <field name="res_model">oudu.bot.tool</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_ai_tool_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first AI Tool!
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
