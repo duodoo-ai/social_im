@@ -1,6 +1,6 @@
 {
     'name': 'AI智能体集成模块 Odoo AI Agent Integration Module',
-    'version': '18.0.1.0.0',
+    "version": "18.0.3.0",
     'category': 'Authentication',
     'price': 100,
     'currency': 'USD',
@@ -9,7 +9,7 @@
         Enterprise AI Gateway supporting multiple AI providers (DeepSeek, Alibaba, Baidu, Tencent, ByteDance)
         with tool calling, knowledge retrieval, and workflow automation.
     """,
-    'author': 'Jason Zou',
+    'author': 'DuodooTEKr多度科技',
     'phone': '18951631470',
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
