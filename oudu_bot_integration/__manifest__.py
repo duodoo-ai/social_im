@@ -13,7 +13,7 @@
     'phone': '18951631470',
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
-    'depends': ['base', 'web', 'mail', 'knowledge'],
+    'depends': ['base', 'web', 'mail'],
     'data': [
         'security/ai_gateway_security.xml',
         'security/ir.model.access.csv',
