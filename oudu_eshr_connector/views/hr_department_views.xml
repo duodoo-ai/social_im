@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_view_department_form_2025" model="ir.ui.view">
+        <field name="name">hr.department.inherit.form</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <sheet>
+                <xpath expr="//sheet/group" position="after">
+                    <group>
+                        <group string="e-shr Base Info">
+                            <field name="fnum"/>
+                            <field name="fid" readonly="1" groups="base.group_erp_manager"/>
+                            <field name="level" readonly="1" groups="base.group_erp_manager"/>
+                        </group>
+                    </group>
+                </xpath>
+            </sheet>
+        </field>
+    </record>
+
+    <record id="inherit_view_department_tree_2025" model="ir.ui.view">
+        <field name="name">hr.department.inherit.tree</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='name']" position="before">
+                <field name="fnum" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="fid" groups="base.group_erp_manager" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

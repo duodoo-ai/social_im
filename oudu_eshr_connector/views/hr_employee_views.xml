@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_view_employee_form_2025" model="ir.ui.view">
+        <field name="name">inherit.hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="fnum"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="e-shr Base Info" groups="base.group_erp_manager">
+                    <group>
+                        <group name="grp_base_shr">
+                            <field name="fid" readonly="1" groups="base.group_erp_manager"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="replace">
+                <field name="coach_id" invisible = "1" groups="base.group_erp_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="replace">
+                <field name="parent_id" string= "Manager" groups="base.group_erp_manager"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_view_employee_tree_2025" model="ir.ui.view">
+        <field name="name">inherit.hr.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="replace">
+                <field name="parent_id" string= "Manager" groups="base.group_erp_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='work_phone']" position="before">
+                <field name="mobile_phone" groups="base.group_erp_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="fnum" groups="base.group_erp_manager"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

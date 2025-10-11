@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_view_job_tree_2025" model="ir.ui.view">
+        <field name="name">inherit.hr.job.tree</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="fid" groups="base.group_erp_manager"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

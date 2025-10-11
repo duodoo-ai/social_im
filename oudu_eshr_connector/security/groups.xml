@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record model="res.groups" id="tone_hikvision_secure_user">
+			<field name="name">海康智能安防用户</field>
+			<field name="category_id" ref="tone_good"/>
+			<field name="comment">海康智能安防用户组</field>
+		</record>
+		<record model="res.groups" id="tone_hikvision_secure_manager">
+			<field name="name">海康智能安防管理</field>
+			<field name="category_id" ref="tone_good"/>
+			<field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+			<field name="comment">海康智能安防权限组</field>
+		</record>
+    </data>
+</odoo>

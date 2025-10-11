@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hikvision_person_list_user,access.hikvision_person_list_user,model_hikvision_person_list,group_hikvision_token,1,1,1,1
+access_hikvision_org_list_user,access.hikvision_org_list_user,model_hikvision_org_list,group_hikvision_token,1,1,1,1
+access_hikvision_token_token,access.hikvision_token_token,model_hikvision_token,tone_hikvision_secure_token,1,1,1,1
