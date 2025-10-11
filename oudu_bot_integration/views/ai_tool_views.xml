@@ -24,10 +24,6 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_execute_tool"
-                            type="object"
-                            string="Execute Tool"
-                            class="btn-primary"/>
                         <button name="execute_demo_tool"
                             type="object"
                             string="Test Demo"
@@ -77,10 +73,6 @@
                                     <group string="API Call" invisible="tool_type != 'api'">
                                         <field name="api_endpoint"/>
                                         <field name="api_method" widget="radio" options="{'horizontal': true}"/>
-                                    </group>
-
-                                    <group string="Webhook" invisible="tool_type != 'webhook'">
-                                        <field name="webhook_url"/>
                                     </group>
                                 </group>
                             </page>

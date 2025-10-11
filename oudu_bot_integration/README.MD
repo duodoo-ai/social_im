@@ -1,3 +1,21 @@
+使用方法
+在其他模块中调用AI提供商：
+python
+result = self.env['oudu.bot.provider'].call_ai_provider(
+    'DEEPSEEK_R1',
+    '请帮我分析这个销售数据...',
+    temperature=0.7,
+    max_tokens=1000
+)
+在其他模块中调用工具：
+python
+result = self.env['oudu.bot.tool'].call_tool(
+    'CALCULATOR',
+    {'expression': '2 + 2 * 3'}
+)
+
+---
+
 完整的集成示例和使用方法
 示例：在销售模块中使用AI能力
 python

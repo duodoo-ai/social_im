@@ -12,21 +12,8 @@ class OduBotIntegrationController(http.Controller):
 
     @http.route('/oudu_bot/test_connection', type='json', auth='user', methods=['POST'])
     def test_connection(self, provider_id: int) -> Dict[str, Any]:
-        """Test connection to AI provider.
-
-        Args:
-            provider_id (int): ID of the provider to test
-
-        Returns:
-            Dict[str, Any]: Test result
-        """
+        """Test connection to AI provider."""
         try:
-            if not request.env.user.has_group('oudu_bot_integration.group_ai_user'):
-                return {
-                    'success': False,
-                    'error': 'Insufficient permissions'
-                }
-
             provider = request.env['oudu.bot.provider'].browse(provider_id)
             if not provider.exists():
                 return {
@@ -47,28 +34,11 @@ class OduBotIntegrationController(http.Controller):
                 'error': str(e)
             }
 
-    @http.route('/oudu_bot/execute_agent', type='json', auth='user', methods=['POST'])
-    def execute_agent(self, agent_code: str, user_input: str,
-                      context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        """Execute an AI agent.
-
-        Args:
-            agent_code (str): Code of the agent to execute
-            user_input (str): User input for the agent
-            context (Optional[Dict[str, Any]]): Additional context
-
-        Returns:
-            Dict[str, Any]: Execution result
-        """
+    @http.route('/oudu_bot/generate_text', type='json', auth='user', methods=['POST'])
+    def generate_text(self, provider_code: str, prompt: str, **kwargs) -> Dict[str, Any]:
+        """Generate text using AI provider."""
         try:
-            if not request.env.user.has_group('oudu_bot_integration.group_ai_user'):
-                return {
-                    'success': False,
-                    'error': 'Insufficient permissions'
-                }
-
-            context = context or {}
-            result = request.env['oudu.bot.agent'].call_ai_agent(agent_code, user_input, context)
+            result = request.env['oudu.bot.provider'].call_ai_provider(provider_code, prompt, **kwargs)
 
             return {
                 'success': True,
@@ -76,36 +46,17 @@ class OduBotIntegrationController(http.Controller):
             }
 
         except Exception as e:
-            _logger.error(f"Agent execution failed: {str(e)}")
+            _logger.error(f"Text generation failed: {str(e)}")
             return {
                 'success': False,
                 'error': str(e)
             }
 
-    @http.route('/oudu_bot/execute_workflow', type='json', auth='user', methods=['POST'])
-    def execute_workflow(self, workflow_code: str, input_data: Dict[str, Any],
-                         context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        """Execute a workflow.
-
-        Args:
-            workflow_code (str): Code of the workflow to execute
-            input_data (Dict[str, Any]): Input data for the workflow
-            context (Optional[Dict[str, Any]]): Additional context
-
-        Returns:
-            Dict[str, Any]: Execution result
-        """
+    @http.route('/oudu_bot/execute_tool', type='json', auth='user', methods=['POST'])
+    def execute_tool(self, tool_code: str, arguments: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Execute a tool."""
         try:
-            if not request.env.user.has_group('oudu_bot_integration.group_ai_user'):
-                return {
-                    'success': False,
-                    'error': 'Insufficient permissions'
-                }
-
-            context = context or {}
-            result = request.env['oudu.bot.workflow'].execute_workflow_by_code(
-                workflow_code, input_data, context
-            )
+            result = request.env['oudu.bot.tool'].call_tool(tool_code, arguments or {})
 
             return {
                 'success': True,
@@ -113,44 +64,34 @@ class OduBotIntegrationController(http.Controller):
             }
 
         except Exception as e:
-            _logger.error(f"Workflow execution failed: {str(e)}")
+            _logger.error(f"Tool execution failed: {str(e)}")
             return {
                 'success': False,
                 'error': str(e)
             }
 
-    @http.route('/oudu_bot/get_agents', type='json', auth='user', methods=['POST'])
-    def get_agents(self) -> Dict[str, Any]:
-        """Get list of available agents.
-
-        Returns:
-            Dict[str, Any]: List of agents
-        """
+    @http.route('/oudu_bot/get_providers', type='json', auth='user', methods=['POST'])
+    def get_providers(self) -> Dict[str, Any]:
+        """Get list of available providers."""
         try:
-            if not request.env.user.has_group('oudu_bot_integration.group_ai_user'):
-                return {
-                    'success': False,
-                    'error': 'Insufficient permissions'
-                }
-
-            agents = request.env['oudu.bot.agent'].search([('is_active', '=', True)])
-            agent_list = []
-            for agent in agents:
-                agent_list.append({
-                    'id': agent.id,
-                    'name': agent.name,
-                    'code': agent.code,
-                    'description': agent.system_prompt[:100] + '...' if agent.system_prompt else '',
-                    'provider': agent.provider_id.name
+            providers = request.env['oudu.bot.provider'].search([('is_active', '=', True)])
+            provider_list = []
+            for provider in providers:
+                provider_list.append({
+                    'id': provider.id,
+                    'name': provider.name,
+                    'code': provider.code,
+                    'provider_type': provider.provider_type,
+                    'default_model': provider.default_model
                 })
 
             return {
                 'success': True,
-                'agents': agent_list
+                'providers': provider_list
             }
 
         except Exception as e:
-            _logger.error(f"Failed to get agents: {str(e)}")
+            _logger.error(f"Failed to get providers: {str(e)}")
             return {
                 'success': False,
                 'error': str(e)
@@ -158,18 +99,8 @@ class OduBotIntegrationController(http.Controller):
 
     @http.route('/oudu_bot/get_tools', type='json', auth='user', methods=['POST'])
     def get_tools(self) -> Dict[str, Any]:
-        """Get list of available tools.
-
-        Returns:
-            Dict[str, Any]: List of tools
-        """
+        """Get list of available tools."""
         try:
-            if not request.env.user.has_group('oudu_bot_integration.group_ai_user'):
-                return {
-                    'success': False,
-                    'error': 'Insufficient permissions'
-                }
-
             tools = request.env['oudu.bot.tool'].search([('is_active', '=', True)])
             tool_list = []
             for tool in tools:
@@ -196,11 +127,7 @@ class OduBotIntegrationController(http.Controller):
 
     @http.route('/oudu_bot/health', type='json', auth='public', methods=['GET'])
     def health_check(self) -> Dict[str, Any]:
-        """Health check endpoint.
-
-        Returns:
-            Dict[str, Any]: Health status
-        """
+        """Health check endpoint."""
         try:
             # Check database connection
             request.env.cr.execute("SELECT 1")
@@ -210,17 +137,11 @@ class OduBotIntegrationController(http.Controller):
                 ('is_active', '=', True)
             ])
 
-            # Check active agents
-            active_agents = request.env['oudu.bot.agent'].search_count([
-                ('is_active', '=', True)
-            ])
-
             return {
                 'success': True,
                 'status': 'healthy',
                 'database': 'connected',
                 'active_providers': active_providers,
-                'active_agents': active_agents,
                 'timestamp': fields.Datetime.now().isoformat()
             }
 

@@ -6,14 +6,13 @@
             <field name="name">DeepSeek-R1</field>
             <field name="code">DEEPSEEK_R1</field>
             <field name="provider_type">deepseek</field>
-            <field name="api_key">sk-b080bc4c2e4a42cc987xxxxxxxx</field>
+            <field name="api_key">sk-b080bc4c2e4a42cc9871d008457083dd</field>
             <field name="base_url">https://api.deepseek.com/v1</field>
             <field name="api_version">v1</field>
             <field name="default_model">deepseek-chat</field>
             <field name="max_tokens">4000</field>
             <field name="temperature">0.7</field>
             <field name="timeout">30</field>
-            <field name="rate_limit">60</field>
             <field name="is_active">True</field>
         </record>
 
@@ -29,7 +28,6 @@
             <field name="max_tokens">2000</field>
             <field name="temperature">0.8</field>
             <field name="timeout">30</field>
-            <field name="rate_limit">100</field>
             <field name="is_active">False</field>
         </record>
 
@@ -45,7 +43,6 @@
             <field name="max_tokens">1024</field>
             <field name="temperature">0.95</field>
             <field name="timeout">60</field>
-            <field name="rate_limit">50</field>
             <field name="is_active">False</field>
         </record>
 
@@ -61,7 +58,6 @@
             <field name="max_tokens">1000</field>
             <field name="temperature">0.7</field>
             <field name="timeout">30</field>
-            <field name="rate_limit">100</field>
             <field name="is_active">False</field>
         </record>
 
@@ -77,7 +73,6 @@
             <field name="max_tokens">2000</field>
             <field name="temperature">0.7</field>
             <field name="timeout">30</field>
-            <field name="rate_limit">200</field>
             <field name="is_active">False</field>
         </record>
 
@@ -93,7 +88,6 @@
             <field name="max_tokens">4000</field>
             <field name="temperature">0.7</field>
             <field name="timeout">30</field>
-            <field name="rate_limit">60</field>
             <field name="is_active">False</field>
         </record>
 
@@ -108,7 +102,6 @@
             <field name="max_tokens">1000</field>
             <field name="temperature">0.7</field>
             <field name="timeout">10</field>
-            <field name="rate_limit">1000</field>
             <field name="is_active">False</field>
             <field name="demo_mode">True</field>
         </record>

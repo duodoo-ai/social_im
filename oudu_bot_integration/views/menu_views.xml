@@ -3,23 +3,25 @@
     <data>
         <!-- Menu -->
         <menuitem id="menu_ai_gateway"
-                  name="Artificial Intelligence"
+                  name="AI Agent"
                   web_icon="oudu_bot_integration,static/description/icon.png"
                   sequence="1000"/>
 
         <!-- Sub Menu -->
-        <menuitem id="menu_ai_provider" name="AI Providers" parent="menu_ai_gateway"
-                  action="action_ai_provider" sequence="10"/>
-        <menuitem id="menu_ai_agent" name="AI Agent Integration" parent="menu_ai_gateway"
-                  action="action_ai_agent" sequence="20"/>
-        <menuitem id="menu_ai_workflow" name="AI Workflows" parent="menu_ai_gateway"
-                  action="action_ai_workflow" sequence="30"/>
-        <menuitem id="menu_ai_tool" name="AI Tools" parent="menu_ai_gateway"
-                  action="action_ai_tool" sequence="40"/>
+        <menuitem id="menu_ai_provider"
+                  name="AI提供商"
+                  parent="menu_ai_gateway"
+                  action="action_ai_provider"
+                  sequence="10"/>
+        <menuitem id="menu_ai_tool"
+                  name="AI智能体"
+                  parent="menu_ai_gateway"
+                  action="action_ai_tool"
+                  sequence="20"/>
         <menuitem id="menu_ai_provider_balance"
-                  name="Balance History"
+                  name="余额历史记录"
                   parent="menu_ai_gateway"
                   action="action_ai_provider_balance"
-                  sequence="50"/>
+                  sequence="30"/>
     </data>
 </odoo>
