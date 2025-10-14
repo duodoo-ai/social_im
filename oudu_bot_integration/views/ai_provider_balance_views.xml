@@ -124,7 +124,7 @@
     <record id="action_ai_provider_balance" model="ir.actions.act_window">
         <field name="name">AI Provider Balance History</field>
         <field name="res_model">oudu.bot.provider.balance</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_ai_provider_balance_tree"/>
         <field name="search_view_id" ref="view_ai_provider_balance_search"/>
         <field name="context">{'search_default_today': 1}</field>

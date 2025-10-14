@@ -23,6 +23,7 @@
         'views/ai_provider_views.xml',
         'views/ai_tool_views.xml',
         'views/ai_provider_balance_views.xml',
+        'views/ai_provider_model_views.xml',
         'views/menu_views.xml',
     ],
     'images': [

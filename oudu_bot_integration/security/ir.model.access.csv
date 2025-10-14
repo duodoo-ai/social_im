@@ -14,3 +14,7 @@ access_oudu_bot_provider_balance_ai_user,oudu.bot.provider.balance.ai.user,model
 access_oudu_bot_tool_demo_result_ai_admin,oudu.bot.tool.demo.result.ai.admin,model_oudu_bot_tool_demo_result,group_ai_admin,1,1,1,1
 access_oudu_bot_tool_demo_result_ai_developer,oudu.bot.tool.demo.result.ai.developer,model_oudu_bot_tool_demo_result,group_ai_developer,1,1,1,0
 access_oudu_bot_tool_demo_result_ai_user,oudu.bot.tool.demo.result.ai.user,model_oudu_bot_tool_demo_result,group_ai_user,1,0,0,0
+
+access_oudu_bot_provider_model_ai_admin,oudu.bot.provider.model.ai.admin,model_oudu_bot_provider_model,group_ai_admin,1,1,1,1
+access_oudu_bot_provider_model_ai_developer,oudu.bot.provider.model.ai.developer,model_oudu_bot_provider_model,group_ai_developer,1,1,1,0
+access_oudu_bot_provider_model_ai_user,oudu.bot.provider.model.ai.user,model_oudu_bot_provider_model,group_ai_user,1,0,0,0

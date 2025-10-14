@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Model Tree View -->
+        <record id="view_ai_provider_model_tree" model="ir.ui.view">
+            <field name="name">ai.provider.model.tree</field>
+            <field name="model">oudu.bot.provider.model</field>
+            <field name="arch" type="xml">
+                <list string="AI Models">
+                    <field name="display_name"/>
+                    <field name="model_id"/>
+                    <field name="provider_id"/>
+                    <field name="object_type"/>
+                    <field name="owned_by"/>
+                    <field name="is_active" widget="boolean_button"/>
+                    <field name="is_recommended" widget="boolean_button"/>
+                    <field name="usage_count"/>
+                    <button name="action_use_model" type="object" string="Use" class="btn-primary"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Model Form View -->
+        <record id="view_ai_provider_model_form" model="ir.ui.view">
+            <field name="name">ai.provider.model.form</field>
+            <field name="model">oudu.bot.provider.model</field>
+            <field name="arch" type="xml">
+                <form string="AI Model">
+                    <header>
+                        <button name="action_use_model" type="object" string="Set as Default" class="btn-primary"/>
+                        <field name="is_active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="provider_id" readonly="1"/>
+                                <field name="model_id"/>
+                                <field name="display_name" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="object_type" readonly="1"/>
+                                <field name="owned_by" readonly="1"/>
+                                <field name="created_timestamp" readonly="1"/>
+                                <field name="is_recommended"/>
+                            </group>
+                        </group>
+                        <group string="Usage Statistics">
+                            <field name="last_used" readonly="1"/>
+                            <field name="usage_count" readonly="1"/>
+                        </group>
+                        <group string="Raw Model Data">
+                            <field name="model_data" widget="json" nolabel="1" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Add model management to provider form view -->
+        <record id="view_ai_provider_form_inherit_models" model="ir.ui.view">
+            <field name="name">ai.provider.form.inherit.models</field>
+            <field name="model">oudu.bot.provider</field>
+            <field name="inherit_id" ref="oudu_bot_integration.view_ai_provider_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='test_connection']" position="after">
+                    <button name="update_available_models" type="object" string="Update Models" class="btn-secondary"/>
+                    <button name="sync_models_to_records" type="object" string="Sync Models" class="btn-secondary"/>
+                    <button name="action_view_available_models" type="object" string="View Models" class="btn-secondary"/>
+                </xpath>
+
+                <xpath expr="//sheet" position="inside">
+                    <group colspan="2">
+                        <group string="Available Models">
+                            <field name="last_models_update" readonly="1"/>
+                            <field name="supported_models" readonly="1" nolabel="1"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Search View for Models -->
+        <record id="view_ai_provider_model_search" model="ir.ui.view">
+            <field name="name">ai.provider.model.search</field>
+            <field name="model">oudu.bot.provider.model</field>
+            <field name="arch" type="xml">
+                <search string="Search AI Models">
+                    <field name="model_id"/>
+                    <field name="provider_id"/>
+                    <field name="object_type"/>
+                    <field name="is_active"/>
+                    <!-- 移除对 is_recommended 的直接搜索，改为使用过滤器 -->
+                    <filter string="Active" name="active" domain="[('is_active', '=', True)]"/>
+                    <filter string="Recommended" name="recommended" domain="[('is_recommended', '=', True)]"/>
+                    <filter string="Not Recommended" name="not_recommended" domain="[('is_recommended', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Provider" name="group_by_provider" context="{'group_by': 'provider_id'}"/>
+                        <filter string="Object Type" name="group_by_type" context="{'group_by': 'object_type'}"/>
+                        <filter string="Recommended Status" name="group_by_recommended" context="{'group_by': 'is_recommended'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action for Models -->
+        <record id="action_ai_provider_model" model="ir.actions.act_window">
+            <field name="name">AI Provider Models</field>
+            <field name="res_model">oudu.bot.provider.model</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_ai_provider_model_tree"/>
+            <field name="search_view_id" ref="view_ai_provider_model_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No AI models found.
+                </p>
+                <p>
+                    Update models from your AI providers to see available models here.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

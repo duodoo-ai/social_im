@@ -4,7 +4,7 @@ from typing import Dict, Any, Optional, List
 from openai import OpenAI
 import logging
 import json
-
+import requests
 _logger = logging.getLogger(__name__)
 
 
@@ -342,3 +342,310 @@ class AIProvider(models.Model):
             raise UserError(f"AI Provider with code '{provider_code}' not found or inactive")
 
         return provider.generate_text(prompt, **kwargs)
+
+    # 新增字段：列出可用模型列表
+    available_models = fields.Json(
+        string='Available Models',
+        compute='_compute_available_models',
+        store=False,
+        help='List of available models from the provider'
+    )
+    last_models_update = fields.Datetime(
+        string='Last Models Update',
+        readonly=True,
+        help='When the available models list was last updated'
+    )
+    supported_models = fields.Text(
+        string='Supported Models',
+        compute='_compute_supported_models',
+        help='Comma-separated list of supported model IDs'
+    )
+
+    @api.depends('available_models')
+    def _compute_supported_models(self):
+        """Compute a readable list of supported models."""
+        for provider in self:
+            if provider.available_models and isinstance(provider.available_models, list):
+                model_ids = [model.get('id', '') for model in provider.available_models]
+                provider.supported_models = ', '.join(model_ids)
+            else:
+                provider.supported_models = 'Not loaded'
+
+    def _compute_available_models(self):
+        """Compute available models - initially empty, will be populated by API call."""
+        for provider in self:
+            provider.available_models = []
+
+    def get_available_models(self):
+        """Get available models from the provider API."""
+        self.ensure_one()
+        try:
+            _logger.info(f"Getting available models for provider: {self.name}, type: {self.provider_type}")
+
+            if self.provider_type == 'deepseek':
+                models = self._get_deepseek_models()
+            elif self.provider_type == 'openai':
+                models = self._get_openai_models()
+            else:
+                # For other providers, return empty list
+                _logger.warning(f"Model listing not implemented for provider type: {self.provider_type}")
+                models = []
+
+            _logger.info(f"Retrieved {len(models)} models from {self.name}")
+            if models:
+                _logger.info(f"Model IDs: {[model.get('id', 'unknown') for model in models]}")
+
+            return models
+        except Exception as e:
+            _logger.error(f"Failed to get available models for {self.name}: {str(e)}")
+            raise UserError(f"Failed to get available models: {str(e)}")
+
+    def _get_deepseek_models(self):
+        """Get available models from DeepSeek API."""
+        try:
+            url = "https://api.deepseek.com/models"
+            headers = {
+                'Accept': 'application/json',
+                'Authorization': f'Bearer {self.api_key}',
+                'Content-Type': 'application/json'
+            }
+
+            _logger.info(f"Making DeepSeek API request to: {url}")
+            response = requests.get(url, headers=headers, timeout=self.timeout)
+            response.raise_for_status()
+
+            data = response.json()
+            _logger.info(f"DeepSeek API response: {data}")
+
+            models = data.get('data', [])
+            _logger.info(f"Extracted {len(models)} models from response")
+
+            # 确保模型数据正确保存到 available_models 字段
+            # 使用 write 方法保存数据
+            self.write({
+                'available_models': models,
+                'last_models_update': fields.Datetime.now()
+            })
+
+            _logger.info(f"Successfully saved {len(models)} models to available_models field")
+            return models
+
+        except requests.exceptions.HTTPError as e:
+            status_code = e.response.status_code if e.response else 'Unknown'
+            error_msg = f"HTTP error {status_code}: {str(e)}"
+            _logger.error(error_msg)
+            if status_code == 401:
+                raise UserError("Authentication failed: Invalid API key")
+            elif status_code == 403:
+                raise UserError("Permission denied: API key does not have model access")
+            elif status_code == 429:
+                raise UserError("Rate limit exceeded: Too many requests")
+            else:
+                raise UserError(f"HTTP error while fetching models: {str(e)}")
+
+        except requests.exceptions.RequestException as e:
+            error_msg = f"Request failed: {str(e)}"
+            _logger.error(error_msg)
+            raise UserError(f"Request failed while fetching models: {str(e)}")
+
+        except Exception as e:
+            error_msg = f"Unexpected error: {str(e)}"
+            _logger.error(error_msg)
+            raise UserError(f"Unexpected error while fetching models: {str(e)}")
+
+    def _get_openai_models(self):
+        """Get available models from OpenAI-compatible API."""
+        try:
+            client = self._get_openai_client()
+
+            # Use OpenAI client to list models
+            models_response = client.models.list()
+            models = [model.model_dump() for model in models_response.data]
+
+            # Update provider with model information
+            self.write({
+                'available_models': models,
+                'last_models_update': fields.Datetime.now()
+            })
+
+            _logger.info(f"Retrieved {len(models)} models from OpenAI API")
+            return models
+
+        except Exception as e:
+            raise UserError(f"Failed to get models from OpenAI API: {str(e)}")
+
+    def update_available_models(self):
+        """Update available models list for this provider."""
+        self.ensure_one()
+        try:
+            models = self.get_available_models()
+
+            # 自动同步到模型记录
+            if models:
+                # 直接调用同步逻辑，避免递归调用
+                ModelModel = self.env['oudu.bot.provider.model']
+                existing_models = ModelModel.search([('provider_id', '=', self.id)])
+                existing_model_ids = set(existing_models.mapped('model_id'))
+
+                created_count = 0
+                updated_count = 0
+
+                for model_data in models:
+                    model_id = model_data.get('id')
+                    if not model_id:
+                        continue
+
+                    existing_model = ModelModel.search([
+                        ('provider_id', '=', self.id),
+                        ('model_id', '=', model_id)
+                    ], limit=1)
+
+                    vals = {
+                        'provider_id': self.id,
+                        'model_id': model_id,
+                        'model_data': model_data,
+                        'is_active': True
+                    }
+
+                    if existing_model:
+                        existing_model.write(vals)
+                        updated_count += 1
+                    else:
+                        ModelModel.create(vals)
+                        created_count += 1
+
+                # Deactivate models that are no longer available
+                current_model_ids = {model.get('id') for model in models if model.get('id')}
+                removed_models = existing_model_ids - current_model_ids
+                if removed_models:
+                    ModelModel.search([
+                        ('provider_id', '=', self.id),
+                        ('model_id', 'in', list(removed_models))
+                    ]).write({'is_active': False})
+
+                message = f'Successfully loaded {len(models)} available models and synced {created_count} created, {updated_count} updated.'
+            else:
+                message = f'Successfully loaded {len(models)} available models.'
+
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Models Updated',
+                    'message': message,
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        except Exception as e:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Models Update Failed',
+                    'message': str(e),
+                    'type': 'danger',
+                    'sticky': True,
+                }
+            }
+
+    def action_view_available_models(self):
+        """View available models in a separate window."""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Available Models - {self.name}',
+            'res_model': 'oudu.bot.provider.model',
+            'view_mode': 'list,form',
+            'domain': [('provider_id', '=', self.id)],
+            'context': {'default_provider_id': self.id},
+            'target': 'current'
+        }
+
+    def sync_models_to_records(self):
+        """Sync available models to individual model records."""
+        self.ensure_one()
+        try:
+            # 检查 available_models 字段
+            if not self.available_models:
+                _logger.warning(f"No models in available_models field for {self.name}, trying to fetch fresh data")
+
+                # 如果 available_models 为空，尝试重新获取
+                models = self.get_available_models()
+                if not models:
+                    raise UserError(
+                        "No available models found after refreshing. Please check API connection and try again.")
+
+                _logger.info(f"Successfully fetched {len(models)} models after retry")
+            else:
+                models = self.available_models
+                _logger.info(f"Using {len(models)} models from available_models field")
+
+            ModelModel = self.env['oudu.bot.provider.model']
+            existing_models = ModelModel.search([('provider_id', '=', self.id)])
+            existing_model_ids = set(existing_models.mapped('model_id'))
+
+            created_count = 0
+            updated_count = 0
+
+            for model_data in models:
+                model_id = model_data.get('id')
+                if not model_id:
+                    _logger.warning(f"Skipping model data without ID: {model_data}")
+                    continue
+
+                # Check if model already exists
+                existing_model = ModelModel.search([
+                    ('provider_id', '=', self.id),
+                    ('model_id', '=', model_id)
+                ], limit=1)
+
+                vals = {
+                    'provider_id': self.id,
+                    'model_id': model_id,
+                    'model_data': model_data,
+                    'is_active': True
+                }
+
+                if existing_model:
+                    existing_model.write(vals)
+                    updated_count += 1
+                    _logger.info(f"Updated model: {model_id}")
+                else:
+                    ModelModel.create(vals)
+                    created_count += 1
+                    _logger.info(f"Created model: {model_id}")
+
+            # Deactivate models that are no longer available
+            current_model_ids = {model.get('id') for model in models if model.get('id')}
+            removed_models = existing_model_ids - current_model_ids
+            if removed_models:
+                deactivated_count = ModelModel.search([
+                    ('provider_id', '=', self.id),
+                    ('model_id', 'in', list(removed_models))
+                ]).write({'is_active': False})
+                _logger.info(f"Deactivated {len(removed_models)} models: {removed_models}")
+
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Models Synced',
+                    'message': f'Successfully synced models: {created_count} created, {updated_count} updated, {len(removed_models)} deactivated.',
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+
+        except Exception as e:
+            _logger.error(f"Model sync failed for {self.name}: {str(e)}", exc_info=True)
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Model Sync Failed',
+                    'message': str(e),
+                    'type': 'danger',
+                    'sticky': True,
+                }
+            }

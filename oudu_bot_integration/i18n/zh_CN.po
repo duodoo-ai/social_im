@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-11 08:47+0000\n"
-"PO-Revision-Date: 2025-10-11 08:47+0000\n"
+"POT-Creation-Date: 2025-10-14 03:19+0000\n"
+"PO-Revision-Date: 2025-10-14 03:19+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,17 @@ msgid "AI Developer"
 msgstr "AI开发者"
 
 #. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_form
+msgid "AI Model"
+msgstr "AI模型"
+
+#. module: oudu_bot_integration
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_provider_model
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_tree
+msgid "AI Models"
+msgstr "AI模型"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__provider_id
 msgid "AI Provider"
 msgstr "AI提供商"
@@ -43,7 +54,7 @@ msgstr "AI提供商"
 #. module: oudu_bot_integration
 #: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_provider_balance
 msgid "AI Provider Balance History"
-msgstr "AI提供商余额历史记录"
+msgstr "AI提供商余额历史"
 
 #. module: oudu_bot_integration
 #: model:ir.model,name:oudu_bot_integration.model_oudu_bot_provider_balance
@@ -56,7 +67,18 @@ msgid "AI Provider Configuration"
 msgstr "AI提供商配置"
 
 #. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_provider_model
+msgid "AI Provider Model"
+msgstr "AI提供商模型"
+
+#. module: oudu_bot_integration
+#: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_provider_model
+msgid "AI Provider Models"
+msgstr "AI提供商模型"
+
+#. module: oudu_bot_integration
 #: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_provider
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_provider
 msgid "AI Providers"
 msgstr "AI提供商"
 
@@ -66,7 +88,13 @@ msgid "AI Tool Definition"
 msgstr "AI工具定义"
 
 #. module: oudu_bot_integration
+#: model:ir.model,name:oudu_bot_integration.model_oudu_bot_tool_demo_result
+msgid "AI Tool Demo Execution Result"
+msgstr "AI工具演示执行结果"
+
+#. module: oudu_bot_integration
 #: model:ir.actions.act_window,name:oudu_bot_integration.action_ai_tool
+#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_tool
 msgid "AI Tools"
 msgstr "AI工具"
 
@@ -74,16 +102,6 @@ msgstr "AI工具"
 #: model:res.groups,name:oudu_bot_integration.group_ai_user
 msgid "AI User"
 msgstr "AI用户"
-
-#. module: oudu_bot_integration
-#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_provider
-msgid "AI提供商"
-msgstr "AI提供商"
-
-#. module: oudu_bot_integration
-#: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_tool
-msgid "AI工具"
-msgstr "AI工具"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__api
@@ -119,18 +137,20 @@ msgstr "API版本"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__api_endpoint
 msgid "API endpoint URL (for api type)"
-msgstr "API端点URL（用于api类型）"
+msgstr "API端点URL（用于API类型）"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__is_active
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__is_active
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__is_active
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
 msgid "Active"
-msgstr "是否激活"
+msgstr "激活"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__alibaba
 msgid "Alibaba Tongyi Qianwen"
-msgstr "阿里巴巴通义千问"
+msgstr "阿里云通义千问"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__allowed_groups
@@ -138,24 +158,41 @@ msgid "Allowed Groups"
 msgstr "允许的用户组"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__arguments
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Arguments"
+msgstr "参数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool_demo_result__arguments
+msgid "Arguments used in the demo execution"
+msgstr "演示执行中使用的参数"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__api_key
 msgid "Authentication key for the AI service"
-msgstr "用于AI服务的身份验证密钥"
+msgstr "AI服务的认证密钥"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__auto_deactivate_low_balance
 msgid "Auto Deactivate on Low Balance"
-msgstr "自动在余额低时停用提供商"
+msgstr "低余额时自动停用"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
 msgid "Automatically deactivate provider when balance is low"
-msgstr "当余额低时自动停用提供商"
+msgstr "余额过低时自动停用提供商"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__auto_deactivate_low_balance
 msgid "Automatically deactivate provider when balance is too low"
-msgstr "当余额低时自动停用提供商"
+msgstr "余额过低时自动停用提供商"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__available_models
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_models
+msgid "Available Models"
+msgstr "可用模型"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__baidu
@@ -178,7 +215,7 @@ msgstr "余额检查频率"
 #: model:ir.ui.menu,name:oudu_bot_integration.menu_ai_provider_balance
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_tree
 msgid "Balance History"
-msgstr "余额历史记录"
+msgstr "余额历史"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
@@ -204,27 +241,27 @@ msgstr "余额状态"
 #. module: oudu_bot_integration
 #: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_balance_balance_positive
 msgid "Balance must be positive or zero"
-msgstr "余额必须为正值或零"
+msgstr "余额必须为正数或零"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__critical_balance_threshold
 msgid "Balance threshold for critical balance warning"
-msgstr "临界余额警告阈值"
+msgstr "严重余额警告的阈值"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__low_balance_threshold
 msgid "Balance threshold for low balance warning"
-msgstr "低余额警告阈值"
+msgstr "低余额警告的阈值"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__base_url
 msgid "Base URL"
-msgstr "AI服务的基本URL"
+msgstr "基础URL"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__base_url
 msgid "Base endpoint URL for the AI service"
-msgstr "AI服务的基本URL，例如 https://api.ai.baidu.com"
+msgstr "AI服务的基础端点URL"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__bytedance
@@ -235,17 +272,17 @@ msgstr "字节跳动豆包"
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
 msgid "Check Balance Now"
-msgstr "检查余额"
+msgstr "立即检查余额"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__check_date
 msgid "Check Date"
-msgstr "检查余额日期"
+msgstr "检查日期"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__is_success
 msgid "Check Successful"
-msgstr "检查余额是否成功"
+msgstr "检查成功"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_provider_balance
@@ -253,9 +290,19 @@ msgid "Check balances manually or wait for scheduled checks."
 msgstr "手动检查余额或等待计划检查。"
 
 #. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Clear History"
+msgstr "清除历史"
+
+#. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
 msgid "Close"
 msgstr "关闭"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__supported_models
+msgid "Comma-separated list of supported model IDs"
+msgstr "支持的模型ID列表（逗号分隔）"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__temperature
@@ -265,7 +312,7 @@ msgstr "控制响应的随机性（0-2）"
 #. module: oudu_bot_integration
 #: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_provider
 msgid "Create your first AI Provider!"
-msgstr "创建您的第一个AI服务提供商！"
+msgstr "创建您的第一个AI提供商！"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_tool
@@ -273,24 +320,33 @@ msgid "Create your first AI Tool!"
 msgstr "创建您的第一个AI工具！"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__created_timestamp
+msgid "Created Timestamp"
+msgstr "创建时间戳"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__create_uid
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__create_uid
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__create_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__create_uid
 msgid "Created by"
 msgstr "创建人"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__create_date
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__create_date
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__create_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__create_date
 msgid "Created on"
-msgstr "创建日期"
+msgstr "创建时间"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__critical_balance_threshold
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__critical_balance_threshold
 msgid "Critical Balance Threshold"
-msgstr "临界余额警告阈值"
+msgstr "严重余额阈值"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__currency
@@ -301,7 +357,7 @@ msgstr "货币"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__currency
 msgid "Currency code (CNY, USD, etc.)"
-msgstr "货币代码（CNY, USD, 等）"
+msgstr "货币代码（CNY、USD等）"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__current_balance
@@ -312,22 +368,22 @@ msgstr "当前余额"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__balance
 msgid "Current balance in the provider account"
-msgstr "当前余额在服务提供商账户中的余额"
+msgstr "提供商账户中的当前余额"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__custom
 msgid "Custom Provider"
-msgstr "自定义服务提供商"
+msgstr "自定义提供商"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__delete
 msgid "DELETE"
-msgstr "DELETE方法"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_check_frequency__daily
 msgid "Daily"
-msgstr "每日一次"
+msgstr "每天"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
@@ -337,7 +393,7 @@ msgstr "日期"
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__deepseek
 msgid "DeepSeek-R1"
-msgstr "DeepSeek-R1服务提供商"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__default_model
@@ -347,7 +403,12 @@ msgstr "默认模型"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__default_model
 msgid "Default model to use when not specified"
-msgstr "默认模型，在未指定时使用"
+msgstr "未指定时使用的默认模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__demo_execution_history
+msgid "Demo Execution History"
+msgstr "演示执行历史"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__demo_mode
@@ -355,25 +416,32 @@ msgid "Demo Mode"
 msgstr "演示模式"
 
 #. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Demo Results"
+msgstr "演示结果"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__description
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
 msgid "Description"
-msgstr "工具描述"
+msgstr "描述"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__description
 msgid "Detailed description of what the tool does"
-msgstr "工具的详细描述"
+msgstr "工具功能的详细描述"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_test_message
 msgid "Detailed message from the last connection test"
-msgstr "最后一次连接测试的详细消息"
+msgstr "上次连接测试的详细信息"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__display_name
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__display_name
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__display_name
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__display_name
 msgid "Display Name"
 msgstr "显示名称"
 
@@ -381,7 +449,7 @@ msgstr "显示名称"
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__name
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__provider_name
 msgid "Display name for the AI provider"
-msgstr "服务提供商的显示名称"
+msgstr "AI提供商的显示名称"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__name
@@ -391,12 +459,12 @@ msgstr "工具的显示名称"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__demo_mode
 msgid "Enable demo mode for testing without real API calls"
-msgstr "启用演示模式，用于测试而不进行实际的API调用"
+msgstr "启用演示模式以进行测试，无需真实的API调用"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__is_active
 msgid "Enable or disable this provider"
-msgstr "启用或禁用此服务提供商"
+msgstr "启用或禁用此提供商"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__is_active
@@ -411,12 +479,32 @@ msgstr "错误信息"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__error_message
 msgid "Error Message"
-msgstr "余额检查失败的错误消息"
+msgstr "错误消息"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__error_message
 msgid "Error message if balance check failed"
-msgstr "余额检查失败的错误消息"
+msgstr "余额检查失败时的错误消息"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__execution_date
+msgid "Execution Date"
+msgstr "执行日期"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Execution History"
+msgstr "执行历史"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool_demo_result__result
+msgid "Execution result"
+msgstr "执行结果"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__last_demo_status__failed
+msgid "Failed"
+msgstr "失败"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__function_name
@@ -426,12 +514,13 @@ msgstr "函数名称"
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__get
 msgid "GET"
-msgstr "GET方法"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
 msgid "Group By"
-msgstr "按日期分组"
+msgstr "分组"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__api_method
@@ -451,9 +540,11 @@ msgstr "自动检查余额的频率"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__id
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__id
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__id
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
@@ -464,18 +555,18 @@ msgstr "实现"
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__insufficient
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__insufficient
 msgid "Insufficient"
-msgstr "余额不足"
+msgstr "不足"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__code
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__provider_code
 msgid "Internal code for API identification"
-msgstr "API识别的内部代码"
+msgstr "用于API识别的内部代码"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__code
 msgid "Internal code for system reference"
-msgstr "系统参考的内部代码"
+msgstr "用于系统引用的内部代码"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__parameters
@@ -485,46 +576,66 @@ msgstr "函数参数的JSON模式"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_balance_check
 msgid "Last Balance Check"
-msgstr "最后一次余额检查时间"
+msgstr "上次余额检查"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
 msgid "Last Check"
-msgstr "最后一次余额检查时间"
+msgstr "上次检查"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_balance_check_result
 msgid "Last Check Result"
-msgstr "最后一次余额检查结果"
+msgstr "上次检查结果"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__last_demo_result
+msgid "Last Demo Result"
+msgstr "上次演示结果"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__last_demo_status
+msgid "Last Demo Status"
+msgstr "上次演示状态"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_models_update
+msgid "Last Models Update"
+msgstr "上次模型更新"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_test_message
 msgid "Last Test Message"
-msgstr "最后一次测试消息"
+msgstr "上次测试消息"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_test_result
 msgid "Last Test Result"
-msgstr "最后一次测试结果"
+msgstr "上次测试结果"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__write_uid
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__write_uid
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__write_uid
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__write_uid
 msgid "Last Updated by"
-msgstr "最后一次更新人"
+msgstr "最后更新人"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__write_date
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__write_date
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__write_date
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__write_date
 msgid "Last Updated on"
-msgstr "最后一次更新时间"
+msgstr "最后更新时间"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__last_used
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__last_used
 msgid "Last Used"
-msgstr "最后一次使用时间"
+msgstr "上次使用"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
@@ -532,11 +643,16 @@ msgid "Latest Balance"
 msgstr "最新余额"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__available_models
+msgid "List of available models from the provider"
+msgstr "提供商提供的可用模型列表"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__low
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__low
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
 msgid "Low Balance"
-msgstr "余额低"
+msgstr "余额过低"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__low_balance_threshold
@@ -555,29 +671,70 @@ msgid "Maximum tokens per request"
 msgstr "每个请求的最大令牌数"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__model_data
+msgid "Model Data"
+msgstr "模型数据"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__model_id
+msgid "Model ID"
+msgstr "模型ID"
+
+#. module: oudu_bot_integration
+#: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_model_model_provider_unique
+msgid "Model ID must be unique per provider!"
+msgstr "模型ID必须在每个提供商中唯一！"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_check_frequency__monthly
 msgid "Monthly"
-msgstr "每月一次"
+msgstr "每月"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__function_name
 msgid "Name used in AI function calls"
-msgstr "在AI函数调用中使用的名称"
+msgstr "AI函数调用中使用的名称"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__next_check_date
 msgid "Next Check"
-msgstr "下一次余额检查时间"
+msgstr "下次检查"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_provider_model
+msgid "No AI models found."
+msgstr "未找到AI模型。"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_provider_balance
 msgid "No balance records found."
-msgstr "没有找到余额记录。"
+msgstr "未找到余额记录。"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
+msgid "Not Recommended"
+msgstr "不推荐"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__last_demo_status__not_tested
+msgid "Not Tested"
+msgstr "未测试"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__usage_count
+msgid "Number of times this model has been used"
+msgstr "此模型的使用次数"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__usage_count
 msgid "Number of times this provider has been used"
-msgstr "此提供程序已被使用的次数"
+msgstr "此提供商的使用次数"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__object_type
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
+msgid "Object Type"
+msgstr "对象类型"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__odoo_method
@@ -594,7 +751,7 @@ msgstr "Odoo模型"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__odoo_method
 msgid "Odoo method name to call (for odoo_method type)"
-msgstr "Odoo方法名称（用于odoo_method类型）"
+msgstr "要调用的Odoo方法名称（用于odoo_method类型）"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__odoo_model
@@ -604,17 +761,22 @@ msgstr "Odoo模型名称（用于odoo_method类型）"
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__provider_type__openai
 msgid "OpenAI GPT"
-msgstr "OpenAI GPT"
+msgstr ""
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__owned_by
+msgid "Owned By"
+msgstr "所有者"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__post
 msgid "POST"
-msgstr "POST方法"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__api_method__put
 msgid "PUT"
-msgstr "PUT方法"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
@@ -632,36 +794,38 @@ msgid "Performance Settings"
 msgstr "性能设置"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__provider_id
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
 msgid "Provider"
-msgstr "提供程序"
+msgstr "提供商"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__code
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__provider_code
 msgid "Provider Code"
-msgstr "提供程序代码"
+msgstr "提供商代码"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__name
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_balance__provider_name
 msgid "Provider Name"
-msgstr "提供程序名称"
+msgstr "提供商名称"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__provider_type
 msgid "Provider Type"
-msgstr "提供程序类型"
+msgstr "提供商类型"
 
 #. module: oudu_bot_integration
 #: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_code_unique
 msgid "Provider code must be unique!"
-msgstr "提供程序代码必须唯一！"
+msgstr "提供商代码必须唯一！"
 
 #. module: oudu_bot_integration
 #: model:ir.model.constraint,message:oudu_bot_integration.constraint_oudu_bot_provider_name_unique
 msgid "Provider name must be unique!"
-msgstr "提供程序名称必须唯一！"
+msgstr "提供商名称必须唯一！"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__python_code
@@ -673,7 +837,28 @@ msgstr "Python代码"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__python_code
 msgid "Python code to execute (for python type)"
-msgstr "Python代码用于执行（用于python类型）"
+msgstr "要执行的Python代码（用于python类型）"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_form
+msgid "Raw Model Data"
+msgstr "原始模型数据"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__model_data
+msgid "Raw model data from provider API"
+msgstr "来自提供商API的原始模型数据"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__is_recommended
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
+msgid "Recommended"
+msgstr "推荐"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
+msgid "Recommended Status"
+msgstr "推荐状态"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__timeout
@@ -683,17 +868,28 @@ msgstr "请求超时时间（秒）"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__require_authentication
 msgid "Require Authentication"
-msgstr "是否需要用户认证执行工具"
+msgstr "需要认证"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__require_authentication
 msgid "Require user authentication for tool execution"
-msgstr "是否需要用户认证执行工具"
+msgstr "工具执行需要用户认证"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__result
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_tool_form
+msgid "Result"
+msgstr "结果"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_test_result
 msgid "Result of the last connection test"
-msgstr "最后一次连接测试结果"
+msgstr "上次连接测试的结果"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_search
+msgid "Search AI Models"
+msgstr "搜索AI模型"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
@@ -703,7 +899,7 @@ msgstr "搜索余额记录"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__provider_type
 msgid "Select the AI service provider"
-msgstr "选择AI服务提供程序"
+msgstr "选择AI服务提供商"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__sequence
@@ -712,9 +908,14 @@ msgid "Sequence"
 msgstr "序列"
 
 #. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_form
+msgid "Set as Default"
+msgstr "设为默认"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__api_version
 msgid "Specific API version if required"
-msgstr "如果需要特定的API版本，请指定"
+msgstr "如有需要，指定API版本"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
@@ -722,15 +923,31 @@ msgid "Status"
 msgstr "状态"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__is_success
+#: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__last_demo_status__success
+msgid "Success"
+msgstr "成功"
+
+#. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
 msgid "Successful Checks"
-msgstr "成功检查次数"
+msgstr "成功检查"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__sufficient
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__sufficient
 msgid "Sufficient"
 msgstr "充足"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__supported_models
+msgid "Supported Models"
+msgstr "支持的模型"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_models
+msgid "Sync Models"
+msgstr "同步模型"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__temperature
@@ -756,13 +973,13 @@ msgstr "测试演示"
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__critical_balance_threshold
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
 msgid "Threshold for critical balance warning"
-msgstr "临界余额警告阈值"
+msgstr "严重余额警告的阈值"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__low_balance_threshold
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
 msgid "Threshold for low balance warning"
-msgstr "低余额警告阈值"
+msgstr "低余额警告的阈值"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
@@ -772,12 +989,17 @@ msgstr "阈值"
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__timeout
 msgid "Timeout (seconds)"
-msgstr "请求超时时间（秒）"
+msgstr "超时时间（秒）"
 
 #. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_search
 msgid "Today"
 msgstr "今天"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool_demo_result__tool_id
+msgid "Tool"
+msgstr "工具"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_tool__code
@@ -810,15 +1032,41 @@ msgid "Type of tool implementation"
 msgstr "工具实现类型"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__model_id
+msgid "Unique identifier for the model (e.g., deepseek-chat)"
+msgstr "模型的唯一标识符（例如：deepseek-chat）"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_status__unknown
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider_balance__balance_status__unknown
 msgid "Unknown"
 msgstr "未知"
 
 #. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_models
+msgid "Update Models"
+msgstr "更新模型"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.actions.act_window,help:oudu_bot_integration.action_ai_provider_model
+msgid "Update models from your AI providers to see available models here."
+msgstr "从您的AI提供商更新模型以在此处查看可用模型。"
+
+#. module: oudu_bot_integration
 #: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider__usage_count
+#: model:ir.model.fields,field_description:oudu_bot_integration.field_oudu_bot_provider_model__usage_count
 msgid "Usage Count"
 msgstr "使用次数"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_form
+msgid "Usage Statistics"
+msgstr "使用统计"
+
+#. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_model_tree
+msgid "Use"
+msgstr "使用"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool__allowed_groups
@@ -826,29 +1074,49 @@ msgid "User groups allowed to use this tool"
 msgstr "允许使用此工具的用户组"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__display_name
+msgid "User-friendly display name"
+msgstr "用户友好的显示名称"
+
+#. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_balance
 msgid "View Balance History"
 msgstr "查看余额历史"
 
 #. module: oudu_bot_integration
+#: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_form_inherit_models
+msgid "View Models"
+msgstr "查看模型"
+
+#. module: oudu_bot_integration
 #: model_terms:ir.ui.view,arch_db:oudu_bot_integration.view_ai_provider_balance_form
 msgid "View Provider"
-msgstr "查看提供方"
+msgstr "查看提供商"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_tool__tool_type__webhook
 msgid "Webhook"
-msgstr "Webhook"
+msgstr ""
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields.selection,name:oudu_bot_integration.selection__oudu_bot_provider__balance_check_frequency__weekly
 msgid "Weekly"
-msgstr "每周一次"
+msgstr "每周"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_models_update
+msgid "When the available models list was last updated"
+msgstr "可用模型列表的最后更新时间"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__last_used
+msgid "When this model was last used"
+msgstr "此模型的上次使用时间"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider__last_used
 msgid "When this provider was last used"
-msgstr "上次使用时间"
+msgstr "此提供商的上次使用时间"
 
 #. module: oudu_bot_integration
 #: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_balance__is_success
@@ -856,6 +1124,21 @@ msgid "Whether the balance check was successful"
 msgstr "余额检查是否成功"
 
 #. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_tool_demo_result__is_success
+msgid "Whether the execution was successful"
+msgstr "执行是否成功"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__is_recommended
+msgid "Whether this is a recommended model for the provider"
+msgstr "这是否是提供商的推荐模型"
+
+#. module: oudu_bot_integration
+#: model:ir.model.fields,help:oudu_bot_integration.field_oudu_bot_provider_model__is_active
+msgid "Whether this model is currently available"
+msgstr "此模型当前是否可用"
+
+#. module: oudu_bot_integration
 #: model:ir.actions.server,name:oudu_bot_integration.cron_ai_provider_balance_check_ir_actions_server
 msgid "[AI Gateway] Provider Balance Check"
-msgstr "提供方余额检查"
+msgstr "[AI网关] 提供商余额检查"

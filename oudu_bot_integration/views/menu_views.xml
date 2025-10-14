@@ -9,12 +9,12 @@
 
         <!-- Sub Menu -->
         <menuitem id="menu_ai_provider"
-                  name="AI提供商"
+                  name="AI Providers"
                   parent="menu_ai_gateway"
                   action="action_ai_provider"
                   sequence="10"/>
         <menuitem id="menu_ai_tool"
-                  name="AI智能体"
+                  name="AI Tools"
                   parent="menu_ai_gateway"
                   action="action_ai_tool"
                   sequence="20"/>
@@ -24,5 +24,12 @@
               parent="menu_ai_gateway"
               action="action_ai_provider_balance"
               sequence="30"/>
+
+        <!-- Menu for Models -->
+        <menuitem id="menu_ai_provider_model"
+                  name="AI Models"
+                  parent="menu_ai_gateway"
+                  action="action_ai_provider_model"
+                  sequence="40"/>
     </data>
 </odoo>
