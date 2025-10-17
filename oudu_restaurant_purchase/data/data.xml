@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 序列号 -->
+    <record id="seq_restaurant_purchase_order" model="ir.sequence">
+        <field name="name">餐厅采购订单</field>
+        <field name="code">restaurant.purchase.order</field>
+        <field name="prefix">RPO/%(year)s/%(month)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- 默认产品分类 -->
+    <record id="product_category_restaurant" model="product.category">
+        <field name="name">餐厅物料</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+
+    <!-- 默认产品 -->
+    <record id="product_restaurant_rice" model="product.product">
+        <field name="name">大米</field>
+        <field name="default_code">RICE001</field>
+        <field name="barcode">690000000001</field>
+        <field name="categ_id" ref="product_category_restaurant"/>
+        <field name="type">consu</field>  <!-- 修正为 consu -->
+        <field name="purchase_ok">True</field>
+        <field name="sale_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">5.0</field>
+    </record>
+
+    <record id="product_restaurant_oil" model="product.product">
+        <field name="name">食用油</field>
+        <field name="default_code">OIL001</field>
+        <field name="barcode">690000000002</field>
+        <field name="categ_id" ref="product_category_restaurant"/>
+        <field name="type">consu</field>  <!-- 修正为 consu -->
+        <field name="purchase_ok">True</field>
+        <field name="sale_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_litre"/>
+        <field name="uom_po_id" ref="uom.product_uom_litre"/>
+        <field name="standard_price">15.0</field>
+    </record>
+
+    <record id="product_restaurant_vegetable" model="product.product">
+        <field name="name">蔬菜</field>
+        <field name="default_code">VEG001</field>
+        <field name="barcode">690000000003</field>
+        <field name="categ_id" ref="product_category_restaurant"/>
+        <field name="type">consu</field>  <!-- 修正为 consu -->
+        <field name="purchase_ok">True</field>
+        <field name="sale_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">8.0</field>
+    </record>
+
+    <!-- 更多餐厅常用产品 -->
+    <record id="product_restaurant_meat" model="product.product">
+        <field name="name">肉类</field>
+        <field name="default_code">MEAT001</field>
+        <field name="barcode">690000000004</field>
+        <field name="categ_id" ref="product_category_restaurant"/>
+        <field name="type">consu</field>  <!-- 修正为 consu -->
+        <field name="purchase_ok">True</field>
+        <field name="sale_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">25.0</field>
+    </record>
+
+    <record id="product_restaurant_seafood" model="product.product">
+        <field name="name">海鲜</field>
+        <field name="default_code">SEAF001</field>
+        <field name="barcode">690000000005</field>
+        <field name="categ_id" ref="product_category_restaurant"/>
+        <field name="type">consu</field>  <!-- 修正为 consu -->
+        <field name="purchase_ok">True</field>
+        <field name="sale_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">35.0</field>
+    </record>
+
+    <record id="product_restaurant_spice" model="product.product">
+        <field name="name">调味品</field>
+        <field name="default_code">SPICE001</field>
+        <field name="barcode">690000000006</field>
+        <field name="categ_id" ref="product_category_restaurant"/>
+        <field name="type">consu</field>  <!-- 修正为 consu -->
+        <field name="purchase_ok">True</field>
+        <field name="sale_ok">False</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="standard_price">12.0</field>
+    </record>
+</odoo>

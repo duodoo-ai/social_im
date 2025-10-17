@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_restaurant_purchase_order_chef,restaurant.purchase.order.chef,model_restaurant_purchase_order,group_restaurant_chef,1,1,1,0
+access_restaurant_purchase_order_purchaser,restaurant.purchase.order.purchaser,model_restaurant_purchase_order,group_restaurant_purchaser,1,1,1,0
+access_restaurant_purchase_order_admin,restaurant.purchase.order.admin,model_restaurant_purchase_order,group_restaurant_admin,1,1,1,1
+access_restaurant_purchase_order_line_chef,restaurant.purchase.order.line.chef,model_restaurant_purchase_order_line,group_restaurant_chef,1,1,1,0
+access_restaurant_purchase_order_line_purchaser,restaurant.purchase.order.line.purchaser,model_restaurant_purchase_order_line,group_restaurant_purchaser,1,1,1,0
+access_restaurant_purchase_order_line_admin,restaurant.purchase.order.line.admin,model_restaurant_purchase_order_line,group_restaurant_admin,1,1,1,1
+access_restaurant_shop_chef,restaurant.shop.chef,model_restaurant_shop,group_restaurant_chef,1,0,0,0
+access_restaurant_shop_admin,restaurant.shop.admin,model_restaurant_shop,group_restaurant_admin,1,1,1,1

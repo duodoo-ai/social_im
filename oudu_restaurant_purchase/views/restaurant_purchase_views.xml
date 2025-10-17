@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 动作定义 -->
+    <record id="action_restaurant_purchase_orders" model="ir.actions.act_window">
+        <field name="name">餐厅采购订单</field>
+        <field name="res_model">restaurant.purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+    </record>
+
+    <record id="action_today_purchase_view" model="ir.actions.act_window">
+        <field name="name">今日采购</field>
+        <field name="res_model">restaurant.purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('delivery_date', '=', context_today())]</field>
+        <field name="context">
+            {"search_default_today": 1, "create": False}
+        </field>
+    </record>
+
+    <!-- 修正：使用正确的 act_url 模型 -->
+    <record id="action_quick_receive" model="ir.actions.act_url">
+        <field name="name">快速收货</field>
+        <field name="url">/restaurant/purchase/quick_receive</field>
+        <field name="target">self</field>
+    </record>
+
+    <!-- 树状视图 -->
+    <record id="view_restaurant_purchase_order_list" model="ir.ui.view">
+        <field name="name">restaurant.purchase.order.list</field>
+        <field name="model">restaurant.purchase.order</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state=='done'" decoration-warning="state=='purchasing'">
+                <field name="name"/>
+                <field name="shop_id"/>
+                <field name="chef_id"/>
+                <field name="order_date"/>
+                <field name="delivery_date"/>
+                <field name="state"/>
+                <field name="product_count"/>
+                <field name="purchased_count"/>
+                <field name="total_amount"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 表单视图 -->
+    <record id="view_restaurant_purchase_order_form" model="ir.ui.view">
+        <field name="name">restaurant.purchase.order.form</field>
+        <field name="model">restaurant.purchase.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="提交订单" type="object"
+                            class="btn-primary" invisible="state!='draft'"/>
+                    <button name="action_start_purchasing" string="开始采购" type="object"
+                            class="btn-primary" invisible="state!='chef_submitted'"/>
+                    <button name="action_receive" string="确认收货" type="object"
+                            class="btn-primary" invisible="state!='purchasing'"/>
+                    <button name="action_done" string="完成订单" type="object"
+                            class="btn-primary" invisible="state!='received'"/>
+                    <button name="action_reset_draft" string="重置草稿" type="object"
+                            class="btn-secondary" invisible="state!='purchasing'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,chef_submitted,purchasing,received,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="shop_id"/>
+                            <field name="chef_id"/>
+                            <field name="state" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="order_date"/>
+                            <field name="delivery_date"/>
+                            <field name="purchaser_id" readonly="1"/>
+                            <field name="receiver_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="product_code"/>
+                            <field name="product_barcode"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom"/>
+                            <field name="price_unit"/>
+                            <field name="subtotal"/>
+                            <field name="is_purchased"/>
+                            <field name="actual_qty"/>
+                            <field name="notes"/>
+                        </list>
+                    </field>
+                    <field name="notes"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- 搜索视图 -->
+<!--    <record id="view_restaurant_purchase_order_search" model="ir.ui.view">-->
+<!--        <field name="name">restaurant.purchase.order.search</field>-->
+<!--        <field name="model">restaurant.purchase.order</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search>-->
+<!--                <filter string="今日订单" name="today" domain="[('delivery_date', '=', context_today())]"/>-->
+<!--                <filter string="待采购" name="to_purchase" domain="[('state', '=', 'chef_submitted')]"/>-->
+<!--                <filter string="采购中" name="purchasing" domain="[('state', '=', 'purchasing')]"/>-->
+<!--                <filter string="待收货" name="to_receive" domain="[('state', '=', 'purchasing')]"/>-->
+<!--                <group expand="0" string="分组按">-->
+<!--                    <filter string="门店" name="group_shop" context="{'group_by': 'shop_id'}"/>-->
+<!--                    <filter string="状态" name="group_state" context="{'group_by': 'state'}"/>-->
+<!--                </group>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>

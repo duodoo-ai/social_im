@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- 菜单定义 -->
+        <menuitem
+            id="menu_restaurant_purchase_root"
+            name="餐厅采购"
+            web_icon="oudu_restaurant_purchase,static/description/icon.png"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_restaurant_purchase_orders"
+            name="采购订单"
+            parent="menu_restaurant_purchase_root"
+            action="action_restaurant_purchase_orders"
+            sequence="10"/>
+
+        <menuitem
+            id="menu_restaurant_purchase_today"
+            name="今日采购"
+            parent="menu_restaurant_purchase_root"
+            action="action_today_purchase_view"
+            sequence="20"/>
+
+        <menuitem
+            id="menu_restaurant_purchase_quick_receive"
+            name="快速收货"
+            parent="menu_restaurant_purchase_root"
+            action="action_quick_receive"
+            sequence="30"/>
+
+        <!-- 添加到菜单 -->
+        <menuitem
+            id="menu_restaurant_purchase_report"
+            name="采购报表"
+            parent="menu_restaurant_purchase_root"
+            action="action_restaurant_purchase_report"
+            sequence="40"/>
+    </data>
+</odoo>

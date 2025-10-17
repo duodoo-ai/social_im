@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 演示门店 -->
+    <record id="demo_shop_beijing" model="restaurant.shop">
+        <field name="name">北京总店</field>
+        <field name="code">BJ001</field>
+        <field name="address">北京市朝阳区建国路100号</field>
+        <field name="phone">010-12345678</field>
+        <field name="chef_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="demo_shop_shanghai" model="restaurant.shop">
+        <field name="name">上海分店</field>
+        <field name="code">SH001</field>
+        <field name="address">上海市浦东新区陆家嘴金融中心</field>
+        <field name="phone">021-87654321</field>
+        <field name="chef_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="demo_shop_guangzhou" model="restaurant.shop">
+        <field name="name">广州分店</field>
+        <field name="code">GZ001</field>
+        <field name="address">广州市天河区珠江新城</field>
+        <field name="phone">020-12345678</field>
+        <field name="chef_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- 演示采购订单1 - 北京总店 -->
+    <record id="demo_purchase_order_1" model="restaurant.purchase.order">
+        <field name="name">RPO/2024/03/0001</field>
+        <field name="shop_id" ref="demo_shop_beijing"/>
+        <field name="chef_id" ref="base.user_admin"/>
+        <field name="order_date">2025-10-15</field>
+        <field name="delivery_date">2025-10-16</field>
+        <field name="state">chef_submitted</field>
+    </record>
+
+    <!-- 演示采购订单行 -->
+    <record id="demo_order_line_1" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_1"/>
+        <field name="product_id" ref="product_restaurant_rice"/>
+        <field name="product_qty">50</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">5.0</field>
+    </record>
+
+    <record id="demo_order_line_2" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_1"/>
+        <field name="product_id" ref="product_restaurant_oil"/>
+        <field name="product_qty">10</field>
+        <field name="product_uom" ref="uom.product_uom_litre"/>
+        <field name="price_unit">15.0</field>
+    </record>
+
+    <record id="demo_order_line_3" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_1"/>
+        <field name="product_id" ref="product_restaurant_vegetable"/>
+        <field name="product_qty">20</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">8.0</field>
+    </record>
+
+    <!-- 演示采购订单2 - 上海分店 -->
+    <record id="demo_purchase_order_2" model="restaurant.purchase.order">
+        <field name="name">RPO/2024/03/0002</field>
+        <field name="shop_id" ref="demo_shop_shanghai"/>
+        <field name="chef_id" ref="base.user_admin"/>
+        <field name="order_date">2025-10-15</field>
+        <field name="delivery_date">2025-10-16</field>
+        <field name="state">purchasing</field>
+        <field name="purchaser_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="demo_order_line_4" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_2"/>
+        <field name="product_id" ref="product_restaurant_rice"/>
+        <field name="product_qty">30</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">5.0</field>
+        <field name="is_purchased">True</field>
+    </record>
+
+    <record id="demo_order_line_5" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_2"/>
+        <field name="product_id" ref="product_restaurant_oil"/>
+        <field name="product_qty">5</field>
+        <field name="product_uom" ref="uom.product_uom_litre"/>
+        <field name="price_unit">15.0</field>
+        <field name="is_purchased">True</field>
+    </record>
+
+    <record id="demo_order_line_6" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_2"/>
+        <field name="product_id" ref="product_restaurant_meat"/>
+        <field name="product_qty">15</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">25.0</field>
+        <field name="is_purchased">False</field>
+    </record>
+
+    <!-- 演示采购订单3 - 广州分店 -->
+    <record id="demo_purchase_order_3" model="restaurant.purchase.order">
+        <field name="name">RPO/2024/03/0003</field>
+        <field name="shop_id" ref="demo_shop_guangzhou"/>
+        <field name="chef_id" ref="base.user_admin"/>
+        <field name="order_date">2025-10-15</field>
+        <field name="delivery_date">2025-10-16</field>
+        <field name="state">received</field>
+        <field name="purchaser_id" ref="base.user_admin"/>
+        <field name="receiver_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="demo_order_line_7" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_3"/>
+        <field name="product_id" ref="product_restaurant_seafood"/>
+        <field name="product_qty">8</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">35.0</field>
+        <field name="is_purchased">True</field>
+        <field name="actual_qty">8</field>
+    </record>
+
+    <record id="demo_order_line_8" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_3"/>
+        <field name="product_id" ref="product_restaurant_spice"/>
+        <field name="product_qty">5</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">12.0</field>
+        <field name="is_purchased">True</field>
+        <field name="actual_qty">5</field>
+    </record>
+
+    <!-- 演示采购订单4 - 已完成 -->
+    <record id="demo_purchase_order_4" model="restaurant.purchase.order">
+        <field name="name">RPO/2024/02/0001</field>
+        <field name="shop_id" ref="demo_shop_beijing"/>
+        <field name="chef_id" ref="base.user_admin"/>
+        <field name="order_date">2025-10-15</field>
+        <field name="delivery_date">2025-10-16</field>
+        <field name="state">done</field>
+        <field name="purchaser_id" ref="base.user_admin"/>
+        <field name="receiver_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="demo_order_line_9" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_4"/>
+        <field name="product_id" ref="product_restaurant_rice"/>
+        <field name="product_qty">40</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">5.0</field>
+        <field name="is_purchased">True</field>
+        <field name="actual_qty">40</field>
+    </record>
+
+    <record id="demo_order_line_10" model="restaurant.purchase.order.line">
+        <field name="order_id" ref="demo_purchase_order_4"/>
+        <field name="product_id" ref="product_restaurant_vegetable"/>
+        <field name="product_qty">25</field>
+        <field name="product_uom" ref="uom.product_uom_kgm"/>
+        <field name="price_unit">8.0</field>
+        <field name="is_purchased">True</field>
+        <field name="actual_qty">25</field>
+    </record>
+</odoo>

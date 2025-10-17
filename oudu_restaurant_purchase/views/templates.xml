@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- 今日采购订单页面模板 - 卡片样式 -->
+        <template id="today_orders_template" name="今日采购订单页面" priority="10">
+            <t t-call="web.basic_layout">
+                <div class="container-fluid o_restaurant_purchase">
+                    <!-- 页面标题和统计信息 -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="mb-0">
+                                    <i class="fa fa-shopping-cart mr-2"></i>今日采购订单
+                                </h2>
+                                <div class="stat-badges">
+                                    <span class="badge badge-primary badge-lg mr-2">
+                                        <i class="fa fa-clipboard-list mr-1"></i>
+                                        总计: <span t-esc="len(orders)"/> 个订单
+                                    </span>
+                                    <span class="badge badge-success badge-lg mr-2">
+                                        <i class="fa fa-check-circle mr-1"></i>
+                                        已完成: <span t-esc="sum(1 for o in orders if o.state == 'done')"/>
+                                    </span>
+                                    <span class="badge badge-warning badge-lg">
+                                        <i class="fa fa-clock mr-1"></i>
+                                        进行中: <span t-esc="sum(1 for o in orders if o.state in ['chef_submitted', 'purchasing'])"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="mt-3 mb-4"/>
+                        </div>
+                    </div>
+
+                    <!-- 订单卡片网格 -->
+                    <div class="row" id="orders-grid">
+                        <t t-foreach="orders" t-as="order">
+                            <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                                <div t-att-class="'card order-card h-100 state-' + order.state">
+                                    <!-- 卡片头部 -->
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fa fa-file-invoice mr-2"></i>
+                                            <span t-esc="order.name"/>
+                                        </h5>
+                                        <t t-if="order.state == 'draft'">
+                                            <span class="status-badge status-draft">草稿</span>
+                                        </t>
+                                        <t t-if="order.state == 'chef_submitted'">
+                                            <span class="status-badge status-chef_submitted">已提交</span>
+                                        </t>
+                                        <t t-if="order.state == 'purchasing'">
+                                            <span class="status-badge status-purchasing">采购中</span>
+                                        </t>
+                                        <t t-if="order.state == 'received'">
+                                            <span class="status-badge status-received">已收货</span>
+                                        </t>
+                                        <t t-if="order.state == 'done'">
+                                            <span class="status-badge status-done">已完成</span>
+                                        </t>
+                                    </div>
+
+                                    <!-- 卡片内容 -->
+                                    <div class="card-body">
+                                        <!-- 基本信息 -->
+                                        <div class="order-info mb-3">
+                                            <div class="info-item">
+                                                <i class="fa fa-store mr-2 text-muted"></i>
+                                                <strong>门店:</strong> <span t-esc="order.shop_id.name"/>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="fa fa-user mr-2 text-muted"></i>
+                                                <strong>主厨:</strong> <span t-esc="order.chef_id.name"/>
+                                            </div>
+                                            <div class="info-item">
+                                                <i class="fa fa-calendar mr-2 text-muted"></i>
+                                                <strong>需求日期:</strong> <span t-esc="order.delivery_date"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- 进度统计 -->
+                                        <div class="progress-stats mb-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <small class="text-muted">采购进度</small>
+                                                <small class="text-muted">
+                                                    <span t-esc="order.purchased_count"/>/<span t-esc="order.product_count"/> 商品
+                                                </small>
+                                            </div>
+                                            <div class="progress" style="height: 20px;">
+                                                <t t-set="progress_width" t-value="0"/>
+                                                <t t-if="order.product_count > 0">
+                                                    <t t-set="progress_width" t-value="(order.purchased_count / order.product_count) * 100"/>
+                                                </t>
+                                                <t t-set="progress_class" t-value="'progress-bar'"/>
+                                                <t t-if="order.state == 'done'">
+                                                    <t t-set="progress_class" t-value="'progress-bar bg-success'"/>
+                                                </t>
+                                                <t t-elif="order.state == 'purchasing'">
+                                                    <t t-set="progress_class" t-value="'progress-bar bg-warning'"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="progress_class" t-value="'progress-bar bg-info'"/>
+                                                </t>
+                                                <div t-att-class="progress_class" t-att-style="'width: ' + str(progress_width) + '%;'">
+                                                    <span t-esc="int(progress_width)"/>%
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 金额信息 -->
+                                        <div t-att-class="'amount-info text-center p-3 mb-3 state-' + order.state">
+                                            <div class="amount-label">总金额</div>
+                                            <div class="amount-value">
+                                                ¥<span t-esc="'{:,.2f}'.format(order.total_amount)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 卡片底部操作按钮 -->
+                                    <div class="card-footer bg-transparent">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <a t-attf-href="/web#id={{ order.id }}&amp;model=restaurant.purchase.order&amp;view_type=form"
+                                                   class="btn btn-primary btn-block btn-action">
+                                                    <i class="fa fa-eye mr-1"></i>查看详情
+                                                </a>
+                                            </div>
+                                            <div class="col-6">
+                                                <t t-if="order.state == 'chef_submitted'">
+                                                    <button type="button" class="btn btn-success btn-block btn-action"
+                                                            t-att-data-order-id="order.id" onclick="startPurchasing(this)">
+                                                        <i class="fa fa-play mr-1"></i>开始采购
+                                                    </button>
+                                                </t>
+                                                <t t-if="order.state == 'purchasing'">
+                                                    <button type="button" class="btn btn-warning btn-block btn-action"
+                                                            t-att-data-order-id="order.id" onclick="receiveOrder(this)">
+                                                        <i class="fa fa-check mr-1"></i>确认收货
+                                                    </button>
+                                                </t>
+                                                <t t-if="order.state == 'received'">
+                                                    <button type="button" class="btn btn-info btn-block btn-action"
+                                                            t-att-data-order-id="order.id" onclick="completeOrder(this)">
+                                                        <i class="fa fa-flag-checkered mr-1"></i>完成订单
+                                                    </button>
+                                                </t>
+                                                <t t-if="order.state == 'done'">
+                                                    <span class="badge badge-success p-2 w-100">
+                                                        <i class="fa fa-check-double mr-1"></i>已完成
+                                                    </span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- 空状态 -->
+                        <t t-if="not orders">
+                            <div class="col-12">
+                                <div class="card text-center empty-state">
+                                    <div class="card-body py-5">
+                                        <i class="fa fa-clipboard-check fa-4x text-muted mb-3"></i>
+                                        <h4 class="text-muted">暂无今日采购订单</h4>
+                                        <p class="text-muted mb-4">今天还没有需要处理的采购订单</p>
+                                        <a href="/web#action=action_restaurant_purchase_orders" class="btn btn-primary btn-lg">
+                                            <i class="fa fa-plus mr-2"></i>创建采购订单
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- 内联 JavaScript -->
+                <script>
+                    function startPurchasing(button) {
+                        const orderId = button.getAttribute('data-order-id');
+                        fetch('/restaurant/purchase/start_purchasing', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                'order_id': parseInt(orderId)
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification('开始采购成功！', 'success');
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification('操作失败: ' + data.error, 'danger');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('操作失败', 'danger');
+                        });
+                    }
+
+                    function receiveOrder(button) {
+                        const orderId = button.getAttribute('data-order-id');
+                        fetch('/restaurant/purchase/receive_order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                'order_id': parseInt(orderId)
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification('收货确认成功！', 'success');
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification('操作失败: ' + data.error, 'danger');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('操作失败', 'danger');
+                        });
+                    }
+
+                    function completeOrder(button) {
+                        const orderId = button.getAttribute('data-order-id');
+                        fetch('/restaurant/purchase/complete_order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                'order_id': parseInt(orderId)
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification('订单完成！', 'success');
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification('操作失败: ' + data.error, 'danger');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('操作失败', 'danger');
+                        });
+                    }
+
+                    function showNotification(message, type) {
+                        // 创建通知元素
+                        const notification = document.createElement('div');
+                        notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+                        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+                        notification.innerHTML = `
+                            ${message}
+                            <button type="button" class="close" data-dismiss="alert">
+<!--                                <span>&times;</span>-->
+                            </button>
+                        `;
+
+                        document.body.appendChild(notification);
+
+                        // 3秒后自动消失
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.parentNode.removeChild(notification);
+                            }
+                        }, 3000);
+                    }
+
+                    // 添加卡片悬停效果
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const cards = document.querySelectorAll('.order-card');
+                        cards.forEach(card => {
+                            card.addEventListener('mouseenter', function() {
+                                this.style.transform = 'translateY(-5px)';
+                                this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+                            });
+                            card.addEventListener('mouseleave', function() {
+                                this.style.transform = 'translateY(0)';
+                                this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                            });
+                        });
+                    });
+                </script>
+
+                <style>
+                    /* 卡片样式增强 */
+                    .order-card {
+                        border: none;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                        transition: all 0.3s ease;
+                        border-left: 4px solid #dee2e6;
+                    }
+
+                    .order-card.state-draft {
+                        border-left-color: #6c757d;
+                    }
+
+                    .order-card.state-chef_submitted {
+                        border-left-color: #17a2b8;
+                    }
+
+                    .order-card.state-purchasing {
+                        border-left-color: #ffc107;
+                    }
+
+                    .order-card.state-received {
+                        border-left-color: #28a745;
+                    }
+
+                    .order-card.state-done {
+                        border-left-color: #6f42c1;
+                    }
+
+                    .card-header {
+                        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                        border-bottom: 1px solid rgba(0,0,0,0.05);
+                    }
+
+                    .status-badge {
+                        padding: 6px 12px;
+                        border-radius: 20px;
+                        font-weight: bold;
+                        font-size: 12px;
+                    }
+
+                    .status-draft { background-color: #6c757d; color: white; }
+                    .status-chef_submitted { background-color: #17a2b8; color: white; }
+                    .status-purchasing { background-color: #ffc107; color: #212529; }
+                    .status-received { background-color: #28a745; color: white; }
+                    .status-done { background-color: #6f42c1; color: white; }
+
+                    .info-item {
+                        padding: 4px 0;
+                        font-size: 14px;
+                    }
+
+                    .amount-info {
+                        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                        border-radius: 8px;
+                        border: 1px solid rgba(0,0,0,0.05);
+                    }
+
+                    .amount-label {
+                        font-size: 12px;
+                        color: #6c757d;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                    }
+
+                    .amount-value {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #2c3e50;
+                    }
+
+                    /* 按钮样式改进 - 确保文字清晰可见 */
+                    .btn-action {
+                        font-weight: 600;
+                        padding: 10px 16px;
+                        border-radius: 8px;
+                        transition: all 0.3s ease;
+                        border: 2px solid transparent;
+                    }
+
+                    .btn-action:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    }
+
+                    /* 特别优化黄色按钮的文字可见性 */
+                    .btn-warning {
+                        background-color: #e0a800; /* 更深的黄色 */
+                        border-color: #d39e00;
+                        color: #212529 !important; /* 确保文字为深色 */
+                        font-weight: 700; /* 加粗文字 */
+                        text-shadow: 0 1px 1px rgba(255,255,255,0.5); /* 文字阴影增强可读性 */
+                    }
+
+                    .btn-warning:hover {
+                        background-color: #d39e00;
+                        border-color: #c69500;
+                        color: #212529 !important;
+                    }
+
+                    /* 其他按钮样式优化 */
+                    .btn-success {
+                        background-color: #28a745;
+                        border-color: #1e7e34;
+                        color: white !important;
+                        font-weight: 600;
+                    }
+
+                    .btn-success:hover {
+                        background-color: #218838;
+                        border-color: #1c7430;
+                        color: white !important;
+                    }
+
+                    .btn-primary {
+                        background-color: #007bff;
+                        border-color: #0069d9;
+                        color: white !important;
+                        font-weight: 600;
+                    }
+
+                    .btn-primary:hover {
+                        background-color: #0069d9;
+                        border-color: #0062cc;
+                        color: white !important;
+                    }
+
+                    .btn-info {
+                        background-color: #17a2b8;
+                        border-color: #138496;
+                        color: white !important;
+                        font-weight: 600;
+                    }
+
+                    .btn-info:hover {
+                        background-color: #138496;
+                        border-color: #117a8b;
+                        color: white !important;
+                    }
+
+                    .badge-lg {
+                        padding: 8px 16px;
+                        font-size: 14px;
+                        border-radius: 20px;
+                    }
+
+                    .empty-state {
+                        border: 2px dashed #dee2e6;
+                        background: #f8f9fa;
+                    }
+
+                    .progress {
+                        border-radius: 10px;
+                        background-color: #e9ecef;
+                    }
+
+                    .progress-bar {
+                        border-radius: 10px;
+                        font-weight: bold;
+                        font-size: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    @media (max-width: 768px) {
+                        .stat-badges {
+                            display: none;
+                        }
+
+                        .col-xl-4, .col-lg-6, .col-md-6 {
+                            margin-bottom: 1rem;
+                        }
+
+                        /* 移动端按钮优化 */
+                        .btn-action {
+                            padding: 12px 8px;
+                            font-size: 14px;
+                        }
+                    }
+                </style>
+            </t>
+        </template>
+
+        <!-- 快速收货页面模板 -->
+        <template id="quick_receive_template" name="快速收货页面" priority="10">
+            <t t-call="web.basic_layout">
+                <div class="container-fluid o_restaurant_purchase">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="text-center mb-4">
+                                <i class="fa fa-barcode mr-2"></i>快速收货
+                            </h2>
+
+                            <!-- 快速收货表单 -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">扫描商品条码收货</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="quick-receive-form" class="form-inline justify-content-center">
+                                        <div class="form-group mr-2 mb-2">
+                                            <label for="barcode" class="sr-only">商品条码</label>
+                                            <input type="text" class="form-control barcode-input" id="barcode"
+                                                   placeholder="扫描或输入商品条码" required="autofocus" style="min-width: 250px;"/>
+                                        </div>
+                                        <div class="form-group mr-2 mb-2">
+                                            <label for="actual_qty" class="sr-only">实际数量</label>
+                                            <input type="number" class="form-control" id="actual_qty"
+                                                   placeholder="实际数量" step="0.01" min="0" required="true" style="min-width: 150px;"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mb-2">
+                                            <i class="fa fa-check mr-1"></i>确认收货
+                                        </button>
+                                    </form>
+                                    <div id="result-message" class="mt-3" style="display: none;"></div>
+                                </div>
+                            </div>
+
+                            <!-- 待收货商品列表 -->
+                            <div class="card mt-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">今日待收货商品</h5>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="loadPendingReceipts()">
+                                        <i class="fa fa-refresh mr-1"></i>刷新
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>商品信息</th>
+                                                    <th>门店</th>
+                                                    <th>计划数量</th>
+                                                    <th>实际数量</th>
+                                                    <th>状态</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pending-receipts">
+                                                <!-- 动态加载 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 内联 JavaScript -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var form = document.getElementById('quick-receive-form');
+                        var resultDiv = document.getElementById('result-message');
+                        var barcodeInput = document.getElementById('barcode');
+
+                        // 加载待收货商品
+                        loadPendingReceipts();
+
+                        // 自动聚焦到条码输入框
+                        if (barcodeInput) {
+                            barcodeInput.focus();
+                        }
+
+                        if (form) {
+                            form.addEventListener('submit', function(e) {
+                                e.preventDefault();
+
+                                var barcode = barcodeInput.value;
+                                var actualQty = document.getElementById('actual_qty').value;
+
+                                if (!barcode || !actualQty) {
+                                    showResult('请输入条码和数量', 'danger');
+                                    return;
+                                }
+
+                                // 显示加载状态
+                                var submitBtn = form.querySelector('button[type="submit"]');
+                                var originalText = submitBtn.innerHTML;
+                                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>处理中...';
+                                submitBtn.disabled = true;
+
+                                fetch('/restaurant/purchase/quick_receive_action', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        'barcode': barcode,
+                                        'actual_qty': parseFloat(actualQty)
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        showResult('<i class="fa fa-check-circle mr-2"></i>' + data.message, 'success');
+                                        form.reset();
+                                        barcodeInput.focus();
+                                        // 刷新待收货列表
+                                        loadPendingReceipts();
+                                    } else {
+                                        showResult('<i class="fa fa-exclamation-triangle mr-2"></i>操作失败: ' + data.error, 'danger');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    showResult('<i class="fa fa-exclamation-triangle mr-2"></i>操作失败', 'danger');
+                                })
+                                .finally(() => {
+                                    // 恢复按钮状态
+                                    submitBtn.innerHTML = originalText;
+                                    submitBtn.disabled = false;
+                                });
+                            });
+                        }
+
+                        // 添加条码输入自动跳转
+                        barcodeInput.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                document.getElementById('actual_qty').focus();
+                            }
+                        });
+
+                        // 数量输入自动提交
+                        document.getElementById('actual_qty').addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                form.dispatchEvent(new Event('submit'));
+                            }
+                        });
+                    });
+
+                    function showResult(message, type) {
+                        var resultDiv = document.getElementById('result-message');
+                        if (!resultDiv) return;
+
+                        resultDiv.innerHTML =
+                            '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                            message +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true"></span>' +
+                            '</button>' +
+                            '</div>';
+                        resultDiv.style.display = 'block';
+
+                        // 添加关闭按钮功能
+                        var closeButton = resultDiv.querySelector('.close');
+                        if (closeButton) {
+                            closeButton.addEventListener('click', function() {
+                                resultDiv.style.display = 'none';
+                            });
+                        }
+
+                        // 5秒后自动消失
+                        setTimeout(() => {
+                            resultDiv.style.display = 'none';
+                        }, 5000);
+                    }
+
+                    function loadPendingReceipts() {
+                        var tbody = document.getElementById('pending-receipts');
+                        if (!tbody) return;
+
+                        // 显示加载中
+                        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3"><i class="fa fa-spinner fa-spin mr-2"></i>加载中...</td></tr>';
+
+                        fetch('/restaurant/purchase/get_pending_receipts', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success &amp;&amp; data.pending_receipts &amp;&amp; data.pending_receipts.length > 0) {
+                                tbody.innerHTML = '';
+
+                                data.pending_receipts.forEach(function(item) {
+                                    var row = document.createElement('tr');
+                                    var statusClass = item.actual_qty >= item.planned_qty ? 'badge-success' : 'badge-warning';
+                                    var statusText = item.actual_qty >= item.planned_qty ? '已完成' : '待收货';
+
+                                    row.innerHTML =
+                                        '<td>' +
+                                            '<div class="font-weight-bold">' + (item.product_name || '未知商品') + '</div>' +
+                                            '<small class="text-muted">' + (item.barcode || '无条码') + '</small>' +
+                                        '</td>' +
+                                        '<td>' + (item.shop_name || '未知门店') + '</td>' +
+                                        '<td class="font-weight-bold">' + (item.planned_qty || '0') + '</td>' +
+                                        '<td class="font-weight-bold text-primary">' + (item.actual_qty || '0') + '</td>' +
+                                        '<td><span class="badge ' + statusClass + ' p-2">' + statusText + '</span></td>';
+                                    tbody.appendChild(row);
+                                });
+                            } else {
+                                tbody.innerHTML =
+                                    '<tr>' +
+                                        '<td colspan="5" class="text-center py-4 text-muted">' +
+                                            '<i class="fa fa-check-circle fa-2x mb-2"></i>' +
+                                            '<p>暂无待收货商品</p>' +
+                                        '</td>' +
+                                    '</tr>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error loading pending receipts:', error);
+                            var tbody = document.getElementById('pending-receipts');
+                            if (tbody) {
+                                tbody.innerHTML =
+                                    '<tr>' +
+                                        '<td colspan="5" class="text-center py-4 text-danger">' +
+                                            '<i class="fa fa-exclamation-triangle fa-2x mb-2"></i>' +
+                                            '<p>加载失败，请刷新重试</p>' +
+                                        '</td>' +
+                                    '</tr>';
+                            }
+                        });
+                    }
+                </script>
+
+                <style>
+                    .barcode-input {
+                        font-size: 18px;
+                        text-align: center;
+                        letter-spacing: 2px;
+                    }
+
+                    .form-control {
+                        font-size: 16px;
+                        height: 50px;
+                    }
+
+                    .btn {
+                        font-size: 16px;
+                        padding: 12px 24px;
+                        min-height: 50px;
+                    }
+
+                    @media (max-width: 768px) {
+                        .form-inline .form-group {
+                            display: block;
+                            width: 100%;
+                            margin-bottom: 10px;
+                        }
+
+                        .form-inline .form-control {
+                            width: 100%;
+                            margin-bottom: 10px;
+                        }
+
+                        .form-inline .btn {
+                            width: 100%;
+                        }
+                    }
+                </style>
+            </t>
+        </template>
+
+        <!-- 采购工作台页面 -->
+        <!-- 采购工作台页面 -->
+        <!-- 采购工作台页面 -->
+        <!-- 采购工作台页面 -->
+        <!-- 采购工作台页面 --><!-- 采购工作台页面 -->
+        <!-- 采购工作台页面 -->
+        <template id="purchase_dashboard_template" name="采购工作台" priority="10">
+            <t t-call="web.basic_layout">
+                <div class="container-fluid o_restaurant_purchase">
+                    <!-- 页面标题和快速统计 -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h1 class="mb-0">
+                                    <i class="fa fa-tachometer-alt mr-2"></i>采购工作台
+                                </h1>
+                                <div class="quick-stats">
+                                    <span class="badge badge-primary badge-lg mr-2">
+                                        <i class="fa fa-clipboard-list mr-1"></i>
+                                        今日订单: <span t-esc="len(orders)"/>
+                                    </span>
+                                    <span class="badge badge-warning badge-lg mr-2">
+                                        <i class="fa fa-boxes mr-1"></i>
+                                        待收货: <span t-esc="pending_stats.get('total_pending', 0)"/>
+                                    </span>
+                                    <span class="badge badge-success badge-lg">
+                                        <i class="fa fa-check-circle mr-1"></i>
+                                        已完成: <span t-esc="sum(1 for o in orders if o.state == 'done')"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="mb-4"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- 左侧：今日订单和快速操作 -->
+                        <div class="col-lg-8 col-md-7">
+                            <!-- 今日采购订单 -->
+                            <div class="card mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fa fa-shopping-cart mr-2"></i>今日采购订单
+                                    </h5>
+                                    <div>
+                                        <a href="/restaurant/purchase/today" class="btn btn-sm btn-outline-primary mr-2">
+                                            <i class="fa fa-external-link-alt mr-1"></i>独立页面
+                                        </a>
+                                        <a href="/web#action=action_restaurant_purchase_orders" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fa fa-list mr-1"></i>所有订单
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" id="orders-grid">
+                                        <t t-foreach="orders" t-as="order">
+                                            <div class="col-xl-6 col-lg-12 mb-3">
+                                                <div t-att-class="'card order-card h-100 state-' + order.state" style="min-height: 280px;">
+                                                    <!-- 卡片头部 -->
+                                                    <div class="card-header d-flex justify-content-between align-items-center py-2">
+                                                        <h6 class="card-title mb-0 text-truncate">
+                                                            <i class="fa fa-file-invoice mr-1"></i>
+                                                            <span t-esc="order.name"/>
+                                                        </h6>
+                                                        <t t-if="order.state == 'draft'">
+                                                            <span class="status-badge status-draft">草稿</span>
+                                                        </t>
+                                                        <t t-if="order.state == 'chef_submitted'">
+                                                            <span class="status-badge status-chef_submitted">已提交</span>
+                                                        </t>
+                                                        <t t-if="order.state == 'purchasing'">
+                                                            <span class="status-badge status-purchasing">采购中</span>
+                                                        </t>
+                                                        <t t-if="order.state == 'received'">
+                                                            <span class="status-badge status-received">已收货</span>
+                                                        </t>
+                                                        <t t-if="order.state == 'done'">
+                                                            <span class="status-badge status-done">已完成</span>
+                                                        </t>
+                                                    </div>
+
+                                                    <!-- 卡片内容 -->
+                                                    <div class="card-body p-3">
+                                                        <!-- 基本信息 -->
+                                                        <div class="order-info mb-2">
+                                                            <div class="info-item small">
+                                                                <i class="fa fa-store mr-1 text-muted"></i>
+                                                                <strong>门店:</strong> <span t-esc="order.shop_id.name"/>
+                                                            </div>
+                                                            <div class="info-item small">
+                                                                <i class="fa fa-user mr-1 text-muted"></i>
+                                                                <strong>主厨:</strong> <span t-esc="order.chef_id.name"/>
+                                                            </div>
+                                                            <div class="info-item small">
+                                                                <i class="fa fa-calendar mr-1 text-muted"></i>
+                                                                <strong>需求:</strong> <span t-esc="order.delivery_date"/>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 进度统计 -->
+                                                        <div class="progress-stats mb-2">
+                                                            <div class="d-flex justify-content-between mb-1">
+                                                                <small class="text-muted">采购进度</small>
+                                                                <small class="text-muted">
+                                                                    <span t-esc="order.purchased_count"/>/<span t-esc="order.product_count"/>
+                                                                </small>
+                                                            </div>
+                                                            <div class="progress" style="height: 16px;">
+                                                                <t t-set="progress_width" t-value="0"/>
+                                                                <t t-if="order.product_count > 0">
+                                                                    <t t-set="progress_width" t-value="(order.purchased_count / order.product_count) * 100"/>
+                                                                </t>
+                                                                <t t-set="progress_class" t-value="'progress-bar'"/>
+                                                                <t t-if="order.state == 'done'">
+                                                                    <t t-set="progress_class" t-value="'progress-bar bg-success'"/>
+                                                                </t>
+                                                                <t t-elif="order.state == 'purchasing'">
+                                                                    <t t-set="progress_class" t-value="'progress-bar bg-warning'"/>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <t t-set="progress_class" t-value="'progress-bar bg-info'"/>
+                                                                </t>
+                                                                <div t-att-class="progress_class" t-att-style="'width: ' + str(progress_width) + '%;'">
+                                                                    <small><span t-esc="int(progress_width)"/>%</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 金额信息 -->
+                                                        <div class="amount-info text-center p-2 mb-2" t-att-class="'amount-info state-' + order.state">
+                                                            <div class="amount-label small">总金额</div>
+                                                            <div class="amount-value" style="font-size: 18px;">
+                                                                ¥<span t-esc="'{:,.2f}'.format(order.total_amount)"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- 卡片底部操作按钮 -->
+                                                    <div class="card-footer bg-transparent py-2">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-6 pr-1">
+                                                                <a t-attf-href="/web#id={{ order.id }}&amp;model=restaurant.purchase.order&amp;view_type=form"
+                                                                   class="btn btn-primary btn-sm btn-block btn-action">
+                                                                    <i class="fa fa-eye mr-1"></i>详情
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-6 pl-1">
+                                                                <t t-if="order.state == 'chef_submitted'">
+                                                                    <button type="button" class="btn btn-success btn-sm btn-block btn-action"
+                                                                            t-att-data-order-id="order.id" onclick="startPurchasing(this)">
+                                                                        <i class="fa fa-play mr-1"></i>采购
+                                                                    </button>
+                                                                </t>
+                                                                <t t-if="order.state == 'purchasing'">
+                                                                    <button type="button" class="btn btn-warning btn-sm btn-block btn-action"
+                                                                            t-att-data-order-id="order.id" onclick="receiveOrder(this)">
+                                                                        <i class="fa fa-check mr-1"></i>收货
+                                                                    </button>
+                                                                </t>
+                                                                <t t-if="order.state == 'received'">
+                                                                    <button type="button" class="btn btn-info btn-sm btn-block btn-action"
+                                                                            t-att-data-order-id="order.id" onclick="completeOrder(this)">
+                                                                        <i class="fa fa-flag mr-1"></i>完成
+                                                                    </button>
+                                                                </t>
+                                                                <t t-if="order.state == 'done'">
+                                                                    <span class="badge badge-success p-1 w-100">
+                                                                        <i class="fa fa-check-double mr-1"></i>完成
+                                                                    </span>
+                                                                </t>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+
+                                        <!-- 空状态 -->
+                                        <t t-if="not orders">
+                                            <div class="col-12 text-center py-4">
+                                                <i class="fa fa-clipboard-check fa-3x text-muted mb-3"></i>
+                                                <h5 class="text-muted">暂无今日采购订单</h5>
+                                                <p class="text-muted">今天还没有需要处理的采购订单</p>
+                                                <a href="/web#action=action_restaurant_purchase_orders" class="btn btn-primary">
+                                                    <i class="fa fa-plus mr-2"></i>创建采购订单
+                                                </a>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧：快速收货和待收货列表 -->
+                        <div class="col-lg-4 col-md-5">
+                            <!-- 快速收货 -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fa fa-barcode mr-2"></i>快速收货
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="quick-receive-form">
+                                        <div class="form-group">
+                                            <label for="barcode" class="font-weight-bold">商品条码</label>
+                                            <input type="text" class="form-control barcode-input" id="barcode"
+                                                   placeholder="扫描或输入商品条码" required="autofocus"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="actual_qty" class="font-weight-bold">实际数量</label>
+                                            <input type="number" class="form-control" id="actual_qty"
+                                                   placeholder="输入实际收货数量" step="0.01" min="0" required="true"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            <i class="fa fa-check mr-1"></i>确认收货
+                                        </button>
+                                    </form>
+                                    <div id="result-message" class="mt-3" style="display: none;"></div>
+                                </div>
+                            </div>
+
+                            <!-- 待收货商品 -->
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fa fa-boxes mr-2"></i>待收货商品
+                                        <span class="badge badge-warning ml-1" t-esc="pending_stats.get('total_pending', 0)"/>
+                                    </h5>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="loadPendingReceipts()">
+                                        <i class="fa fa-refresh"></i>
+                                    </button>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush" id="pending-receipts-list">
+                                        <t t-foreach="pending_stats.get('pending_items', [])" t-as="item">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1" t-esc="item.get('product_name', '未知商品')"/>
+                                                    <small t-esc="item.get('planned_qty', 0)"/>
+                                                </div>
+                                                <p class="mb-1 small text-muted">
+                                                    <span t-esc="item.get('shop_name', '未知门店')"/> •
+                                                    <span t-esc="item.get('barcode', '无条码')"/>
+                                                </p>
+                                                <small class="text-muted" t-esc="item.get('order_name', '')"/>
+                                            </div>
+                                        </t>
+                                        <t t-if="not pending_stats.get('pending_items')">
+                                            <div class="list-group-item text-center py-4 text-muted">
+                                                <i class="fa fa-check-circle fa-2x mb-2"></i>
+                                                <p class="mb-0">暂无待收货商品</p>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 内联 JavaScript -->
+                <script>
+                    // 订单操作函数
+                    function startPurchasing(button) {
+                        const orderId = button.getAttribute('data-order-id');
+                        performOrderAction('/restaurant/purchase/start_purchasing', orderId, '开始采购成功！');
+                    }
+
+                    function receiveOrder(button) {
+                        const orderId = button.getAttribute('data-order-id');
+                        performOrderAction('/restaurant/purchase/receive_order', orderId, '收货确认成功！');
+                    }
+
+                    function completeOrder(button) {
+                        const orderId = button.getAttribute('data-order-id');
+                        performOrderAction('/restaurant/purchase/complete_order', orderId, '订单完成！');
+                    }
+
+                    function performOrderAction(url, orderId, successMessage) {
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                'order_id': parseInt(orderId)
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification(successMessage, 'success');
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification('操作失败: ' + data.error, 'danger');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('操作失败', 'danger');
+                        });
+                    }
+
+                    // 快速收货功能
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const form = document.getElementById('quick-receive-form');
+                        const barcodeInput = document.getElementById('barcode');
+                        const actualQtyInput = document.getElementById('actual_qty');
+
+                        // 自动聚焦到条码输入框
+                        if (barcodeInput) {
+                            barcodeInput.focus();
+                        }
+
+                        if (form) {
+                            form.addEventListener('submit', function(e) {
+                                e.preventDefault();
+
+                                const barcode = barcodeInput.value;
+                                const actualQty = actualQtyInput.value;
+
+                                if (!barcode || !actualQty) {
+                                    showNotification('请输入条码和数量', 'warning');
+                                    return;
+                                }
+
+                                // 显示加载状态
+                                const submitBtn = form.querySelector('button[type="submit"]');
+                                const originalText = submitBtn.innerHTML;
+                                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>处理中...';
+                                submitBtn.disabled = true;
+
+                                fetch('/restaurant/purchase/quick_receive_action', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        'barcode': barcode,
+                                        'actual_qty': parseFloat(actualQty)
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        showNotification('<i class="fa fa-check-circle mr-2"></i>' + data.message, 'success');
+                                        form.reset();
+                                        barcodeInput.focus();
+                                        // 刷新页面以更新状态
+                                        setTimeout(() => location.reload(), 1500);
+                                    } else {
+                                        showNotification('<i class="fa fa-exclamation-triangle mr-2"></i>' + data.error, 'danger');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    showNotification('<i class="fa fa-exclamation-triangle mr-2"></i>操作失败', 'danger');
+                                })
+                                .finally(() => {
+                                    // 恢复按钮状态
+                                    submitBtn.innerHTML = originalText;
+                                    submitBtn.disabled = false;
+                                });
+                            });
+                        }
+
+                        // 键盘快捷键
+                        barcodeInput.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                actualQtyInput.focus();
+                            }
+                        });
+
+                        actualQtyInput.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                form.dispatchEvent(new Event('submit'));
+                            }
+                        });
+                    });
+
+                    function loadPendingReceipts() {
+                        const list = document.getElementById('pending-receipts-list');
+                        if (!list) return;
+
+                        // 显示加载中
+                        list.innerHTML = '<div class="list-group-item text-center py-3"><i class="fa fa-spinner fa-spin mr-2"></i>加载中...</div>';
+
+                        fetch('/restaurant/purchase/get_pending_receipts', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success &amp;&amp; data.pending_receipts &amp;&amp; data.pending_receipts.length > 0) {
+                                list.innerHTML = '';
+                                data.pending_receipts.slice(0, 10).forEach(function(item) {
+                                    const listItem = document.createElement('div');
+                                    listItem.className = 'list-group-item';
+                                    listItem.innerHTML =
+                                        '<div class="d-flex w-100 justify-content-between">' +
+                                            '<h6 class="mb-1">' + (item.product_name || '未知商品') + '</h6>' +
+                                            '<small>' + (item.planned_qty || '0') + '</small>' +
+                                        '</div>' +
+                                        '<p class="mb-1 small text-muted">' +
+                                            (item.shop_name || '未知门店') + ' • ' + (item.barcode || '无条码') +
+                                        '</p>';
+                                    list.appendChild(listItem);
+                                });
+                            } else {
+                                list.innerHTML =
+                                    '<div class="list-group-item text-center py-4 text-muted">' +
+                                        '<i class="fa fa-check-circle fa-2x mb-2"></i>' +
+                                        '<p class="mb-0">暂无待收货商品</p>' +
+                                    '</div>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error loading pending receipts:', error);
+                            list.innerHTML =
+                                '<div class="list-group-item text-center py-4 text-danger">' +
+                                    '<i class="fa fa-exclamation-triangle fa-2x mb-2"></i>' +
+                                    '<p class="mb-0">加载失败</p>' +
+                                '</div>';
+                        });
+                    }
+
+                    function showNotification(message, type) {
+                        // 创建通知元素
+                        const notification = document.createElement('div');
+                        notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+                        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+                        notification.innerHTML = `
+                            ${message}
+                            <button type="button" class="close" data-dismiss="alert">
+<!--                                <span aria-hidden="true">&times;</span>-->
+                            </button>
+                        `;
+
+                        document.body.appendChild(notification);
+
+                        // 3秒后自动消失
+                        setTimeout(() => {
+                            if (notification.parentNode) {
+                                notification.parentNode.removeChild(notification);
+                            }
+                        }, 3000);
+                    }
+
+                    // 添加卡片悬停效果
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const cards = document.querySelectorAll('.order-card');
+                        cards.forEach(card => {
+                            card.addEventListener('mouseenter', function() {
+                                this.style.transform = 'translateY(-3px)';
+                                this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+                            });
+                            card.addEventListener('mouseleave', function() {
+                                this.style.transform = 'translateY(0)';
+                                this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                            });
+                        });
+                    });
+                </script>
+
+                <style>
+                    .order-card {
+                        border: none;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                        transition: all 0.3s ease;
+                        border-left: 3px solid #dee2e6;
+                    }
+
+                    .order-card.state-draft { border-left-color: #6c757d; }
+                    .order-card.state-chef_submitted { border-left-color: #17a2b8; }
+                    .order-card.state-purchasing { border-left-color: #ffc107; }
+                    .order-card.state-received { border-left-color: #28a745; }
+                    .order-card.state-done { border-left-color: #6f42c1; }
+
+                    .status-badge {
+                        padding: 4px 8px;
+                        border-radius: 12px;
+                        font-weight: bold;
+                        font-size: 10px;
+                    }
+
+                    .status-draft { background-color: #6c757d; color: white; }
+                    .status-chef_submitted { background-color: #17a2b8; color: white; }
+                    .status-purchasing { background-color: #ffc107; color: #212529; }
+                    .status-received { background-color: #28a745; color: white; }
+                    .status-done { background-color: #6f42c1; color: white; }
+
+                    .info-item.small {
+                        font-size: 12px;
+                        padding: 2px 0;
+                    }
+
+                    .amount-info {
+                        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                        border-radius: 6px;
+                        border: 1px solid rgba(0,0,0,0.05);
+                    }
+
+                    .btn-action {
+                        font-weight: 600;
+                        padding: 6px 8px;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: all 0.2s ease;
+                    }
+
+                    .btn-action:hover {
+                        transform: translateY(-1px);
+                    }
+
+                    .barcode-input {
+                        font-size: 16px;
+                        text-align: center;
+                        letter-spacing: 1px;
+                    }
+
+                    .list-group-item {
+                        border: none;
+                        padding: 12px 16px;
+                    }
+
+                    .list-group-item h6 {
+                        font-size: 14px;
+                    }
+
+                    @media (max-width: 768px) {
+                        .quick-stats {
+                            display: none;
+                        }
+
+                        .col-lg-8, .col-lg-4 {
+                            margin-bottom: 1rem;
+                        }
+                    }
+                </style>
+            </t>
+        </template>
+    </data>
+</odoo>

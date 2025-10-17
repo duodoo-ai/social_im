@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_restaurant_chef" model="res.groups">
+        <field name="name">餐厅主厨</field>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="group_restaurant_purchaser" model="res.groups">
+        <field name="name">采购员</field>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="group_restaurant_admin" model="res.groups">
+        <field name="name">餐厅管理员</field>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>
