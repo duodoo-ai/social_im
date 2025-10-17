@@ -24,7 +24,7 @@
     'email': 'zou.jason@qq.com',
     'website': 'http://www.duodoo.tech',
     'category': 'Purchases',
-    'price': 300,
+    'price': 250,
     'currency': 'USD',
     'depends': [
         'purchase',
