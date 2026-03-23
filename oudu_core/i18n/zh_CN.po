@@ -1,0 +1,115 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* oudu_core
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-22 09:03+0000\n"
+"PO-Revision-Date: 2025-05-22 09:03+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_todo
+#: model:ir.ui.menu,name:project_todo.menu_todo_todos
+msgid "To-do"
+msgstr "待办事项"
+
+#. module: base
+#: model:ir.ui.menu,name:base.menu_administration
+msgid "Settings"
+msgstr "系统管理"
+
+#. module: base
+#: model:ir.ui.menu,name:base.menu_management
+msgid "Apps"
+msgstr "应用管理"
+
+#. module: mail
+#: model:ir.actions.client,name:mail.action_discuss
+#: model:ir.ui.menu,name:mail.mail_menu_technical
+#: model:ir.ui.menu,name:mail.menu_root_discuss
+#: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
+msgid "Discuss"
+msgstr "在线沟通"
+
+#. module: mail
+#: model:ir.ui.menu,name:mail.menu_configuration
+msgid "Configuration"
+msgstr "配置管理"
+
+#. module: project
+#: model:ir.ui.menu,name:project.menu_main_pm
+msgid "Project"
+msgstr "项目任务"
+
+
+#. module: calendar
+#: model:ir.ui.menu,name:calendar.mail_menu_calendar
+msgid "Calendar"
+msgstr "工作日历"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.sale_menu_root
+msgid "Sales"
+msgstr "销售订单"
+
+#. module: crm
+#: model:ir.ui.menu,name:crm.crm_menu_root
+msgid "CRM"
+msgstr "商机发布"
+
+#. module: account
+#: model:ir.ui.menu,name:account.menu_finance
+msgid "Invoicing"
+msgstr "发票管理"
+
+#. module: website
+#: model:ir.ui.menu,name:website.menu_website_configuration
+msgid "Website"
+msgstr "网站管理"
+
+#. module: hr
+#: model:ir.ui.menu,name:hr.menu_hr_root
+msgid "Employees"
+msgstr "员工管理"
+
+#. module: iot
+#: model:ir.ui.menu,name:iot.iot_menu_root
+msgid "IoT"
+msgstr "物联数采"
+
+#. module: knowledge
+#: model:ir.ui.menu,name:knowledge.knowledge_menu_root
+msgid "Knowledge"
+msgstr "知识管理"
+
+#. module: helpdesk
+#: model:ir.ui.menu,name:helpdesk.menu_helpdesk_root
+msgid "Helpdesk"
+msgstr "售后服务"
+
+#. module: utm
+#: model:ir.ui.menu,name:utm.menu_link_tracker_root
+msgid "Link Tracker"
+msgstr "业务跟踪"
+
+#. module: contacts
+#: model:ir.ui.menu,name:contacts.menu_contacts
+msgid "Contacts"
+msgstr "客商档案"
+
+#. module: stock
+#: model:ir.ui.menu,name:stock.menu_stock_root
+msgid "Inventory"
+msgstr "库存作业"
+
+#. module: spreadsheet_dashboard
+#: model:ir.ui.menu,name:spreadsheet_dashboard.spreadsheet_dashboard_menu_root
+msgid "Dashboards"
+msgstr "数据看板"
